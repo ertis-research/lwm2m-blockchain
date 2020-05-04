@@ -4,4 +4,5 @@ In this project we will integrate the protocol [LWM2M](https://omaspecworks.org/
 This repository is divided in three main folders:
 * **blockchain** --> Smart Contracts are stored here
 * **docs** --> Project documentation
-* **leshan** --> Java Implementation of LWM2M protocol. Modified to accomplish communication with Ropsten network
+* **leshan** --> Java Implementation of LWM2M protocol Modified to accomplish communication with Ropsten network
+* **mainApp** --> Frontend and backend of the Main Server Application
