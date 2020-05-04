@@ -1,0 +1,80 @@
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3>Add a new security information</h3>
+        </div>
+        <div class="card-body">
+            
+            <form action="">
+                <div class="row">
+                    <div class="form-group" class="col-md">
+                        <label for="">Endpoint </label>
+                        <input [(ngModel)]="bootstrapConfigForm.endpoint" name="endpoint" type="text"
+                            class="form-control">
+                            <button (click)="addSecurityInfo()" class="btn btn-success">Add</button>
+                    </div>
+
+                    <div class="form-group" class="col-md">
+                        <label for="url_bs">url_bs </label>
+                        <input [(ngModel)]="bootstrapConfigForm.url_bs" name="url_bs" type="text" class="form-control">
+                        <label for="">id_bs </label>
+                        <input [(ngModel)]="bootstrapConfigForm.id_bs" name="id_bs" type="text" class="form-control">
+                        <label for="">key_bs </label>
+                        <input [(ngModel)]="bootstrapConfigForm.key_bs" name="key_bs" type="text" class="form-control">
+                    </div>
+
+                    <div class="form-group" class="col-md">
+                        <label for="url_bs">url_s </label>
+                        <input [(ngModel)]="bootstrapConfigForm.url_s" name="url_s" type="text" class="form-control">
+                        <label for="">id_s </label>
+                        <input [(ngModel)]="bootstrapConfigForm.id_s" name="id_s" type="text" class="form-control">
+                        <label for="">key_s </label>
+                        <input [(ngModel)]="bootstrapConfigForm.key_s" name="key_s" type="text" class="form-control">
+                    </div>
+                </div>
+
+                
+
+            </form>
+            
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3>Security information list</h3>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ENDPOINTS</th>
+                        <th>URL_BS</th>
+                        <th>ID_BS</th>
+                        <th>KEY_BS</th>
+                        <th>URL_S</th>
+                        <th>ID_S</th>
+                        <th>KEY_S</th>
+                        <th></th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr *ngFor="let bootstrapConfig of bootstrapConfigs">
+                        <td>{{bootstrapConfig.endpoint}}</td>
+                        <td>{{bootstrapConfig.url_bs}}</td>
+                        <td>{{bootstrapConfig.id_bs}}</td>
+                        <td>{{bootstrapConfig.key_bs}}</td>
+                        <td>{{bootstrapConfig.url_s}}</td>
+                        <td>{{bootstrapConfig.id_s}}</td>
+                        <td>{{bootstrapConfig.key_s}}</td>
+                        <td>
+                            <button (click)="deleteSecurityInfo(bootstrapConfig)" class="btn btn-danger">Delete</button>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

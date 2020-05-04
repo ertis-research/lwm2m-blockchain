@@ -28,9 +28,23 @@ The project folder structure is:
 
 You can run the spring boot backend server by typing mvn spring-boot:run in the terminal. It will run on port 8080.
 
+## MainAppFrontEnd
+Para crear el proyecto Angular lanzar el siguiente comando desde la terminal.
+```
+ng new MainAppFrontEnd
+```
 
-### URLs
+The project folder structure in the app directory is:
+- components
+- models
+- services
+
+The Angular front-end can be run by typing ng serve command. It will start on port 4200.
+
+
+## URLs
 - https://www.callicoder.com/spring-boot-mongodb-angular-js-rest-api-tutorial/
 - https://bezkoder.com/angular-spring-boot-mongodb/
 - https://bezkoder.com/spring-boot-mongodb-crud/
+- https://youtu.be/O13X14TGtm8
 - https://www.youtube.com/watch?v=c8n6JsQuX2A
