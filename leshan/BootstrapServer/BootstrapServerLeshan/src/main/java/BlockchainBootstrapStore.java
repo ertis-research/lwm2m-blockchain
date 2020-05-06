@@ -32,9 +32,9 @@ public class BlockchainBootstrapStore implements EditableBootstrapConfigStore {
 	String privateKey = "4C2A99F86C06C98448AB1986D33A248D699B5D7280EEBD76E4FD60B84C4B51C8"; //Private key of an account, Ropsten
 	String contractAddress = "0x0b65c81b465953fd25b29c0caffd2a448f0b948f"; //Ropsten
 	
-//	String url = "HTTP://127.0.0.1:7545"; //Ganache
-//	String privateKey = "a701158005907d33a130caa07a2b7d811b409336ba14efca9a00b8593ec6feb9"; //Private key of an account, Ganache
-//	String contractAddress = "0x17EC1b6b63b5B477Aa38E5389e98765573Db5415"; //Ganache
+	//String url = "HTTP://127.0.0.1:7545"; //Ganache
+	//String privateKey = "a701158005907d33a130caa07a2b7d811b409336ba14efca9a00b8593ec6feb9"; //Private key of an account, Ganache
+	//String contractAddress = "0x17EC1b6b63b5B477Aa38E5389e98765573Db5415"; //Ganache
 	
 	BigInteger gasPrice = new BigInteger("20000000000");
 	BigInteger gasLimit = new BigInteger("4712388");
@@ -60,7 +60,7 @@ public class BlockchainBootstrapStore implements EditableBootstrapConfigStore {
 
 		try {
 			String[] endpoints = getAllClients(contract);
-			System.out.println(endpoints);;
+			System.out.println(endpoints);
 			for (String end : endpoints) {
 				BootstrapConfig config = getClient(contract, end);
 				res.put(end, config);
@@ -332,32 +332,5 @@ public class BlockchainBootstrapStore implements EditableBootstrapConfigStore {
 					+ Character.digit(s.charAt(i+1), 16));
 		}
 		return data;
-	}
-	
-	private String byteToHex(byte[] bytes) {
-		String res ="";
-		for (byte b : bytes) {
-			String st = String.format("%02X", b);
-			res+=st;
-		}
-		return res.trim();
-	}
-	
-	private byte[] hexToByte32(String s) {
-		int len = s.length();
-		byte[] data = new byte[32];
-		for (int i = 0; i < len; i += 2) {
-			data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
-					+ Character.digit(s.charAt(i+1), 16));
-		}
-		return data;
-	}
-
-	private byte[] bytetoByte32(byte[] in) {
-		byte[] out = new byte[32];
-		for (int i = 0; i < in.length; i++) {
-			out[i] = in[i];
-		}
-		return out;
 	}
 }

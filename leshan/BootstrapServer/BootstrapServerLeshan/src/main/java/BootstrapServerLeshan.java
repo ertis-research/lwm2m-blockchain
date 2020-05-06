@@ -1,13 +1,6 @@
-import java.net.InetSocketAddress;
-
 import org.eclipse.californium.scandium.config.DtlsConnectorConfig;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.webapp.WebAppContext;
 import org.eclipse.leshan.server.californium.bootstrap.LeshanBootstrapServer;
 import org.eclipse.leshan.server.californium.bootstrap.LeshanBootstrapServerBuilder;
-
-import servlet.BootstrapServlet;
 
 public class BootstrapServerLeshan {
 
@@ -34,28 +27,5 @@ public class BootstrapServerLeshan {
         
         LeshanBootstrapServer bsServer = builder.build();
         bsServer.start();
-        
-        // Prepare and start jetty
-        int webPort = 8080;
-        InetSocketAddress jettyAddr;
-        jettyAddr = new InetSocketAddress(webPort);
-  
-        Server server = new Server(jettyAddr);
-        WebAppContext root = new WebAppContext();
-
-        root.setContextPath("/");
-        root.setResourceBase(BootstrapServerLeshan.class.getClassLoader().getResource("webapp").toExternalForm());
-        root.setParentLoaderPriority(true);
-
-        ServletHolder bsServletHolder = new ServletHolder(new BootstrapServlet(bsStore));
-        root.addServlet(bsServletHolder, "/api/bootstrap/*");
-
-        server.setHandler(root);
-
-        try {
-			server.start();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 }
