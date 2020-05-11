@@ -13,14 +13,12 @@ import { ApiService } from './services/api.service';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { BootstrapServerComponent } from './components/bootstrap-server/bootstrap-server.component';
-import { ServerComponent } from './components/server/server.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    BootstrapServerComponent,
-    ServerComponent
+    BootstrapServerComponent
   ],
   imports: [
     BrowserModule,

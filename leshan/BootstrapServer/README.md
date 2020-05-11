@@ -15,14 +15,6 @@ A file called BlockchainBootstrapStore.java is created, which will be an impleme
 Finally, the Main class of the project called BootstrapServerLeshan.java is created. This class does the following:
 - Prepare and start bootstrap server
 - Create and set DTLS Config
-- Prepare and start jetty
-
-## Web interface
-A servlet called BootstrapServlet.java is created. The constructor of this class receives a BlockchainBootstrapStore object (implementation of EditableBootstrapConfigStore). The methods that handle the GET (doGet), POST (doPost) and DELETE (doDelete) requests are defined. Also, a class called ClientInfo.java is created to collect the information of each client
-
-Finally, a folder called webapp has been created in the resources folder. Here are the files of our small web application (index.html and index.js)
-
-Note: It is a very simple web page, where no error is handled. It only helps us to have a first approach and to be able to add and remove client information easier. This web interface will be improved soon.
 
 ## Test
 To see that everything works, a little test is done adding the client's information on the bootstrap server and on the server.

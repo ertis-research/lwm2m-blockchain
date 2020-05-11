@@ -10,7 +10,6 @@ import { SecurityInfoServer } from '../models/SecurityInfoServer';
 export class ApiService {
 
   constructor(private http:HttpClient) {
-    console.log("service listo");
   }
 
   url_bs = "http://localhost:8080/api/bootstrap/";
@@ -19,15 +18,11 @@ export class ApiService {
     return this.http.get<BootstrapConfig[]>(this.url_bs+"clients");
   }
 
-  getConnectedClients(){
-    return this.http.get<SecurityInfoServer[]>('http://localhost:8081/api/clients');
-  }
-
   addNewBootstrapConfig(bootstrapConfig:BootstrapConfig){
     return this.http.post(this.url_bs+"addClient", bootstrapConfig);
   }
 
-  deleteBootstrapConfig(endpoint: String){
+  deleteBootstrapConfig(endpoint: string){
     return this.http.delete(this.url_bs+"removeClient/"+endpoint);
   }
 

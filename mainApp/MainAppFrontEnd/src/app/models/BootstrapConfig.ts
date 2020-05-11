@@ -1,9 +1,9 @@
 export class BootstrapConfig{
-    endpoint:String;
-    url_bs:String;
-    id_bs:String;
-    key_bs:String;
-    url_s:String;
-    id_s:String;
-    key_s:String;
+    endpoint:string;
+    url_bs:string;
+    id_bs:string;
+    key_bs:string;
+    url_s:string;
+    id_s:string;
+    key_s:string;
 }
