@@ -5,7 +5,7 @@ import org.web3j.tuples.generated.Tuple6;
 import com.ivan.tfm.MainAppBackEnd.utils.Converter;
 
 
-public class BootstrapConfig {
+public class Client {
 	private String endpoint;
 	private String url_bs;
 	private String id_bs;
@@ -14,9 +14,9 @@ public class BootstrapConfig {
 	private String id_s;
 	private String key_s;
 	
-	public BootstrapConfig() {}
+	public Client() {}
 	
-	public BootstrapConfig(String endpoint, Tuple6<byte[],byte[],byte[],byte[],byte[],byte[]> in) {
+	public Client(String endpoint, Tuple6<byte[],byte[],byte[],byte[],byte[],byte[]> in) {
 		this.endpoint = endpoint;
 		this.url_bs = Converter.byteToAscii(in.component1());
 		this.id_bs = Converter.byteToAscii(in.component2());

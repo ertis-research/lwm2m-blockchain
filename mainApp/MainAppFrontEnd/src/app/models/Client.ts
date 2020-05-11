@@ -1,4 +1,4 @@
-export class BootstrapConfig{
+export class Client{
     endpoint:string;
     url_bs:string;
     id_bs:string;

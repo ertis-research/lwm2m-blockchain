@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3>Anomaly list</h3>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>TIMESTAMP</th>
+                        <th>ENDPOINT</th>
+                        <th>EMERGENCY LEVEL</th>
+                        <th>TEMPERATURE</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr *ngFor="let anomaly of anomalies">
+                        <td>{{timestampToDate(anomaly.timestamp)}}</td>
+                        <td>{{anomaly.endpoint}}</td>
+                        <td>{{anomaly.emergencyLevel}}</td>
+                        <td>{{anomaly.temperature}}</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

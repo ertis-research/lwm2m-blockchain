@@ -1,11 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { BootstrapServerComponent } from './components/bootstrap-server/bootstrap-server.component';
+import { ClientComponent } from './components/client/client.component';
+import { AnomalyComponent } from './components/anomaly/anomaly.component';
+import { UserComponent } from './components/user/user.component';
 
 
 const routes: Routes = [
-  {path: 'bs', component:BootstrapServerComponent},
-  {path: '**', pathMatch:'full', redirectTo:'bs'}
+  {path: 'clients', component:ClientComponent},
+  {path: 'anomalies', component:AnomalyComponent},
+  {path: 'users', component:UserComponent},
+  {path: '**', pathMatch:'full', redirectTo:'clients'}
 ];
 
 @NgModule({

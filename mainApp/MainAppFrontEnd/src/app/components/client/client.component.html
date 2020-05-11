@@ -1,7 +1,7 @@
 <div class="container">
     <div class="card">
         <div class="card-header">
-            <h3>Add a new security information</h3>
+            <h3>Add new client</h3>
         </div>
         <div class="card-body">
             
@@ -9,27 +9,27 @@
                 <div class="row">
                     <div class="form-group" class="col-md">
                         <label for="">Endpoint </label>
-                        <input [(ngModel)]="bootstrapConfigForm.endpoint" name="endpoint" type="text"
+                        <input [(ngModel)]="clientForm.endpoint" name="endpoint" type="text"
                             class="form-control">
-                            <button (click)="addSecurityInfo()" class="btn btn-success">Add</button>
+                            <button (click)="addClient()" class="btn btn-success">Add</button>
                     </div>
 
                     <div class="form-group" class="col-md">
                         <label for="url_bs">url_bs </label>
-                        <input [(ngModel)]="bootstrapConfigForm.url_bs" name="url_bs" type="text" class="form-control">
+                        <input [(ngModel)]="clientForm.url_bs" name="url_bs" type="text" class="form-control">
                         <label for="">id_bs </label>
-                        <input [(ngModel)]="bootstrapConfigForm.id_bs" name="id_bs" type="text" class="form-control">
+                        <input [(ngModel)]="clientForm.id_bs" name="id_bs" type="text" class="form-control">
                         <label for="">key_bs </label>
-                        <input [(ngModel)]="bootstrapConfigForm.key_bs" name="key_bs" type="text" class="form-control">
+                        <input [(ngModel)]="clientForm.key_bs" name="key_bs" type="text" class="form-control">
                     </div>
 
                     <div class="form-group" class="col-md">
                         <label for="url_bs">url_s </label>
-                        <input [(ngModel)]="bootstrapConfigForm.url_s" name="url_s" type="text" class="form-control">
+                        <input [(ngModel)]="clientForm.url_s" name="url_s" type="text" class="form-control">
                         <label for="">id_s </label>
-                        <input [(ngModel)]="bootstrapConfigForm.id_s" name="id_s" type="text" class="form-control">
+                        <input [(ngModel)]="clientForm.id_s" name="id_s" type="text" class="form-control">
                         <label for="">key_s </label>
-                        <input [(ngModel)]="bootstrapConfigForm.key_s" name="key_s" type="text" class="form-control">
+                        <input [(ngModel)]="clientForm.key_s" name="key_s" type="text" class="form-control">
                     </div>
                 </div>
 
@@ -40,9 +40,11 @@
         </div>
     </div>
 
+    <br>
+    
     <div class="card">
         <div class="card-header">
-            <h3>Security information list</h3>
+            <h3>Client list</h3>
         </div>
         <div class="card-body">
             <table class="table table-hover">
@@ -60,16 +62,16 @@
 
                 </thead>
                 <tbody>
-                    <tr *ngFor="let bootstrapConfig of bootstrapConfigs">
-                        <td>{{bootstrapConfig.endpoint}}</td>
-                        <td>{{bootstrapConfig.url_bs}}</td>
-                        <td>{{bootstrapConfig.id_bs}}</td>
-                        <td>{{bootstrapConfig.key_bs}}</td>
-                        <td>{{bootstrapConfig.url_s}}</td>
-                        <td>{{bootstrapConfig.id_s}}</td>
-                        <td>{{bootstrapConfig.key_s}}</td>
+                    <tr *ngFor="let client of clients">
+                        <td>{{client.endpoint}}</td>
+                        <td>{{client.url_bs}}</td>
+                        <td>{{client.id_bs}}</td>
+                        <td>{{client.key_bs}}</td>
+                        <td>{{client.url_s}}</td>
+                        <td>{{client.id_s}}</td>
+                        <td>{{client.key_s}}</td>
                         <td>
-                            <button (click)="deleteSecurityInfo(bootstrapConfig)" class="btn btn-danger">Delete</button>
+                            <button (click)="deleteClient(client)" class="btn btn-danger">Delete</button>
                         </td>
                     </tr>
 

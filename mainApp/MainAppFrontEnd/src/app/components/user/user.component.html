@@ -1,0 +1,71 @@
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3>Add new user</h3>
+        </div>
+        <div class="card-body">
+
+            <form action="">
+                <div class="row">
+                    <div class="form-group" class="col-md">
+                        <label for="username">Username </label>
+                        <input [(ngModel)]="userForm.username" name="username" type="text" class="form-control">
+                    </div>
+
+                    <div class="form-group" class="col-md">
+                        <label for="password">Password </label>
+                        <input [(ngModel)]="userForm.password" name="password" type="text" class="form-control">
+                    </div>
+
+                    <div class="form-group" class="col-md">
+                        <label for="role">Role </label>
+                        <select name="miselect" [(ngModel)]="userForm.role" class="form-control">
+                            <option [value]="role" *ngFor="let role of roles">{{role}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group" class="col-sm-2">
+                        <br>
+                        <button (click)="addUser()" class="btn btn-success">Add</button>
+
+                    </div>
+                </div>
+
+
+
+            </form>
+
+        </div>
+    </div>
+
+    <br>
+
+    <div class="card">
+        <div class="card-header">
+            <h3>User list</h3>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>USERNAME</th>
+                        <th>PASSWORD</th>
+                        <th>ROLE</th>
+                        <th></th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of users">
+                        <td>{{user.username}}</td>
+                        <td>{{user.password}}</td>
+                        <td>{{user.role}}</td>
+                        <td>
+                            <button (click)="deleteUser(user)" class="btn btn-danger">Delete</button>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

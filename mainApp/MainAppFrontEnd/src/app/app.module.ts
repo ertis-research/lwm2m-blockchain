@@ -7,18 +7,25 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 
 //services
-import { ApiService } from './services/api.service';
+import { ClientService } from './services/client.service';
+import { AnomalyService } from './services/anomaly.service';
+import { UserService } from './services/user.service';
 
 //components
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/shared/navbar/navbar.component';
-import { BootstrapServerComponent } from './components/bootstrap-server/bootstrap-server.component';
+import { ClientComponent } from './components/client/client.component';
+import { AnomalyComponent } from './components/anomaly/anomaly.component';
+import { UserComponent } from './components/user/user.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    BootstrapServerComponent
+    ClientComponent,
+    AnomalyComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +34,9 @@ import { BootstrapServerComponent } from './components/bootstrap-server/bootstra
     FormsModule
   ],
   providers: [
-    ApiService
+    ClientService,
+    AnomalyService,
+    UserService
   ],
   bootstrap: [AppComponent]
 })

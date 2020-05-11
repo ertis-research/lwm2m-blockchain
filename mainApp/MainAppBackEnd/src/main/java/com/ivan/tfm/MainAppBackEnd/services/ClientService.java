@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
@@ -14,22 +15,22 @@ import org.web3j.tuples.generated.Tuple6;
 import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.tx.gas.StaticGasProvider;
 
-import com.ivan.tfm.MainAppBackEnd.beans.BootstrapConfig;
+import com.ivan.tfm.MainAppBackEnd.beans.Client;
 import com.ivan.tfm.MainAppBackEnd.utils.Converter;
 import com.ivan.tfm.MainAppBackEnd.wrappers.BootstrapStore;
 
+@Service
+public class ClientService {
 
-public class BlockchainService {
+	static Logger log = LoggerFactory.getLogger(ClientService.class);
 
-	static Logger log = LoggerFactory.getLogger(BlockchainService.class);
+	//String url = "https://ropsten.infura.io/v3/a21979a509154e19b42267c28f697e32"; //Ropsten
+	//String privateKey = "4C2A99F86C06C98448AB1986D33A248D699B5D7280EEBD76E4FD60B84C4B51C8"; //Private key of an account, Ropsten
+	//String contractAddress = "0x0b65c81b465953fd25b29c0caffd2a448f0b948f"; //Ropsten
 
-	String url = "https://ropsten.infura.io/v3/a21979a509154e19b42267c28f697e32"; //Ropsten
-	String privateKey = "4C2A99F86C06C98448AB1986D33A248D699B5D7280EEBD76E4FD60B84C4B51C8"; //Private key of an account, Ropsten
-	String contractAddress = "0x0b65c81b465953fd25b29c0caffd2a448f0b948f"; //Ropsten
-
-	//String url = "HTTP://127.0.0.1:7545"; //Ganache
-	//String privateKey = "a701158005907d33a130caa07a2b7d811b409336ba14efca9a00b8593ec6feb9"; //Private key of an account, Ganache
-	//String contractAddress = "0x17EC1b6b63b5B477Aa38E5389e98765573Db5415"; //Ganache
+	String url = "HTTP://127.0.0.1:7545"; //Ganache
+	String privateKey = "a701158005907d33a130caa07a2b7d811b409336ba14efca9a00b8593ec6feb9"; //Private key of an account, Ganache
+	String contractAddress = "0x17EC1b6b63b5B477Aa38E5389e98765573Db5415"; //Ganache
 
 	BigInteger gasPrice = new BigInteger("20000000000");
 	BigInteger gasLimit = new BigInteger("4712388");
@@ -37,7 +38,7 @@ public class BlockchainService {
 	Web3j web3j;
 	BootstrapStore contract;
 
-	public BlockchainService() {
+	public ClientService() {
 		try {
 			web3j = connect(url);
 			Credentials credentials = createCredentials(privateKey);
@@ -150,25 +151,25 @@ public class BlockchainService {
 		return response;
 	}
 
-	private BootstrapConfig getClient(BootstrapStore contract, String endpoint) throws Exception {
+	private Client getClient(BootstrapStore contract, String endpoint) throws Exception {
 		//long startTime = System.currentTimeMillis();
 		Tuple6<byte[],byte[],byte[],byte[],byte[],byte[]> response = contract.getClient(Converter.asciiToByte32(endpoint)).send();
-		BootstrapConfig bootstrapConfig = new BootstrapConfig(endpoint, response);
+		Client client = new Client(endpoint, response);
 		//long endTime = System.currentTimeMillis();
 		//long totalTime = ((endTime - startTime));
 		//System.out.println("getClient: "+ totalTime + " ms");
-		return bootstrapConfig;
+		return client;
 	}
 
-	public List<BootstrapConfig> getAllClients(){
+	public List<Client> getAllClients(){
 		long startTime = System.currentTimeMillis();
-		List<BootstrapConfig> res = new ArrayList<BootstrapConfig>();
+		List<Client> res = new ArrayList<Client>();
 		
 		try {
 			String[] endpoints = getAllEndpoints();
 			for (String end : endpoints) {
-				BootstrapConfig config = getClient(contract, end);
-				res.add(config);
+				Client client = getClient(contract, end);
+				res.add(client);
 			}
 
 		} catch (Exception e) {
