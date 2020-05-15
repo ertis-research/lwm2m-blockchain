@@ -67,7 +67,7 @@ contract AnomalyStore {
     uint256[] memory res_data = new uint256[](cont);
     uint256 res_cont = 0;
 
-    for (uint256 i = 1; i <= cont; i++) {
+    for (uint i = 1; i <= cont; i++) {
       if(anomalies[i].endpoint == endpoint) {
         res_ts[res_cont] = anomalies[i].timestamp;
         res_emer[res_cont] = anomalies[i].emergency_level;
@@ -88,7 +88,7 @@ contract AnomalyStore {
     uint256[] memory res_data = new uint256[](cont);
     uint256 res_cont = 0;
 
-    for (uint256 i = 1; i <= cont; i++) {
+    for (uint i = 1; i <= cont; i++) {
       if(anomalies[i].timestamp >= ts_start && anomalies[i].timestamp <= ts_end) {
         res_ts[res_cont] = anomalies[i].timestamp;
         res_end[res_cont] = anomalies[i].endpoint;
@@ -109,7 +109,7 @@ contract AnomalyStore {
     uint256[] memory res_emer = new uint256[](cont);
     uint256[] memory res_data = new uint256[](cont);
 
-    for (uint256 i = 1; i <= cont; i++) {
+    for (uint i = 1; i <= cont; i++) {
       res_ts[i-1] = anomalies[i].timestamp;
       res_end[i-1] = anomalies[i].endpoint;
       res_emer[i-1] = anomalies[i].emergency_level;

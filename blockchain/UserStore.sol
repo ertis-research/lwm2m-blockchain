@@ -3,15 +3,13 @@ pragma solidity >=0.4.22 <0.7.0;
 contract UserStore {
 
   struct UserData {
-    bytes32 username;
     bytes32 email;
     bytes32 password;
-    uint256 role;
+    uint256 role; //1 - admin, 2 - advanced, 3 - basic
   }
 
-  mapping (uint256 => UserData) users;
-  uint256 cont;
-  uint256 n_users; //number of registered users
+  mapping (bytes32 => UserData) users; //username is the key
+  bytes32[] usernames;
 
   address public owner; // Contract owner
   mapping(address => bool) public whitelist; // White list of addresses that can execute transactions
@@ -25,8 +23,6 @@ contract UserStore {
         whitelist[addresses[i]] = true;
       }
     }
-    cont = 0;
-    n_users = 0;
   }
 
   modifier onlyOwner {
@@ -45,49 +41,55 @@ contract UserStore {
 
   function addUser(
     bytes32 username, bytes32 email, bytes32 password, uint256 role
-  ) public onlyOwner returns(uint256) {
+  ) public onlyOwner {
 
-    cont++;
-    users[cont].username = username;
-    users[cont].email = email;
-    users[cont].password = password;
-    users[cont].role = role;
-    n_users++; // New user registered
-
-    return(cont); // Returns new user id
+    users[username].email = email;
+    users[username].password = password;
+    users[username].role = role;
+    usernames.push(username); // New user registered
   }
 
   function getAllUsers() public onlyOwner view returns(
     bytes32[] memory, bytes32[] memory, bytes32[] memory, uint256[] memory
   ) {
-    bytes32[] memory res_email = new bytes32[](cont);
-    bytes32[] memory res_username = new bytes32[](cont);
-    bytes32[] memory res_password = new bytes32[](cont);
-    uint256[] memory res_role = new uint256[](cont);
+    bytes32[] memory res_username = new bytes32[](usernames.length);
+    bytes32[] memory res_email = new bytes32[](usernames.length);
+    bytes32[] memory res_password = new bytes32[](usernames.length);
+    uint256[] memory res_role = new uint256[](usernames.length);
 
-    for (uint256 i = 1; i <= cont; i++) {
-      res_email[i-1] = users[i].email;
-      res_username[i-1] = users[i].username;
-      res_password[i-1] = users[i].password;
-      res_role[i-1] = users[i].role;
+    for (uint i = 0; i < usernames.length; i++) {
+      res_username[i] = usernames[i];
+      res_email[i] = users[usernames[i]].email;
+      res_password[i] = users[usernames[i]].password;
+      res_role[i] = users[usernames[i]].role;
     }
 
-    return(res_email, res_username, res_password, res_role);
+    return(res_username, res_email, res_password, res_role);
   }
 
-  function updateUser(uint256 id) public onlyOwner {
-    //TO-DO
-  }
-
-  function deleteUser(uint256 id) public onlyOwner {
-    //TO-DO
-  }
-
+  //wildcard field can be email or username. The response is the user's profile (username, email, role)
   function validateLogin(
-    bytes32 wildcard, bytes32 password //wildcard field can be email or username
-  ) public onlyWhitelist view returns(bool) { 
-    //TO-DO
+    bytes32 wildcard, bytes32 password
+  ) public onlyWhitelist view returns(bytes32, bytes32, uint256) {
 
-    return false;
+    int pos = existsUser(wildcard);
+
+    if(pos != -1 && users[usernames[uint(pos)]].password == password) {
+      return (
+        usernames[uint(pos)],
+        users[usernames[uint(pos)]].email,
+        users[usernames[uint(pos)]].role
+      );
+    }
+    return ("", "", 0);
+  }
+
+  function existsUser(bytes32 wildcard) private view returns(int) {
+    for(uint i = 0; i < usernames.length; i++) {
+      if(usernames[i] == wildcard || users[usernames[i]].email == wildcard) {
+        return int(i);
+      }
+    }
+    return -1;
   }
 }
