@@ -7,7 +7,7 @@ import { timestampToDate } from "../../common";
 @Component({
   selector: 'app-anomaly',
   templateUrl: './anomaly.component.html',
-  styleUrls: ['./anomaly.component.css']
+  styles: []
 })
 export class AnomalyComponent implements OnInit {
 
