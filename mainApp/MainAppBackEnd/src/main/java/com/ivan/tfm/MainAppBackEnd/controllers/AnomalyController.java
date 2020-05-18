@@ -18,13 +18,13 @@ import com.ivan.tfm.MainAppBackEnd.services.AnomalyService;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/api/anomaly")
+@RequestMapping("/api/anomalies")
 public class AnomalyController {
 
 	@Autowired
 	AnomalyService anomalyService;
 
-	@GetMapping("/anomalies")
+	@GetMapping("/")
 	public List<Anomaly> getAllAnomalies() {
 		List<Anomaly> res = new ArrayList<>();
 		res = anomalyService.getAll();

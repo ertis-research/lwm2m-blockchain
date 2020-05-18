@@ -14,9 +14,9 @@ public class UserService {
 	
 	public UserService() {
 		users = new ArrayList<User>();
-		User user1 = new User("admin", "admin", "admin");
-		User user2 = new User("ivan", "123456", "advanced");
-		User user3 = new User("noe", "654321", "basic");
+		User user1 = new User("admin", "admin@test.com", "admin", 1);
+		User user2 = new User("ivan", "ivan@test.com", "123456", 2);
+		User user3 = new User("noe", "noe@test.com", "654321", 3);
 		users.add(user1);
 		users.add(user2);
 		users.add(user3);

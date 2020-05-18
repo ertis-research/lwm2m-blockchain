@@ -20,13 +20,13 @@ import com.ivan.tfm.MainAppBackEnd.services.UserService;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 public class UserController {
 
 	@Autowired
 	UserService userService;
 
-	@GetMapping("/users")
+	@GetMapping("/")
 	public List<User> getAllUsers() {
 		List<User> res = new ArrayList<>();
 		res = userService.getAll();

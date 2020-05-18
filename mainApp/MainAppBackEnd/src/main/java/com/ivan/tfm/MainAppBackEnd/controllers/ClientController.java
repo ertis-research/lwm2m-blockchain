@@ -21,28 +21,21 @@ import com.ivan.tfm.MainAppBackEnd.services.ClientService;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/api/client")
+@RequestMapping("/api/clients")
 public class ClientController {
 
 	@Autowired
 	ClientService clientService;
-
-	@GetMapping("/endpoints")
-	public List<String> getAllEndpoints() {
-		List<String> res = new ArrayList<>();
-		res = Arrays.asList(clientService.getAllEndpoints());
-		return res;
-	}
 	
-	@GetMapping("/clients")
+	@GetMapping("/")
 	public List<Client> getAllClients() {
 		List<Client> res = new ArrayList<>();
 		res = clientService.getAllClients();
 		return res;
 	}
 
-	@PostMapping("/addClient")
-	public ResponseEntity<HttpStatus> createTodo(@RequestBody Client bc) {
+	@PostMapping("/add")
+	public ResponseEntity<HttpStatus> createClient(@RequestBody Client bc) {
 		try {
 			clientService.addClient(bc.getEndpoint(), bc.getUrl_bs(),bc.getId_bs(),bc.getKey_bs(), bc.getUrl_s(), bc.getId_s(), bc.getKey_s());
 			return new ResponseEntity<>(HttpStatus.CREATED);
@@ -51,7 +44,7 @@ public class ClientController {
 		}
 	}
 
-	@DeleteMapping("/removeClient/{endpoint}")
+	@DeleteMapping("/remove/{endpoint}")
 	public ResponseEntity<HttpStatus> removeClient(@PathVariable("endpoint") String endpoint) {
 		try {
 			System.out.println(endpoint);
