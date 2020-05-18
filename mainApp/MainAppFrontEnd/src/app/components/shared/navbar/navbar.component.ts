@@ -13,9 +13,16 @@ export class NavbarComponent {
 
   constructor(private auth: AuthService) { }
 
-  isAuthenticated(): boolean{
+  isAuthenticated(): boolean {
     if(this.auth.isAuthenticated()){
       this.username = this.auth.getUsername();
+      return true;
+    }
+    return false;
+  }
+
+  isAdmin(): boolean {
+    if(this.auth.getRole() === 1) {
       return true;
     }
     return false;

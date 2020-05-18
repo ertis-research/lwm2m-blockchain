@@ -13,12 +13,8 @@ export class AuthService {
     this.userCredentials = undefined;
   }
 
-  public setUserCredentials(email: string, username: string, token: string) {
-    this.userCredentials = {
-      email,
-      username,
-      token,
-    };
+  public setUserCredentials(credentials: Credentials) {
+    this.userCredentials = credentials;
   }
 
   public logout() {
@@ -37,6 +33,12 @@ export class AuthService {
 
   public getUsername(): string {
     return this.userCredentials.username;
+  }
+
+  public getRole(): number {
+    return this.userCredentials !== undefined
+      ? this.userCredentials.role
+      : 0;
   }
 
   public getToken(): string {

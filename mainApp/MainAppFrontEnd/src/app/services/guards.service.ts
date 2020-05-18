@@ -27,3 +27,24 @@ export class LoggedGuard implements CanActivate {
     }
   }
 }
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AdminGuard implements CanActivate {
+
+  constructor(
+    private router:Router,
+    private auth:AuthService
+  ) { }
+            
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    if(this.auth.getRole() === 1){
+      return true;
+    }else{
+      console.error("You have not permission to view this page");
+      this.router.navigate(['/login']);
+      return false;
+    }
+  }
+}

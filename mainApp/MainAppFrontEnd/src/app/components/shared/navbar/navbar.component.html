@@ -6,12 +6,12 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" [routerLink]="['clients']">Clients</a>
-        </li>
-        <li class="nav-item" routerLinkActive="active">
           <a class="nav-link" [routerLink]="['anomalies']">Anomalies</a>
         </li>
-        <li class="nav-item" routerLinkActive="active">
+        <li class="nav-item" routerLinkActive="active" *ngIf="isAdmin()">
+          <a class="nav-link" [routerLink]="['clients']">Clients</a>
+        </li>
+        <li class="nav-item" routerLinkActive="active" *ngIf="isAdmin()">
           <a class="nav-link" [routerLink]="['users']">Users</a>
         </li>
       </ul>

@@ -5,33 +5,70 @@
         </div>
         <div class="card-body">
 
-            <form action="">
+            <form (ngSubmit)="addUser()" #addUserForm="ngForm">
                 <div class="row">
                     <div class="form-group" class="col-md">
                         <label for="username">Username </label>
-                        <input [(ngModel)]="userForm.username" name="username" type="text" class="form-control">
+                        <input
+                            type="text"
+                            class="form-control"
+                            placeholder="username"
+                            required
+                            [(ngModel)]="username"
+                            name="username"
+                            #username_tp="ngModel"
+                        >
+                    </div>
+
+                    <div class="form-group" class="col-md">
+                        <label for="email">Email </label>
+                        <input
+                            type="email"
+                            class="form-control"
+                            placeholder="test@test.com"
+                            required
+                            [(ngModel)]="email"
+                            name="email"
+                            #email_tp="ngModel"
+                        >
                     </div>
 
                     <div class="form-group" class="col-md">
                         <label for="password">Password </label>
-                        <input [(ngModel)]="userForm.password" name="password" type="text" class="form-control">
+                        <input
+                            type="text"
+                            class="form-control"
+                            placeholder="password"
+                            required
+                            [(ngModel)]="password"
+                            name="password"
+                            #password_tp="ngModel"
+                        >
                     </div>
 
                     <div class="form-group" class="col-md">
                         <label for="role">Role </label>
-                        <select name="miselect" [(ngModel)]="userForm.role" class="form-control">
-                            <option [value]="role" *ngFor="let role of roles">{{role}}</option>
+                        <select
+                            class="form-control"
+                            required
+                            [(ngModel)]="role"
+                            name="role"
+                            #role_tp="ngModel"
+                        >
+                            <option [ngValue]="undefined" [disabled]="true">-- Choose a role --</option>
+                            <option *ngFor="let r of roles" [value]="r.value">{{r.label}}</option>
                         </select>
                     </div>
+
                     <div class="form-group" class="col-sm-2">
                         <br>
-                        <button (click)="addUser()" class="btn btn-success">Add</button>
-
+                        <button
+                            type="submit"
+                            class="btn btn-success"
+                            [disabled]="!addUserForm.form.valid"
+                        >Add</button>
                     </div>
                 </div>
-
-
-
             </form>
 
         </div>
@@ -48,6 +85,7 @@
                 <thead>
                     <tr>
                         <th>USERNAME</th>
+                        <th>EMAIL</th>
                         <th>PASSWORD</th>
                         <th>ROLE</th>
                         <th></th>
@@ -57,8 +95,9 @@
                 <tbody>
                     <tr *ngFor="let user of users">
                         <td>{{user.username}}</td>
+                        <td>{{user.email}}</td>
                         <td>{{user.password}}</td>
-                        <td>{{user.role}}</td>
+                        <td>{{user.role | roleNumberToString}}</td>
                         <td>
                             <button (click)="deleteUser(user)" class="btn btn-danger">Delete</button>
                         </td>

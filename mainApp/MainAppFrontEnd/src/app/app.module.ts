@@ -22,6 +22,9 @@ import { AnomalyComponent } from './components/anomaly/anomaly.component';
 import { UserComponent } from './components/user/user.component';
 import { LoginComponent } from './components/login/login.component';
 
+//pipes
+import { RoleNumberToStringPipe } from './pipes/role-number-to-string.pipe';
+
 
 @NgModule({
   declarations: [
@@ -31,6 +34,7 @@ import { LoginComponent } from './components/login/login.component';
     AnomalyComponent,
     UserComponent,
     LoginComponent,
+    RoleNumberToStringPipe,
   ],
   imports: [
     BrowserModule,

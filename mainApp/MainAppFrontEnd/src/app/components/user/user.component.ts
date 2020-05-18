@@ -10,13 +10,17 @@ import { UserService } from 'src/app/services/user.service';
 export class UserComponent implements OnInit {
 
   users: User[];
-  userForm: User = {
-    username: "newUsername",
-    password: "newPassword",
-    role: "basic"
-  }
 
-  roles:string[]=["admin","advanced","basic"];
+  username: string;
+  email: string;
+  password: string;
+  role: number;
+
+  roles: Role[] = [
+    { label: "Admin", value: 1 },
+    { label: "Advanced", value: 2 },
+    { label: "Basic", value: 3},
+  ];
   
   constructor(private service: UserService) { }
 
@@ -32,16 +36,28 @@ export class UserComponent implements OnInit {
   }
 
   addUser() {
-    this.service.addNewUser(this.userForm)
+    const user: User = {
+      username: this.username,
+      email: this.email,
+      password: this.password,
+      role: this.role
+    }
+    console.log(user);
+    /*this.service.addNewUser(user)
       .subscribe(data => {
         this.getAllUsers();
-      })
+      });*/
   }
 
   deleteUser(user: User) {
-    this.service.deleteUSer(user.username)
+    this.service.deleteUser(user.username)
       .subscribe(data => {
         this.getAllUsers();
       })
   }
+}
+
+interface Role {
+  label: string;
+  value: number;
 }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+
 import { Anomaly } from '../../models/Anomaly';
 import { AnomalyService } from '../../services/anomaly.service';
+import { timestampToDate } from "../../common";
 
 @Component({
   selector: 'app-anomaly',
@@ -24,16 +26,8 @@ export class AnomalyComponent implements OnInit {
       });
   }
 
-  timestampToDate(timestamp: number) {
-    var date = new Date(timestamp);
-    var dateDisplay = date.toLocaleString('es-ES', {
-      day: 'numeric',
-      month: 'numeric',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-    return dateDisplay;
+  tsToDate(timestamp: number) {
+    timestampToDate(timestamp);
   }
 
 }
