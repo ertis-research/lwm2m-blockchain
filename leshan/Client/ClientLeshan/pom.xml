@@ -1,0 +1,23 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.ivan</groupId>
+  <artifactId>ClientLeshan</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <dependencies>
+
+    <!-- https://mvnrepository.com/artifact/org.eclipse.leshan/leshan-client-cf -->
+	<dependency>
+	    <groupId>org.eclipse.leshan</groupId>
+	    <artifactId>leshan-client-cf</artifactId>
+	    <version>1.0.0-M13</version>
+	</dependency>
+    
+    <!-- add any slf4j backend, here we use one of the smallest one: slf4j-simple -->
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>1.7.30</version>
+        <scope>runtime</scope>
+    </dependency>
+</dependencies>
+</project>
