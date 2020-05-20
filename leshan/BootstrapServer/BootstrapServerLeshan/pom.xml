@@ -4,23 +4,26 @@
 	<artifactId>BootstrapServerLeshan</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<dependencies>
+	
 	    <dependency>
 	        <groupId>org.eclipse.leshan</groupId>
 	        <artifactId>leshan-server-cf</artifactId>
 	        <version>1.0.0-M13</version>                 
 	    </dependency>
-	    <!-- add any slf4j backend, here we use one of the smallest one: slf4j-simple -->
-	    <dependency>
+
+		<dependency>
+		    <groupId>org.web3j</groupId>
+		    <artifactId>core</artifactId>
+		    <version>4.5.11</version>
+		</dependency>
+		
+		<dependency>
 	        <groupId>org.slf4j</groupId>
 	        <artifactId>slf4j-simple</artifactId>
 	        <version>1.7.30</version>
 	        <scope>runtime</scope>
 	    </dependency>
 		
-		<dependency>
-		    <groupId>org.web3j</groupId>
-		    <artifactId>core</artifactId>
-		    <version>4.5.17</version>
-		</dependency>
+		
 	</dependencies>
 </project>

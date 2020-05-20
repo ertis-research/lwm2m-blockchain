@@ -1,6 +1,4 @@
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -12,9 +10,6 @@ import org.eclipse.leshan.server.bootstrap.BootstrapConfigStore;
 import org.eclipse.leshan.server.bootstrap.EditableBootstrapConfigStore;
 import org.eclipse.leshan.server.security.BootstrapSecurityStore;
 import org.eclipse.leshan.server.security.SecurityInfo;
-import org.eclipse.leshan.util.SecurityUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * A {@link BootstrapSecurityStore} which uses a {@link BootstrapConfigStore} to device credentials.
@@ -31,8 +26,6 @@ import org.slf4j.LoggerFactory;
  * <strong>WARNING : This store is not production ready.</strong>
  */
 public class BootstrapConfigSecurityStore implements BootstrapSecurityStore {
-
-    private static final Logger LOG = LoggerFactory.getLogger(BootstrapConfigSecurityStore.class);
 
     private final EditableBootstrapConfigStore bootstrapConfigStore;
 
@@ -81,22 +74,6 @@ public class BootstrapConfigSecurityStore implements BootstrapSecurityStore {
             if (value.bootstrapServer && value.securityMode == SecurityMode.PSK) {
                 SecurityInfo securityInfo = SecurityInfo.newPreSharedKeyInfo(endpoint,
                         new String(value.publicKeyOrId, StandardCharsets.UTF_8), value.secretKey);
-                return Arrays.asList(securityInfo);
-            }
-            // Extract RPK security info
-            else if (value.bootstrapServer && value.securityMode == SecurityMode.RPK) {
-                try {
-                    SecurityInfo securityInfo = SecurityInfo.newRawPublicKeyInfo(endpoint,
-                            SecurityUtil.publicKey.decode(value.publicKeyOrId));
-                    return Arrays.asList(securityInfo);
-                } catch (IOException | GeneralSecurityException e) {
-                    LOG.error("Unable to decode Client public key for {}", endpoint, e);
-                    return null;
-                }
-            }
-            // Extract X509 security info
-            else if (value.bootstrapServer && value.securityMode == SecurityMode.X509) {
-                SecurityInfo securityInfo = SecurityInfo.newX509CertInfo(endpoint);
                 return Arrays.asList(securityInfo);
             }
         }
