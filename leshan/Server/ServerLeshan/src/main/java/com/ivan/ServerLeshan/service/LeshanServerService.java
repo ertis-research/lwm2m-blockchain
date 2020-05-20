@@ -16,8 +16,6 @@ public class LeshanServerService {
 
 	boolean supportDeprecatedCiphers = false;
 
-	String localAddress= "0.0.0.0";
-	int localPort = 5783;
 	String secureLocalAddress= "0.0.0.0";
 	int secureLocalPort = 5784;
 
@@ -39,7 +37,7 @@ public class LeshanServerService {
 	
 	private LeshanServerBuilder configureLeshanServer() {
 		LeshanServerBuilder builder = new LeshanServerBuilder();
-		builder.setLocalAddress(localAddress, localPort);
+		builder.disableUnsecuredEndpoint();
 		builder.setLocalSecureAddress(secureLocalAddress, secureLocalPort);
 		builder.setEncoder(new DefaultLwM2mNodeEncoder());
 		LwM2mNodeDecoder decoder = new DefaultLwM2mNodeDecoder();
