@@ -1,4 +1,4 @@
-package org.eclipse.leshan.server;
+package com.ivan.ServerLeshan.service;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -23,13 +23,13 @@ public class BlockchainStore implements EditableSecurityStore {
 
 	static Logger log = LoggerFactory.getLogger(BlockchainStore.class);
 
-	String url = "https://ropsten.infura.io/v3/a21979a509154e19b42267c28f697e32"; //Ropsten
-	String privateKey = "4C2A99F86C06C98448AB1986D33A248D699B5D7280EEBD76E4FD60B84C4B51C8"; //Private key of an account, Ropsten
-	String contractAddress = "0x0b65c81b465953fd25b29c0caffd2a448f0b948f"; //Ropsten
+	//String url = "https://ropsten.infura.io/v3/a21979a509154e19b42267c28f697e32"; //Ropsten
+	//String privateKey = "4C2A99F86C06C98448AB1986D33A248D699B5D7280EEBD76E4FD60B84C4B51C8"; //Private key of an account, Ropsten
+	//String contractAddress = "0x0b65c81b465953fd25b29c0caffd2a448f0b948f"; //Ropsten
 
-	//String url = "HTTP://127.0.0.1:7545"; //Ganache
-	//String privateKey = "a701158005907d33a130caa07a2b7d811b409336ba14efca9a00b8593ec6feb9"; //Private key of an account, Ganache
-	//String contractAddress = "0x17EC1b6b63b5B477Aa38E5389e98765573Db5415"; //Ganache
+	String url = "HTTP://127.0.0.1:7545"; //Ganache
+	String privateKey = "a701158005907d33a130caa07a2b7d811b409336ba14efca9a00b8593ec6feb9"; //Private key of an account, Ganache
+	String contractAddress = "0x17EC1b6b63b5B477Aa38E5389e98765573Db5415"; //Ganache
 
 	BigInteger gasPrice = new BigInteger("20000000000");
 	BigInteger gasLimit = new BigInteger("4712388");
@@ -65,7 +65,7 @@ public class BlockchainStore implements EditableSecurityStore {
 		System.out.println("BlockchainStore - getByIdentity");
 
 		try {
-			String[] endpoints = getAllClients(contract);
+			String[] endpoints = getAllEndpoints(contract);
 
 			for (String end : endpoints) {
 				SecurityInfo securityInfoFor = getClient(contract, end);
@@ -86,7 +86,7 @@ public class BlockchainStore implements EditableSecurityStore {
 		Collection<SecurityInfo> res = new ArrayList<SecurityInfo>();
 
 		try {
-			String[] endpoints = getAllClients(contract);
+			String[] endpoints = getAllEndpoints(contract);
 
 			for (String end : endpoints) {
 				SecurityInfo securityInfoFor = getClient(contract, end);
@@ -148,15 +148,6 @@ public class BlockchainStore implements EditableSecurityStore {
 	private SecurityInfo getClient(BootstrapStore contract, String endpoint) throws Exception {
 		long startTime = System.currentTimeMillis();
 		Tuple6<byte[],byte[],byte[],byte[],byte[],byte[]> clientConfig = contract.getClient(asciiToByte32(endpoint)).send();
-		/*
-		log.info("CLIENT ENDPOINT " + endpoint + " DATA STORED");
-		log.info("BS Server URL: " + byteToAscii(clientConfig.component1()));
-		log.info("BS Identity: " + byteToAscii(clientConfig.component2()));
-		log.info("BS Key: " + byteToAscii(clientConfig.component3()));
-		log.info("Server URL: " + byteToAscii(clientConfig.component4()));
-		log.info("Identity: " + byteToAscii(clientConfig.component5()));
-		log.info("Key: " + byteToAscii(clientConfig.component6()));
-*/
 		SecurityInfo securityInfo = SecurityInfo.newPreSharedKeyInfo(endpoint, byteToAscii(clientConfig.component5()), hexToByte(byteToAscii(clientConfig.component6())));
 		long endTime = System.currentTimeMillis();
 		long totalTime = ((endTime - startTime));
@@ -164,7 +155,7 @@ public class BlockchainStore implements EditableSecurityStore {
 		return securityInfo;
 	}
 
-	private String[] getAllClients(BootstrapStore contract) throws Exception {
+	private String[] getAllEndpoints(BootstrapStore contract) throws Exception {
 		long startTime = System.currentTimeMillis();
 		@SuppressWarnings("unchecked")
 		List<byte[]> list = contract.getAllClients().send();
