@@ -12,16 +12,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ivan.tfm.MainAppBackEnd.beans.Credentials;
 import com.ivan.tfm.MainAppBackEnd.beans.User;
 import com.ivan.tfm.MainAppBackEnd.services.LoginService;
+import com.ivan.tfm.MainAppBackEnd.utils.JwtUtility;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/api/login")
+@RequestMapping("/login")
 public class LoginController {
 
 	@Autowired
 	LoginService loginService;
 	
-	@PostMapping("/")
+	@PostMapping
 	public ResponseEntity<Credentials> validateLogin(@RequestBody User user) {
 		String wildcard = user.getEmail();
 		String password = user.getPassword();
@@ -29,6 +30,7 @@ public class LoginController {
 		Credentials credentials = loginService.validateLogin(wildcard, password);
 		
 		if(credentials.getRole() != 0) {
+			credentials.setToken(JwtUtility.generateToken(credentials));
 			return new ResponseEntity<>(credentials, HttpStatus.OK);
 		}else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
