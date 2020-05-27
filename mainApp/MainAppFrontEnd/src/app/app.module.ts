@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { CookieService } from 'ngx-cookie-service'; //Cookie service library
 
 //routes
 import { AppRoutingModule } from './app-routing.module';
@@ -49,6 +50,7 @@ import { RoleNumberToStringPipe } from './pipes/role-number-to-string.pipe';
     AuthService,
     LoginService,
     LoggedGuard,
+    CookieService, //Cookie service library
   ],
   bootstrap: [AppComponent]
 })

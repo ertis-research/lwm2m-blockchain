@@ -48,3 +48,24 @@ export class AdminGuard implements CanActivate {
     }
   }
 }
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UnLoggedGuard implements CanActivate {
+
+  constructor(
+    private router:Router,
+    private auth:AuthService
+  ) { }
+            
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    if(!this.auth.isAuthenticated()){
+      return true;
+    }else{
+      console.error("You are logged. You cannot see login page");
+      this.router.navigate(['/anomalies']);
+      return false;
+    }
+  }
+}

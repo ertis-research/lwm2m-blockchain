@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { CookieService } from "ngx-cookie-service";
 import { Credentials } from '../models/Credentials';
 
 @Injectable({
@@ -7,41 +8,43 @@ import { Credentials } from '../models/Credentials';
 })
 export class AuthService {
 
-  private userCredentials: Credentials;
-
-  constructor(private router: Router) {
-    this.userCredentials = undefined;
-  }
+  constructor(private router: Router, private cookies: CookieService) { }
 
   public setUserCredentials(credentials: Credentials) {
-    this.userCredentials = credentials;
+    this.cookies.set("username", credentials.username);
+    this.cookies.set("email", credentials.email);
+    this.cookies.set("role", String(credentials.role));
+    this.cookies.set("token", credentials.token);
   }
 
   public logout() {
-    this.userCredentials = undefined;
+    this.cookies.delete("username");
+    this.cookies.delete("email");
+    this.cookies.delete("role");
+    this.cookies.delete("token");
     this.router.navigate(['/login']);
   }
 
   public isAuthenticated(): boolean {
-    return this.userCredentials !== undefined;
+    return this.cookies.check("username");
   }
 
   // GETTERS
   public getEmail(): string {
-    return this.userCredentials.email;
+    return this.cookies.get("email");
   }
 
   public getUsername(): string {
-    return this.userCredentials.username;
+    return this.cookies.get("username");
   }
 
   public getRole(): number {
-    return this.userCredentials !== undefined
-      ? this.userCredentials.role
+    return this.isAuthenticated()
+      ? +this.cookies.get("role")
       : 0;
   }
 
   public getToken(): string {
-    return this.userCredentials.token;
+    return this.cookies.get("token");
   }
 }

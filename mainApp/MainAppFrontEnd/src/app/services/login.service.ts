@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Observable } from "rxjs";
 
 import { Credentials, User } from "../models";
 import { baseUrl } from "../core";
+import { headersGenerator } from "../common";
 
 @Injectable({
   providedIn: 'root'
@@ -15,14 +17,14 @@ export class LoginService {
     private http: HttpClient,
   ) { }
 
-  validateLogin(wildcard: string, password: string) {
+  validateLogin(wildcard: string, password: string): Observable<Credentials>{
     const user_aux: User = {
       username: wildcard,
       email: wildcard,
       password,
       role: 0,
     };
-    return this.http.post<Credentials>(this.url, user_aux);
-    
+    const headers = headersGenerator(true, false);
+    return this.http.post<Credentials>(this.url, user_aux, { headers });
   }
 }
