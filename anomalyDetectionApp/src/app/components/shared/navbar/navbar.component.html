@@ -1,0 +1,19 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light" *ngIf="isAuthenticated()">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item" routerLinkActive="active">
+                <a class="nav-link" [routerLink]="['clients']">Clients</a>
+            </li>
+        </ul>
+
+        <span class="navbar-text">
+            Welcome: {{username}}
+            <button type="button" class="btn btn-sm btn-dark" (click)="logout()">Sign out</button>
+        </span>
+    </div>
+</nav>
+<br>
