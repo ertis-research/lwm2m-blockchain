@@ -12,24 +12,25 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ivan.ServerLeshan.bean.Credentials;
 import com.ivan.ServerLeshan.bean.User;
 import com.ivan.ServerLeshan.service.LoginService;
+import com.ivan.ServerLeshan.utils.JwtUtility;
 
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/login")
+@RequestMapping("/login")
 public class LoginController {
 
 	@Autowired
 	LoginService loginService;
 	
-	@PostMapping("/")
+	@PostMapping
 	public ResponseEntity<Credentials> validateLogin(@RequestBody User user) {
 		String wildcard = user.getEmail();
 		String password = user.getPassword();
-		
 		Credentials credentials = loginService.validateLogin(wildcard, password);
 		
-		if(credentials.getRole() != 0) {
+		if(credentials!=null && credentials.getRole() > 0 && credentials.getRole() < 3) {
+			credentials.setToken(JwtUtility.generateToken(credentials));
 			return new ResponseEntity<>(credentials, HttpStatus.OK);
 		}else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
