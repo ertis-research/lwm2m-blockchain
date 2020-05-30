@@ -43,6 +43,9 @@ contract UserStore {
     bytes32 username, bytes32 email, bytes32 password, uint256 role
   ) public onlyOwner {
 
+    int exists = existsUser(username);
+    require(exists == -1, "User already exists");
+
     users[username].email = email;
     users[username].password = password;
     users[username].role = role;
@@ -67,6 +70,18 @@ contract UserStore {
     return(res_username, res_email, res_password, res_role);
   }
 
+  function updateUser(
+    bytes32 username, bytes32 email, bytes32 password, uint256 role
+  ) public onlyOwner {
+
+    int exists = existsUser(username);
+    require(exists != -1, "User does not exist");
+
+    users[username].email = email;
+    users[username].password = password;
+    users[username].role = role;
+  }
+
   //wildcard field can be email or username. The response is the user's profile (username, email, role)
   function validateLogin(
     bytes32 wildcard, bytes32 password
@@ -84,7 +99,7 @@ contract UserStore {
     return ("", "", 0);
   }
 
-  function existsUser(bytes32 wildcard) private view returns(int) {
+  function existsUser(bytes32 wildcard) public onlyOwner view returns(int) {
     for(uint i = 0; i < usernames.length; i++) {
       if(usernames[i] == wildcard || users[usernames[i]].email == wildcard) {
         return int(i);

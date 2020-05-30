@@ -30,10 +30,10 @@ solcjs --version
 
 ### Compile smart contract
 ```bash
-solcjs Contract.sol --bin --abi --optimize -o .\compiled
+solcjs Contract.sol --bin --abi --optimize -o compiled/
 ```
 
 ### Generate wrapper code using web3j's CLI
 ```bash
-web3j solidity generate -b Contract.bin -a Contract.abi -c Contract -o .\output -p ertis.uma
+web3j solidity generate -a Contract.abi -b Contract.bin -c Contract -o output/ -p ertis.uma
 ```
