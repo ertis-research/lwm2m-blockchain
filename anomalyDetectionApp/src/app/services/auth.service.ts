@@ -22,6 +22,7 @@ export class AuthService {
     this.cookies.delete("email");
     this.cookies.delete("role");
     this.cookies.delete("token");
+    this.cookies.delete("urlServer");
     this.router.navigate(['/login']);
   }
 
