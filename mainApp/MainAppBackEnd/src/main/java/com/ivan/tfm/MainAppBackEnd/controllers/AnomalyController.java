@@ -18,7 +18,7 @@ import com.ivan.tfm.MainAppBackEnd.beans.Anomaly;
 import com.ivan.tfm.MainAppBackEnd.services.AnomalyService;
 import com.ivan.tfm.MainAppBackEnd.utils.JwtUtility;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/anomalies")
 public class AnomalyController {

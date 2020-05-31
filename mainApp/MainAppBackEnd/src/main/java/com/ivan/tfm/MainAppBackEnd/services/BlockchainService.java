@@ -22,18 +22,21 @@ public class BlockchainService {
 	static Logger log = LoggerFactory.getLogger(BlockchainService.class);
 
 	// Ropsten (Ethereum testnet)
-	/*private final String URL = "https://ropsten.infura.io/v3/a21979a509154e19b42267c28f697e32";
+	private final String URL = "https://ropsten.infura.io/v3/a21979a509154e19b42267c28f697e32";
 	private final String PRIVATE_KEY = "4C2A99F86C06C98448AB1986D33A248D699B5D7280EEBD76E4FD60B84C4B51C8";
 	private final String BOOTSTRAP_STORE_ADDR = "0x0b65c81b465953fd25b29c0caffd2a448f0b948f";
 	private final String ANOMALY_STORE_ADDR = "0x1c209d6e3222f30a52fd2144f6ec4ea11c471d9c";
-	private final String USER_STORE_ADDR = "";*/
+	private final String USER_STORE_ADDR = "0xcfc79c76fe6c55445fa9301be5b2313dbba2d9ea";
+	
 	
 	// Ganache (local network)
+	/*
 	private final String URL = "http://127.0.0.1:7545";
 	private final String PRIVATE_KEY = "";
 	private final String BOOTSTRAP_STORE_ADDR = "";
 	private final String ANOMALY_STORE_ADDR = "";
 	private final String USER_STORE_ADDR = "";
+	*/
 	
 	private Web3j web3j;
 	private Credentials credentials;
