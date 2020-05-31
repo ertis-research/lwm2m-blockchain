@@ -25,7 +25,7 @@ export class ClientService {
 
   addClient(client:Client): Observable<any>{
     const headers = headersGenerator(true, true, this.auth.getToken());
-    return this.http.post(this.url+"add", client);
+    return this.http.post(this.url+"add", client, { headers });
   }
 
   deleteClient(endpoint: string): Observable<any>{

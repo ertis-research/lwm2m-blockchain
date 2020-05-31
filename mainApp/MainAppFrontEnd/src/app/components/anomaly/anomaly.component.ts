@@ -27,7 +27,8 @@ export class AnomalyComponent implements OnInit {
   }
 
   tsToDate(timestamp: number) {
-    timestampToDate(timestamp);
+    if (timestamp == null) return null;
+    return timestampToDate(timestamp);
   }
 
 }
