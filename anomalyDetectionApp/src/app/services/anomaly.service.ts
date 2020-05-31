@@ -1,22 +1,27 @@
 import { Injectable } from '@angular/core';
-import { Anomaly } from '../models/Anomaly';
+import { Anomaly } from '../models';
 import { HttpClient } from '@angular/common/http';
-import { mainServerUrl } from "../core";
+import { addAnomalyUrl } from "../core";
+import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
+import { headersGenerator } from '../common/headers';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnomalyService {
 
-  constructor(private http: HttpClient) { }
-
-  url = `${mainServerUrl}api/anomalies/add`;
-
-  addAnomaly(anomaly: Anomaly) {
-    return this.http.post(this.url, anomaly);
+  constructor(private http: HttpClient, private auth: AuthService) {
   }
 
-  analyzeTemperature(x: number) {
+  url = `${addAnomalyUrl}`;
+
+  addAnomaly(anomaly: Anomaly): Observable<any>{
+    const headers = headersGenerator(true, true, this.auth.getToken());
+    return this.http.post(this.url, anomaly, { headers });
+  }
+
+  analyzeTemperature(x: number): number {
     let level = 0;
     switch (true) {
       case x > 50:
@@ -31,7 +36,6 @@ export class AnomalyService {
       default:
           level = 0;
     }
-
     return level;
   }
 

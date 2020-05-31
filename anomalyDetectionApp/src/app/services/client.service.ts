@@ -1,25 +1,30 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Client } from '../models/Client';
+import { Client } from '../models';
+import { Observable } from 'rxjs';
+import { headersGenerator } from '../common';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClientService {
   
-  urlServer:string;
+  url:string;
 
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient, private auth: AuthService) { }
 
-  getAllClients(){
-    return this.http.get<Client[]>(this.urlServer);
+  getAllClients(): Observable<Client[]>{
+    const headers = headersGenerator(false, true, this.auth.getToken());
+    return this.http.get<Client[]>(this.url,{ headers });
   }
 
-  getValue(endpoint:string){
-    return this.http.get<Client>(this.urlServer+endpoint);
+  getValue(endpoint:string): Observable<Client>{
+    const headers = headersGenerator(false, true, this.auth.getToken());
+    return this.http.get<Client>(this.url+endpoint,{ headers });
   }
 
   setUrl(url:string){
-    this.urlServer = url+"/api/server/";
+    this.url = url+"/api/server/";
   }
 }

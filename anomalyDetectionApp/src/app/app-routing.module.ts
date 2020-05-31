@@ -3,11 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { ClientComponent } from './components/client/client.component';
 import { LoginComponent } from './components/login/login.component';
+import { UnLoggedGuard, LoggedGuard } from './services/guards.service';
 
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
-  { path: 'clients', component: ClientComponent },
+  { path: 'login', component: LoginComponent , canActivate: [UnLoggedGuard] },
+  { path: 'clients', component: ClientComponent, canActivate: [LoggedGuard] },
   { path: '**', pathMatch: 'full', redirectTo: 'login' },
 ];
 

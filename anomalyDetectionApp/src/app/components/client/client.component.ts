@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Client } from '../../models/Client';
 import { ClientService } from '../../services/client.service';
-import { Anomaly } from '../../models/Anomaly';
+import { Client, Anomaly } from '../../models';
 import { AnomalyService } from '../../services/anomaly.service';
+import { timestampToDate } from '../../common/utils';
 
 @Component({
   selector: 'app-client',
@@ -38,7 +38,6 @@ export class ClientComponent implements OnInit {
             this.clients[i].value = data.value;
             this.clients[i].valueTimestamp = data.valueTimestamp;
             this.clients[i].lastUpdateTimestamp = data.lastUpdateTimestamp;
-
           }
 
           let level = this.serviceAnomaly.analyzeTemperature(data.value);
@@ -60,15 +59,7 @@ export class ClientComponent implements OnInit {
 
   tsToDate(timestamp: number) {
     if (timestamp == null) return null;
-    var date = new Date(timestamp);
-    var dateDisplay = date.toLocaleString('es-ES', {
-      day: 'numeric',
-      month: 'numeric',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-    return dateDisplay;
+    return timestampToDate(timestamp);
   }
 
 }

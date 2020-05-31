@@ -1,1 +1,1 @@
-export const mainServerUrl = "http://localhost:8080/";
+export const addAnomalyUrl = "http://localhost:8080/api/anomalies/add";

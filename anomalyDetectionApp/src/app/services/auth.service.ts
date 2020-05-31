@@ -1,44 +1,50 @@
 import { Injectable } from '@angular/core';
-import { Credentials } from '../models/Credentials';
+import { Credentials } from '../models';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private userCredentialsServer: Credentials;
-  private userCredentialsAnomaly: Credentials;
+  constructor(private router: Router, private cookies: CookieService) { }
 
-  constructor(private router: Router) { 
-    this.userCredentialsServer = undefined;
-    this.userCredentialsAnomaly = undefined;
-  }
-
-  public setUserCredentialsServer(credentials: Credentials) {
-    this.userCredentialsServer = credentials;
-  }
-
-  public setUserCredentialsAnomaly(credentials: Credentials) {
-    this.userCredentialsAnomaly = credentials;
+  public setUserCredentials(credentials: Credentials) {
+    this.cookies.set("username", credentials.username);
+    this.cookies.set("email", credentials.email);
+    this.cookies.set("role", String(credentials.role));
+    this.cookies.set("token", credentials.token);
   }
 
   public logout() {
-    this.userCredentialsServer = undefined;
-    this.userCredentialsAnomaly = undefined;
+    this.cookies.delete("username");
+    this.cookies.delete("email");
+    this.cookies.delete("role");
+    this.cookies.delete("token");
     this.router.navigate(['/login']);
   }
 
   public isAuthenticated(): boolean {
-    return this.userCredentialsServer !== undefined && this.userCredentialsAnomaly !== undefined;
+    return this.cookies.check("username");
   }
 
+  // GETTERS
+  public getEmail(): string {
+    return this.cookies.get("email");
+  }
+  
   public getUsername(): string {
-    if(this.userCredentialsServer.username !== this.userCredentialsAnomaly.username){
-      this.logout();
-      return "";
-    }
-    return this.userCredentialsServer.username;
+    return this.cookies.get("username");
   }
-
+  
+  public getRole(): number {
+    return this.isAuthenticated()
+      ? +this.cookies.get("role")
+      : 0;
+  }
+  
+  public getToken(): string {
+    return this.cookies.get("token");
+  }
 }
