@@ -7,10 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,10 +46,10 @@ public class UserController {
 		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 	}
 	
-	@DeleteMapping("/delete/{username}")
-	public  ResponseEntity<HttpStatus> deleteUser(@RequestHeader("Authorization") String auth, @PathVariable("username") String username) {
+	@PutMapping("/update")
+	public  ResponseEntity<HttpStatus> updateUser(@RequestHeader("Authorization") String auth, @RequestBody User user) {
 		if(JwtUtility.isValidToken(auth, 1)) {
-			userService.deleteUser(username);
+			userService.updateUser(user);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

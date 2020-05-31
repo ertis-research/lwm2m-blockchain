@@ -1,73 +1,95 @@
 package com.ivan.tfm.MainAppBackEnd.services;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
+import org.web3j.tuples.generated.Tuple4;
 
 import com.ivan.tfm.MainAppBackEnd.beans.User;
+import com.ivan.tfm.MainAppBackEnd.utils.Converter;
 
 @Service
 public class UserService {
 	
-	List<User> users;
+	@Autowired
+	BlockchainService blockchainService;
 	
-	public UserService() {
-		users = new ArrayList<User>();
-		User user1 = new User("admin", "admin@test.com", "admin", 1);
-		User user2 = new User("ivan", "ivan@test.com", "123456", 2);
-		User user3 = new User("noe", "noe@test.com", "654321", 3);
-		users.add(user1);
-		users.add(user2);
-		users.add(user3);
-	}
+	private final String contractName = "UserStore";
 	
 	public List<User> getAll(){
+		List<User> users = new ArrayList<User>();
+		
+		try {
+			Tuple4<List<byte[]>, List<byte[]>, List<byte[]>, List<BigInteger>> response =
+					this.blockchainService.getUser_contract().getAllUsers().send();
+			users = this.tuple4ToList(response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return users;
 	}
 	
 	public void addUser(User u) {
-		if(!existByUsername(u.getUsername())) {
-			users.add(u);
+		try {
+			if(this.existsUser(u.getUsername()) == -1) {
+				byte[] username = Converter.asciiToByte32(u.getUsername());
+				byte[] email = Converter.asciiToByte32(u.getEmail());
+				byte[] password = Converter.asciiToByte32(u.getPassword());
+				BigInteger role = BigInteger.valueOf(u.getRole());
+				
+				TransactionReceipt txReceipt = this.blockchainService.getUser_contract()
+						.addUser(username, email, password, role).send();
+				this.blockchainService.logTransaction(txReceipt, "addUser", this.contractName);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
-	public void deleteUser(String username) {
-		int pos = 0;
-		boolean exist = false;
-		while(exist==false && pos<users.size()) {
-			if(users.get(pos).getUsername().equals(username)){
-				exist = true;
-				users.remove(pos);
+	public void updateUser(User u) {
+		try {
+			if(this.existsUser(u.getUsername()) != -1) {
+				byte[] username = Converter.asciiToByte32(u.getUsername());
+				byte[] email = Converter.asciiToByte32(u.getEmail());
+				byte[] password = Converter.asciiToByte32(u.getPassword());
+				BigInteger role = BigInteger.valueOf(u.getRole());
+				
+				TransactionReceipt txReceipt = this.blockchainService.getUser_contract()
+						.updateUser(username, email, password, role).send();
+				this.blockchainService.logTransaction(txReceipt, "updateUser", this.contractName);
 			}
-			pos++;
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
-	public User getByUsername(String username) {
-		User user = null;
-		int pos = 0;
-		boolean exist = false;
-		while(exist==false && pos<users.size()) {
-			if(users.get(pos).getUsername().equals(username)){
-				exist = true;
-				user = users.get(pos);
-			}
-			pos++;
+	//PRIVATE FUNCTIONS
+	private List<User> tuple4ToList(Tuple4<List<byte[]>, List<byte[]>, List<byte[]>, List<BigInteger>> tuple) {
+		List<User> users = new ArrayList<User>();
+		List<byte[]> usernames = tuple.component1();
+		List<byte[]> emails = tuple.component2();
+		List<byte[]> passwords = tuple.component3();
+		List<BigInteger> roles = tuple.component4();
+		
+		for (int i=0; i<tuple.component1().size(); i++) {
+			String username = Converter.byteToAscii(usernames.get(i));
+			String email = Converter.byteToAscii(emails.get(i));
+			String password = Converter.byteToAscii(passwords.get(i));
+			int role = roles.get(i).intValue();
+			User user = new User(username, email, password, role);
+			users.add(user);
 		}
-		return user;
+		return users;
 	}
 	
-	public boolean existByUsername(String username) {
-		int pos = 0;
-		boolean exist = false;
-		while(exist==false && pos<users.size()) {
-			if(users.get(pos).getUsername().equals(username)){
-				exist = true;
-			}
-			pos++;
-		}
-		return exist;
+	private int existsUser(String username) throws Exception{
+		BigInteger exists = this.blockchainService.getUser_contract()
+				.existsUser(Converter.asciiToByte32(username)).send();
+		return exists.intValue();
 	}
 
 }
