@@ -72,7 +72,7 @@ public class LeshanServerService {
 		builder.setDtlsConfig(dtlsConfig);
 
 		// Set securityStore & registrationStore
-		BlockchainStore securityStore = new BlockchainStore();
+		ClientStore securityStore = new ClientStore();
 		builder.setSecurityStore(securityStore);
 
 		return builder;

@@ -19,7 +19,7 @@ import com.ivan.ServerLeshan.utils.JwtUtility;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/server")
-public class LeshanServerController {
+public class ClientController {
 
 	@Autowired
 	LeshanServerService leshanServerService;
