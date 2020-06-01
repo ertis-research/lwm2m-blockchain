@@ -5,7 +5,7 @@ import { Client } from '../../models/Client';
 @Component({
   selector: 'app-client',
   templateUrl: './client.component.html',
-  styles: []
+  styles: ['.headers { text-align:center; }']
 })
 export class ClientComponent implements OnInit {
 

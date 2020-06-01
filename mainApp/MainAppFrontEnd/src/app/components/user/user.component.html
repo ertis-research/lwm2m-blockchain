@@ -81,30 +81,23 @@
             <h3>User list</h3>
         </div>
         <div class="card-body">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>USERNAME</th>
-                        <th>EMAIL</th>
-                        <th>PASSWORD</th>
-                        <th>ROLE</th>
-                        <th></th>
-                    </tr>
-
-                </thead>
-                <tbody>
-                    <tr *ngFor="let user of users">
-                        <td>{{user.username}}</td>
-                        <td>{{user.email}}</td>
-                        <td>{{user.password}}</td>
-                        <td>{{user.role | roleNumberToString}}</td>
-                        <td>
-                            <button (click)="deleteUser(user)" class="btn btn-danger">Delete</button>
-                        </td>
-                    </tr>
-
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>USERNAME</th>
+                            <th>EMAIL</th>
+                            <th>PASSWORD</th>
+                            <th>ROLE</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let user of users">
+                        <tr user-entry [user]="user" (onUpdate)="updateUser($event)"></tr>
+                    </tbody>
+                </table>
+            </div>
+            
         </div>
     </div>
 </div>

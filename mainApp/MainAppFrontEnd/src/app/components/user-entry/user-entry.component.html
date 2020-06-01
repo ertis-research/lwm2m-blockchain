@@ -1,0 +1,20 @@
+<td>{{user.username}}</td>
+<td>{{user.email}}</td>
+<td>{{user.password}}</td>
+<td>
+  <select
+    class="form-control"
+    [(ngModel)]="role"
+  >
+    <option disabled>-- Choose a role --</option>
+    <option *ngFor="let r of roles" [value]="r.value">{{r.label}}</option>
+  </select>
+</td>
+<td>
+    <button
+      (click)="updateUser()"
+      class="btn btn-primary"
+      [disabled]="role == user.role"
+    >Update
+    </button>
+</td>

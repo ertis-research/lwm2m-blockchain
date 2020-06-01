@@ -22,6 +22,7 @@ import { ClientComponent } from './components/client/client.component';
 import { AnomalyComponent } from './components/anomaly/anomaly.component';
 import { UserComponent } from './components/user/user.component';
 import { LoginComponent } from './components/login/login.component';
+import { UserEntryComponent } from './components/user-entry/user-entry.component';
 
 //pipes
 import { RoleNumberToStringPipe } from './pipes/role-number-to-string.pipe';
@@ -36,6 +37,7 @@ import { RoleNumberToStringPipe } from './pipes/role-number-to-string.pipe';
     UserComponent,
     LoginComponent,
     RoleNumberToStringPipe,
+    UserEntryComponent,
   ],
   imports: [
     BrowserModule,

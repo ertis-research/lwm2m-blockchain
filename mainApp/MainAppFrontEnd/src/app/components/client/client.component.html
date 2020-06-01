@@ -4,39 +4,54 @@
             <h3>Add new client</h3>
         </div>
         <div class="card-body">
-            
             <form action="">
                 <div class="row">
                     <div class="form-group" class="col-md">
                         <label for="">Endpoint </label>
                         <input [(ngModel)]="clientForm.endpoint" name="endpoint" type="text"
-                            class="form-control">
-                            <button (click)="addClient()" class="btn btn-success">Add</button>
+                            class="form-control"> 
                     </div>
+                </div>
+                <br>
 
+                <h4 class="headers">Bootstrap Server configuration</h4>
+                <div class="row">
                     <div class="form-group" class="col-md">
-                        <label for="url_bs">url_bs </label>
+                        <label for="url_bs">URL </label>
                         <input [(ngModel)]="clientForm.url_bs" name="url_bs" type="text" class="form-control">
-                        <label for="">id_bs </label>
+                    </div>
+                    <div class="form-group" class="col-md">
+                        <label for="">ID </label>
                         <input [(ngModel)]="clientForm.id_bs" name="id_bs" type="text" class="form-control">
-                        <label for="">key_bs </label>
+                    </div>
+                    <div class="form-group" class="col-md">
+                        <label for="">KEY </label>
                         <input [(ngModel)]="clientForm.key_bs" name="key_bs" type="text" class="form-control">
                     </div>
+                </div>
+                <br>
 
+                <h4 class="headers">Server configuration</h4>
+                <div class="row">
                     <div class="form-group" class="col-md">
-                        <label for="url_bs">url_s </label>
+                        <label for="url_bs">URL </label>
                         <input [(ngModel)]="clientForm.url_s" name="url_s" type="text" class="form-control">
-                        <label for="">id_s </label>
+                    </div>
+                    <div class="form-group" class="col-md">
+                        <label for="">ID </label>
                         <input [(ngModel)]="clientForm.id_s" name="id_s" type="text" class="form-control">
-                        <label for="">key_s </label>
+                    </div>
+                    <div class="form-group" class="col-md">
+                        <label for="">KEY </label>
                         <input [(ngModel)]="clientForm.key_s" name="key_s" type="text" class="form-control">
                     </div>
                 </div>
-
+                <br>
                 
-
+                <div class="row">
+                    <button (click)="addClient()" class="btn btn-success offset-md-5 col-md-2">Add</button>
+                </div>
             </form>
-            
         </div>
     </div>
 
@@ -47,36 +62,44 @@
             <h3>Client list</h3>
         </div>
         <div class="card-body">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>ENDPOINTS</th>
-                        <th>URL_BS</th>
-                        <th>ID_BS</th>
-                        <th>KEY_BS</th>
-                        <th>URL_S</th>
-                        <th>ID_S</th>
-                        <th>KEY_S</th>
-                        <th></th>
-                    </tr>
-
-                </thead>
-                <tbody>
-                    <tr *ngFor="let client of clients">
-                        <td>{{client.endpoint}}</td>
-                        <td>{{client.url_bs}}</td>
-                        <td>{{client.id_bs}}</td>
-                        <td>{{client.key_bs}}</td>
-                        <td>{{client.url_s}}</td>
-                        <td>{{client.id_s}}</td>
-                        <td>{{client.key_s}}</td>
-                        <td>
-                            <button (click)="deleteClient(client)" class="btn btn-danger">Delete</button>
-                        </td>
-                    </tr>
-
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th></th>
+                            <th class="headers" colspan="3">Bootstrap Server configuration</th>
+                            <th class="headers" colspan="3">Server configuration</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="headers">ENDPOINT</th>
+                            <th class="headers">URL</th>
+                            <th class="headers">ID</th>
+                            <th class="headers">KEY</th>
+                            <th class="headers">URL</th>
+                            <th class="headers">ID</th>
+                            <th class="headers">KEY</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let client of clients">
+                            <td>{{client.endpoint}}</td>
+                            <td>{{client.url_bs}}</td>
+                            <td>{{client.id_bs}}</td>
+                            <td>{{client.key_bs}}</td>
+                            <td>{{client.url_s}}</td>
+                            <td>{{client.id_s}}</td>
+                            <td>{{client.key_s}}</td>
+                            <td>
+                                <button (click)="deleteClient(client)" class="btn btn-danger">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

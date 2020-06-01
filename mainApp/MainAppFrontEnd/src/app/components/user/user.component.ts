@@ -22,14 +22,14 @@ export class UserComponent implements OnInit {
     { label: "Basic", value: 3},
   ];
   
-  constructor(private service: UserService) { }
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
     this.getAllUsers();
   }
 
   getAllUsers() {
-    this.service.getAllUsers()
+    this.userService.getAllUsers()
       .subscribe(data => {
         this.users = data;
       });
@@ -43,17 +43,17 @@ export class UserComponent implements OnInit {
       role: this.role
     }
     console.log(user);
-    /*this.service.addNewUser(user)
+    this.userService.addUser(user)
       .subscribe(data => {
         this.getAllUsers();
-      });*/
+      });
   }
 
-  deleteUser(user: User) {
-    this.service.deleteUser(user.username)
+  updateUser(user: User) {
+    this.userService.updateUser(user)
       .subscribe(data => {
         this.getAllUsers();
-      })
+      });
   }
 }
 

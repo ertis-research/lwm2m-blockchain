@@ -21,13 +21,13 @@ export class UserService {
     return this.http.get<User[]>(this.url, { headers });
   }
 
-  addNewUser(user:User): Observable<any>{
+  addUser(user: User): Observable<any>{
     const headers = headersGenerator(true, true, this.auth.getToken());
     return this.http.post(this.url+"add", user, { headers });
   }
 
-  deleteUser(username: string): Observable<any>{
+  updateUser(user: User): Observable<any>{
     const headers = headersGenerator(false, true, this.auth.getToken());
-    return this.http.delete(this.url+"delete/"+username, { headers });
+    return this.http.put(this.url+"update", user, { headers });
   }
 }
