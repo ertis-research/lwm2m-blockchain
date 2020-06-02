@@ -14,6 +14,7 @@ import { UserService } from './services/user.service';
 import { AuthService } from "./services/auth.service";
 import { LoginService } from "./services/login.service";
 import { LoggedGuard } from "./services/guards.service";
+import { ErrorService } from "./services/error.service";
 
 //components
 import { AppComponent } from './app.component';
@@ -53,6 +54,7 @@ import { RoleNumberToStringPipe } from './pipes/role-number-to-string.pipe';
     LoginService,
     LoggedGuard,
     CookieService, //Cookie service library
+    ErrorService,
   ],
   bootstrap: [AppComponent]
 })

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../../models/User';
 import { UserService } from 'src/app/services/user.service';
+import { ErrorService } from 'src/app/services/error.service';
 
 @Component({
   selector: 'app-user',
@@ -22,7 +23,7 @@ export class UserComponent implements OnInit {
     { label: "Basic", value: 3},
   ];
   
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private errors: ErrorService) { }
 
   ngOnInit(): void {
     this.getAllUsers();
@@ -32,6 +33,8 @@ export class UserComponent implements OnInit {
     this.userService.getAllUsers()
       .subscribe(data => {
         this.users = data;
+      }, error => {
+        this.errors.handleError(error)
       });
   }
 
@@ -46,6 +49,8 @@ export class UserComponent implements OnInit {
     this.userService.addUser(user)
       .subscribe(data => {
         this.getAllUsers();
+      }, error => {
+        this.errors.handleError(error)
       });
   }
 
@@ -53,6 +58,8 @@ export class UserComponent implements OnInit {
     this.userService.updateUser(user)
       .subscribe(data => {
         this.getAllUsers();
+      }, error => {
+        this.errors.handleError(error)
       });
   }
 }

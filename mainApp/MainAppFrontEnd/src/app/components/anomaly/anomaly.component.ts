@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Anomaly } from '../../models/Anomaly';
 import { AnomalyService } from '../../services/anomaly.service';
 import { timestampToDate } from "../../common";
+import { ErrorService } from 'src/app/services/error.service';
 
 @Component({
   selector: 'app-anomaly',
@@ -13,7 +14,7 @@ export class AnomalyComponent implements OnInit {
 
   anomalies: Anomaly[];
 
-  constructor(private service: AnomalyService) { }
+  constructor(private service: AnomalyService, private errors: ErrorService) { }
 
   ngOnInit(): void {
     this.getAllAnomalies();
@@ -23,6 +24,8 @@ export class AnomalyComponent implements OnInit {
     this.service.getAllAnomalies()
       .subscribe(data => {
         this.anomalies = data;
+      }, error => {
+        this.errors.handleError(error)
       });
   }
 

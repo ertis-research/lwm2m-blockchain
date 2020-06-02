@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ClientService } from '../../services/client.service';
 import { Client } from '../../models/Client';
+import { ErrorService } from 'src/app/services/error.service';
 
 @Component({
   selector: 'app-client',
@@ -20,7 +21,7 @@ export class ClientComponent implements OnInit {
     key_s: "123456"
   }
 
-  constructor(private service: ClientService) { }
+  constructor(private service: ClientService, private errors: ErrorService) { }
 
   ngOnInit() {
     this.getAllClients();
@@ -30,6 +31,8 @@ export class ClientComponent implements OnInit {
     this.service.getAllClients()
       .subscribe(data => {
         this.clients = data;
+      }, error => {
+        this.errors.handleError(error)
       })
   }
 
@@ -37,6 +40,8 @@ export class ClientComponent implements OnInit {
     this.service.addClient(this.clientForm)
       .subscribe(data => {
         this.getAllClients();
+      }, error => {
+        this.errors.handleError(error)
       })
   }
 
@@ -44,6 +49,8 @@ export class ClientComponent implements OnInit {
     this.service.deleteClient(client.endpoint)
       .subscribe(data => {
         this.getAllClients();
+      }, error => {
+        this.errors.handleError(error)
       })
 
   }
