@@ -28,20 +28,30 @@ public class AnomalyController {
 
 	@GetMapping()
 	public ResponseEntity<List<Anomaly>> getAllAnomalies(@RequestHeader("Authorization") String auth) {
-		if(JwtUtility.isValidToken(auth, 3)) {
+		int valid = JwtUtility.isValidToken(auth, 3);
+		if(valid == 0) {
 			List<Anomaly> res = new ArrayList<>();
 			res = anomalyService.getAll();
 			return new ResponseEntity<>(res, HttpStatus.OK);
+		}else if(valid == 1){
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}else if(valid == 2){
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 	
 	@PostMapping("/add")
 	public ResponseEntity<Anomaly> addAnomaly(@RequestHeader("Authorization") String auth, @RequestBody Anomaly anomaly) {
-		if(JwtUtility.isValidToken(auth, 2)) {
+		int valid = JwtUtility.isValidToken(auth, 2);
+		if(valid == 0) {
 			anomalyService.addAnomaly(anomaly);
 			return new ResponseEntity<Anomaly>(anomaly, HttpStatus.CREATED);
+		}else if(valid == 1) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}else if(valid == 2) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 }

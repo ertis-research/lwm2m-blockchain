@@ -11,6 +11,7 @@ import com.ivan.tfm.MainAppBackEnd.beans.Credentials;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -38,9 +39,9 @@ public class JwtUtility {
 		return PREFIX + builder.compact();
 	}
 	
-	public static boolean isValidToken(String token, int role) {
+	public static int isValidToken(String token, int role) {
 		if(!token.startsWith(PREFIX)) {
-			return false;
+			return 3; //Other errors
 		}
 		try {
 			Claims claims = Jwts.parserBuilder()
@@ -52,11 +53,13 @@ public class JwtUtility {
 					.getBody();
 			int token_role = (int)claims.get("role");
 			if(role < token_role) {
-				return false;
+				return 2; //Not valid role
 			}
-			return true;
+			return 0; //Everything ok
+		} catch (ExpiredJwtException ex) {
+			return 1; //Token expired
 		} catch (JwtException ex) {
-			return false;
+			return 3; //Other errors
 		}
 	}
 	

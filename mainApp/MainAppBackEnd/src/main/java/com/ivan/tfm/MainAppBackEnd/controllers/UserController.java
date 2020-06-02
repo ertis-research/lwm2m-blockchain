@@ -29,30 +29,45 @@ public class UserController {
 
 	@GetMapping()
 	public ResponseEntity<List<User>> getAllUsers(@RequestHeader("Authorization") String auth) {
-		if(JwtUtility.isValidToken(auth, 1)) {
+		int valid = JwtUtility.isValidToken(auth, 1);
+		if(valid == 0) {
 			List<User> res = new ArrayList<>();
 			res = userService.getAll();
 			return new ResponseEntity<>(res, HttpStatus.OK);
+		}else if(valid == 1) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}else if(valid == 2) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 	
 	@PostMapping("/add")
 	public ResponseEntity<User> addUser(@RequestHeader("Authorization") String auth, @RequestBody User user) {
-		if(JwtUtility.isValidToken(auth, 1)) {
+		int valid = JwtUtility.isValidToken(auth, 1);
+		if(valid == 0) {
 			userService.addUser(user);
 			return new ResponseEntity<User>(user, HttpStatus.CREATED);
+		}else if(valid == 1) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}else if(valid == 2) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 	
 	@PutMapping("/update")
 	public  ResponseEntity<HttpStatus> updateUser(@RequestHeader("Authorization") String auth, @RequestBody User user) {
-		if(JwtUtility.isValidToken(auth, 1)) {
+		int valid = JwtUtility.isValidToken(auth, 1);
+		if(valid == 0) {
 			userService.updateUser(user);
 			return new ResponseEntity<>(HttpStatus.OK);
+		}else if(valid == 1) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}else if(valid == 2) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 	
 	
