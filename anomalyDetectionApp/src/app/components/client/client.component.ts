@@ -3,6 +3,7 @@ import { ClientService } from '../../services/client.service';
 import { Client, Anomaly } from '../../models';
 import { AnomalyService } from '../../services/anomaly.service';
 import { timestampToDate } from '../../common/utils';
+import { ErrorService } from '../../services/error.service';
 
 @Component({
   selector: 'app-client',
@@ -13,7 +14,7 @@ export class ClientComponent implements OnInit {
 
   clients: Client[];
 
-  constructor(private service: ClientService, private serviceAnomaly:AnomalyService) { }
+  constructor(private service: ClientService, private serviceAnomaly:AnomalyService, private errors: ErrorService) { }
 
   ngOnInit(): void {
     this.getAllClients();
@@ -27,6 +28,8 @@ export class ClientComponent implements OnInit {
           client.value = null;
           client.valueTimestamp = null;
         });
+      }, error => {
+        this.errors.handleError(error)
       })
   }
 
@@ -54,6 +57,8 @@ export class ClientComponent implements OnInit {
               })
           }
         }
+      }, error => {
+        this.errors.handleError(error)
       })
   }
 

@@ -12,6 +12,8 @@ import { ClientService } from './services/client.service';
 import { AnomalyService } from './services/anomaly.service';
 import { LoginService } from './services/login.service';
 import { AuthService } from './services/auth.service';
+import { LoggedGuard } from './services/guards.service';
+import { ErrorService } from './services/error.service';
 
 //components
 import { AppComponent } from './app.component';
@@ -37,7 +39,9 @@ import { NavbarComponent } from './components/shared/navbar/navbar.component';
     AnomalyService,
     LoginService,
     AuthService,
-    CookieService
+    LoggedGuard,
+    CookieService,
+    ErrorService,
   ],
   bootstrap: [AppComponent]
 })
