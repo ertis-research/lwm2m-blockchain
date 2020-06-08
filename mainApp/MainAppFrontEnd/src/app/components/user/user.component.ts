@@ -39,19 +39,24 @@ export class UserComponent implements OnInit {
   }
 
   addUser() {
-    const user: User = {
-      username: this.username,
-      email: this.email,
-      password: this.password,
-      role: this.role
+    const response = confirm(`Are you sure you want to add user ${this.username}?`);
+    if(response === true) {
+      const user: User = {
+        username: this.username,
+        email: this.email,
+        password: this.password,
+        role: this.role
+      };
+      this.userService.addUser(user)
+        .subscribe(data => {
+          this.getAllUsers();
+        }, error => {
+          this.errors.handleError(error)
+        });
+    }else{
+      console.log("Operation cancelled");
     }
-    console.log(user);
-    this.userService.addUser(user)
-      .subscribe(data => {
-        this.getAllUsers();
-      }, error => {
-        this.errors.handleError(error)
-      });
+    
   }
 
   updateUser(user: User) {

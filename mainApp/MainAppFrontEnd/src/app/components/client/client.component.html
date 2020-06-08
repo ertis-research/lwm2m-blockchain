@@ -4,12 +4,18 @@
             <h3>Add new client</h3>
         </div>
         <div class="card-body">
-            <form action="">
+            <form (ngSubmit)="addClient()" #addClientForm="ngForm">
                 <div class="row">
-                    <div class="form-group" class="col-md">
-                        <label for="">Endpoint </label>
-                        <input [(ngModel)]="clientForm.endpoint" name="endpoint" type="text"
-                            class="form-control"> 
+                    <div class="form-group" class="offset-md-4 col-md-4">
+                        <label for="endpoint">Endpoint </label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            placeholder="endpointName"
+                            required
+                            [(ngModel)]="clientForm.endpoint"
+                            name="endpoint"
+                        > 
                     </div>
                 </div>
                 <br>
@@ -18,15 +24,38 @@
                 <div class="row">
                     <div class="form-group" class="col-md">
                         <label for="url_bs">URL </label>
-                        <input [(ngModel)]="clientForm.url_bs" name="url_bs" type="text" class="form-control">
+                        <input
+                            type="text"
+                            class="form-control"
+                            placeholder="coaps://localhost:5684"
+                            required
+                            pattern="^(coap|coaps)://([a-zA-Z0-9_\-\.]+):([0-9]{2,5})$"
+                            [(ngModel)]="clientForm.url_bs"
+                            name="url_bs"
+                            #url_bs_tp="ngModel"
+                        >
                     </div>
                     <div class="form-group" class="col-md">
-                        <label for="">ID </label>
-                        <input [(ngModel)]="clientForm.id_bs" name="id_bs" type="text" class="form-control">
+                        <label for="id_bs">ID </label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            placeholder="enter a id"
+                            required
+                            [(ngModel)]="clientForm.id_bs"
+                            name="id_bs"
+                        >
                     </div>
                     <div class="form-group" class="col-md">
-                        <label for="">KEY </label>
-                        <input [(ngModel)]="clientForm.key_bs" name="key_bs" type="text" class="form-control">
+                        <label for="key_bs">KEY </label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            placeholder="enter a key"
+                            required
+                            [(ngModel)]="clientForm.key_bs"
+                            name="key_bs"
+                        >
                     </div>
                 </div>
                 <br>
@@ -34,22 +63,55 @@
                 <h4 class="headers">Server configuration</h4>
                 <div class="row">
                     <div class="form-group" class="col-md">
-                        <label for="url_bs">URL </label>
-                        <input [(ngModel)]="clientForm.url_s" name="url_s" type="text" class="form-control">
+                        <label for="url_s">URL </label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            placeholder="coaps://localhost:5784"
+                            required
+                            pattern="^(coap|coaps)://([a-zA-Z0-9_\-\.]+):([0-9]{2,5})$"
+                            [(ngModel)]="clientForm.url_s"
+                            name="url_s"
+                            #url_s_tp="ngModel"
+                        >
                     </div>
                     <div class="form-group" class="col-md">
-                        <label for="">ID </label>
-                        <input [(ngModel)]="clientForm.id_s" name="id_s" type="text" class="form-control">
+                        <label for="id_s">ID </label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            placeholder="enter a id"
+                            required
+                            [(ngModel)]="clientForm.id_s"
+                            name="id_s"
+                        >
                     </div>
                     <div class="form-group" class="col-md">
-                        <label for="">KEY </label>
-                        <input [(ngModel)]="clientForm.key_s" name="key_s" type="text" class="form-control">
+                        <label for="key_s">KEY </label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            placeholder="enter a key"
+                            required
+                            [(ngModel)]="clientForm.key_s"
+                            name="key_s"
+                        >
                     </div>
                 </div>
                 <br>
+
+                <div class="row" *ngIf="checkFormFulfilled(addClientForm.form) && (url_bs_tp.errors || url_s_tp.errors)">
+                    <div class="alert alert-danger col-12">
+                        At least one URL is malformed. Please check them again.
+                    </div>
+                </div>
                 
                 <div class="row">
-                    <button (click)="addClient()" class="btn btn-success offset-md-5 col-md-2">Add</button>
+                    <button
+                        type="submit"
+                        class="btn btn-success offset-md-5 col-md-2"
+                        [disabled]="!addClientForm.form.valid"
+                    >Add</button>
                 </div>
             </form>
         </div>

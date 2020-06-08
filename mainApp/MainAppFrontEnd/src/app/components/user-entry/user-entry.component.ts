@@ -25,12 +25,13 @@ export class UserEntryComponent implements OnInit {
   }
 
   updateUser() {
-    const response = confirm(`Are you sure you want change user ${this.user.username} role?`)
+    const response = confirm(`Are you sure you want to change user ${this.user.username} role?`);
     if(response === true) {
       this.user.role = this.role;
       this.onUpdate.emit(this.user);
     }else{
       this.role = this.user.role;
+      console.log("Operation cancelled");
     }
   }
 }
