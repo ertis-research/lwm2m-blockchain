@@ -26,19 +26,29 @@ public class ClientController {
 	
 	@GetMapping("/")
 	public ResponseEntity<List<Client>> getAllClients(@RequestHeader("Authorization") String auth) {
-		if(JwtUtility.isValidToken(auth)) {
+		int valid = JwtUtility.isValidToken(auth);
+		if(valid == 0) {
 			List<Client> connectedClients = leshanServerService.getAllConnectedClients();
 			return new ResponseEntity<>(connectedClients, HttpStatus.OK);
+		}else if(valid == 1) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}else if(valid == 2) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 	
 	@GetMapping("/{endpoint}")
 	public ResponseEntity<Client> getValue(@RequestHeader("Authorization") String auth, @PathVariable("endpoint") String endpoint) {
-		if(JwtUtility.isValidToken(auth)) {
+		int valid = JwtUtility.isValidToken(auth);
+		if(valid == 0) {
 			Client c = leshanServerService.getValueFromClient(endpoint);
 			return new ResponseEntity<>(c, HttpStatus.OK);
+		}else if(valid == 1) {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}else if(valid == 2) {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
-		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 }

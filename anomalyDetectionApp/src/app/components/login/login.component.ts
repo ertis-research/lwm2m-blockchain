@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ClientService } from '../../services/client.service';
 import { LoginService } from '../../services/login.service';
@@ -10,7 +10,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './login.component.html',
   styles: ['.invalid { color: red; font-weight: bold; }']
 })
-export class LoginComponent{
+export class LoginComponent implements OnInit{
 
   urlServer: string;
   wildcard: string;
@@ -23,6 +23,15 @@ export class LoginComponent{
     private auth: AuthService,
     private login: LoginService
   ) { }
+
+  ngOnInit() {
+    if(this.router.getCurrentNavigation() != null) {
+      const tokenExpired = this.router.getCurrentNavigation().extras.state.tokenExpired;
+      if(tokenExpired != undefined && tokenExpired != null && tokenExpired) {
+        alert('Your token has expired. You must log in again.')
+      }
+    }
+  }
 
   validateLogin() {
     this.login.validateLogin(this.wildcard,this.password, this.urlServer)
