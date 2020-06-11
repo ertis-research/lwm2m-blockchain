@@ -4,16 +4,17 @@ import { Client } from '../models';
 import { Observable } from 'rxjs';
 import { headersGenerator } from '../common';
 import { AuthService } from './auth.service';
-import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClientService {
   
-  url = this.cookies.get("urlServer");
+  url: string;
 
-  constructor(private http:HttpClient, private auth: AuthService, private cookies: CookieService) { }
+  constructor(private http:HttpClient, private auth: AuthService) {
+    this.url = this.auth.getUrlServer();
+  }
 
   getAllClients(): Observable<Client[]>{
     const headers = headersGenerator(false, true, this.auth.getToken());
@@ -23,10 +24,5 @@ export class ClientService {
   getValue(endpoint:string): Observable<Client>{
     const headers = headersGenerator(false, true, this.auth.getToken());
     return this.http.get<Client>(this.url+endpoint,{ headers });
-  }
-
-  setUrl(url:string){
-    this.url = url+"/api/server/";
-    this.cookies.set("urlServer", this.url);
   }
 }

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { ClientService } from '../../services/client.service';
+import { Router, ActivatedRoute } from '@angular/router';
 import { LoginService } from '../../services/login.service';
 import { Credentials } from '../../models';
 import { AuthService } from '../../services/auth.service';
@@ -19,18 +18,17 @@ export class LoginComponent implements OnInit{
 
   constructor(
     private router: Router,
-    private clientService:ClientService,
     private auth: AuthService,
-    private login: LoginService
+    private login: LoginService,
+    private activatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit() {
-    if(this.router.getCurrentNavigation() != null) {
-      const tokenExpired = this.router.getCurrentNavigation().extras.state.tokenExpired;
-      if(tokenExpired != undefined && tokenExpired != null && tokenExpired) {
-        alert('Your token has expired. You must log in again.')
+    this.activatedRoute.params.subscribe(data => {
+      if(data.expired){
+        alert('Your token has expired. You must log in again.');
       }
-    }
+    });
   }
 
   validateLogin() {
@@ -38,7 +36,7 @@ export class LoginComponent implements OnInit{
       .subscribe((response: Credentials) => {
         this.message = undefined;
         this.auth.setUserCredentials(response);
-        this.clientService.setUrl(this.urlServer);
+        this.auth.setUrlServer(this.urlServer);
         this.router.navigate(['/clients']);
       }, error => {
         this.message = "User does not exist or password is incorrect in Leshan server";
