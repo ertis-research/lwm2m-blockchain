@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { LoginService } from "../../services/login.service";
 import { AuthService } from '../../services/auth.service';
@@ -24,16 +24,16 @@ export class LoginComponent implements OnInit {
   constructor(
     private login: LoginService,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit() {
-    if(this.router.getCurrentNavigation() != null) {
-      const tokenExpired = this.router.getCurrentNavigation().extras.state.tokenExpired;
-      if(tokenExpired != undefined && tokenExpired != null && tokenExpired) {
-        alert('Your token has expired. You must log in again.')
+    this.activatedRoute.params.subscribe(data => {
+      if(data.expired){
+        alert('Your token has expired. You must log in again.');
       }
-    }
+    });
     this.option = 1;
   }
 

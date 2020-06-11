@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from "ngx-cookie-service";
 import { Credentials } from '../models/Credentials';
+import { baseCookie } from "../core";
 
 @Injectable({
   providedIn: 'root'
@@ -11,40 +12,44 @@ export class AuthService {
   constructor(private router: Router, private cookies: CookieService) { }
 
   public setUserCredentials(credentials: Credentials) {
-    this.cookies.set("username", credentials.username);
-    this.cookies.set("email", credentials.email);
-    this.cookies.set("role", String(credentials.role));
-    this.cookies.set("token", credentials.token);
+    this.cookies.set(`${baseCookie}username`, credentials.username);
+    this.cookies.set(`${baseCookie}email`, credentials.email);
+    this.cookies.set(`${baseCookie}role`, String(credentials.role));
+    this.cookies.set(`${baseCookie}token`, credentials.token);
   }
 
-  public logout() {
-    this.cookies.delete("username");
-    this.cookies.delete("email");
-    this.cookies.delete("role");
-    this.cookies.delete("token");
-    this.router.navigate(['/login']);
+  public logout(tokenExpired: boolean) {
+    this.cookies.delete(`${baseCookie}username`);
+    this.cookies.delete(`${baseCookie}email`);
+    this.cookies.delete(`${baseCookie}role`);
+    this.cookies.delete(`${baseCookie}token`);
+    if(tokenExpired) {
+      this.router.navigate(['/login', true]);
+    } else {
+      this.router.navigate(['/login']);
+    }  
   }
 
   public isAuthenticated(): boolean {
-    return this.cookies.check("username");
+    return this.cookies.check(`${baseCookie}username`);
   }
 
   // GETTERS
   public getEmail(): string {
-    return this.cookies.get("email");
+    return this.cookies.get(`${baseCookie}email`);
   }
 
   public getUsername(): string {
-    return this.cookies.get("username");
+    return this.cookies.get(`${baseCookie}username`);
   }
 
   public getRole(): number {
     return this.isAuthenticated()
-      ? +this.cookies.get("role")
+      ? +this.cookies.get(`${baseCookie}role`)
       : 0;
   }
 
   public getToken(): string {
-    return this.cookies.get("token");
+    return this.cookies.get(`${baseCookie}token`);
   }
 }

@@ -11,6 +11,7 @@ import { LoginComponent } from "./components/login/login.component";
 import { LoggedGuard, AdminGuard, UnLoggedGuard } from './services/guards.service';
 
 const routes: Routes = [
+  { path: 'login/:expired', component: LoginComponent, canActivate: [UnLoggedGuard] },
   { path: 'login', component: LoginComponent, canActivate: [UnLoggedGuard] },
   { path: 'clients', component: ClientComponent, canActivate: [AdminGuard] },
   { path: 'anomalies', component: AnomalyComponent, canActivate: [LoggedGuard] },
