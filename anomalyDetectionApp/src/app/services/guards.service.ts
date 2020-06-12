@@ -43,7 +43,7 @@ export class UnLoggedGuard implements CanActivate {
       return true;
     }else{
       console.error("You are logged. You cannot see login page");
-      this.router.navigate(['/anomalies']);
+      this.router.navigate(['/clients']);
       return false;
     }
   }

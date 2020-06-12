@@ -13,7 +13,7 @@ export class ClientService {
   url: string;
 
   constructor(private http:HttpClient, private auth: AuthService) {
-    this.url = this.auth.getUrlServer();
+    this.url = this.auth.getUrlServer() + "/api/server/";
   }
 
   getAllClients(): Observable<Client[]>{
