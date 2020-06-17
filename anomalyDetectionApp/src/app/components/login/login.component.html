@@ -5,31 +5,63 @@
         </div>
         <div class="card-body">
 
+            <div class="radio-div">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="options" id="inlineRadio1" [value]="1"
+                        [(ngModel)]="option">
+                    <label class="form-check-label" for="inlineRadio1">Username</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="options" id="inlineRadio2" [value]="2"
+                        [(ngModel)]="option">
+                    <label class="form-check-label" for="inlineRadio2">Email</label>
+                </div>
+            </div>
+
             <form (ngSubmit)="validateLogin()" #loginForm="ngForm">
                 <div class="form-group row">
                     <label for="urlServer">Url server</label>
-                    <input type="text" class="form-control" required [(ngModel)]="urlServer" name="urlServer" #urlServer_tp="ngModel">
+                    <input type="text" class="form-control" required [(ngModel)]="urlServer" name="urlServer"
+                        #urlServer_tp="ngModel">
                     <div [hidden]="urlServer_tp.valid || urlServer_tp.untouched" class="alert alert-danger col-12">
                         Url is required
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="wildcard">Username/Email</label>
-                    <input type="text" class="form-control" required [(ngModel)]="wildcard" name="wildcard" #wildcard_tp="ngModel">
-                    <div [hidden]="wildcard_tp.valid || wildcard_tp.untouched" class="alert alert-danger col-12">
-                        Username/Email is required
+                <div class="form-group row" *ngIf="option==1">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" required [(ngModel)]="username" name="username"
+                        #username_tp="ngModel">
+                    <div [hidden]="username_tp.valid || username_tp.untouched" class="alert alert-danger col-12">
+                        Username is required
+                    </div>
+                </div>
+
+                <div class="form-group row" *ngIf="option==2">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" required
+                        pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$" [(ngModel)]="email"
+                        name="email" #email_tp="ngModel">
+                    <div *ngIf="email_tp.errors && email_tp.touched && email_tp.errors.required"
+                        class="alert alert-danger col-12">
+                        Email is required
+                    </div>
+                    <div *ngIf="email_tp.errors && email_tp.touched && email_tp.errors.pattern"
+                        class="alert alert-danger col-12">
+                        Email is not valid
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label for="password">Password</label>
-                    <input type="password" class="form-control" required [(ngModel)]="password" name="password" #password_tp="ngModel">
+                    <input type="password" class="form-control" required [(ngModel)]="password" name="password"
+                        #password_tp="ngModel">
                     <div [hidden]="password_tp.valid || password_tp.untouched" class="alert alert-danger col-12">
                         Password is required
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-success offset-4 col-4" [disabled]="!loginForm.form.valid">Sign in</button>
+                <button type="submit" class="btn btn-success offset-4 col-4" [disabled]="!loginForm.form.valid">Sign
+                    in</button>
             </form>
 
             <p class="invalid offset-1 col-10" *ngIf="message">{{message}}</p>
