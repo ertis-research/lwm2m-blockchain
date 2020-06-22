@@ -44,6 +44,8 @@ public class LeshanServerService {
 	LeshanServer leshanServer;
 
 	public LeshanServerService() {
+		leshanServer = configureLeshanServer().build();
+		leshanServer.start();
 		GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeHierarchyAdapter(Registration.class, new RegistrationSerializer(leshanServer.getPresenceService()));
         gsonBuilder.registerTypeHierarchyAdapter(LwM2mResponse.class, new ResponseSerializer());
@@ -51,8 +53,6 @@ public class LeshanServerService {
         gsonBuilder.registerTypeHierarchyAdapter(LwM2mNode.class, new LwM2mNodeDeserializer());
         gsonBuilder.setDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
         this.gson = gsonBuilder.create();
-		leshanServer = configureLeshanServer().build();
-		leshanServer.start();
 	}
 
 	public LeshanServer getLeshanServer() {
