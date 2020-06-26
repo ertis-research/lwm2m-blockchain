@@ -76,37 +76,14 @@ public class BlockchainBootstrapStore implements EditableBootstrapConfigStore {
 	//Add a new client
 	@Override
 	public void add(String endpoint, BootstrapConfig config) throws InvalidConfigurationException {
-		//System.out.println("BlockchainBootstrapStore - add");
-		try {
-			if(existsClient(contract, endpoint) == -1) {
-				String url_bs = config.security.get(0).uri;
-				byte[] id_bs = config.security.get(0).publicKeyOrId;
-				byte[] key_bs = config.security.get(0).secretKey;
-				String url_s = config.security.get(1).uri;
-				byte[] id_s = config.security.get(1).publicKeyOrId;
-				byte[] key_s = config.security.get(1).secretKey;
-				addClient(contract, endpoint, url_bs, id_bs, key_bs, url_s, id_s, key_s);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		System.out.println("BlockchainBootstrapStore - add (Nothing to do)");
 	}
 
 	//Delete a client
 	@Override
 	public BootstrapConfig remove(String endpoint) {
-		//System.out.println("BlockchainBootstrapStore - remove");
-		BootstrapConfig config = null;
-		try {
-			if(existsClient(contract, endpoint) != -1) {
-				config = get(endpoint, null,null);
-				removeClient(contract, endpoint);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return config;
+		System.out.println("BlockchainBootstrapStore - remove (Nothing to do)");
+		return null;
 	}
 
 	//Get a client's security information from an endpoint 
@@ -189,44 +166,6 @@ public class BlockchainBootstrapStore implements EditableBootstrapConfigStore {
 		log.info("Block Number: " + blockNumber);
 		log.info("Block Hash: " + blockHash);
 		log.info("Gas Used: " + gasUsed);
-	}
-
-
-	private int existsClient(BootstrapStore contract, String endpoint) throws Exception{
-		long startTime = System.currentTimeMillis();
-		BigInteger response = contract.existsClient(asciiToByte32(endpoint)).send();
-		//System.out.println(response);
-		//if(!response.equals(new BigInteger("-1"))) {
-		//	log.info("Client " + endpoint + " exists");
-		//}else {
-		//	log.info("Client " + endpoint + " does not exists");
-		//}
-		long endTime = System.currentTimeMillis();
-		long totalTime = ((endTime - startTime));
-		System.out.println("existClient: "+ totalTime + " ms");
-		return response.intValue();
-	}
-
-	private void addClient(BootstrapStore contract, String endpoint,
-			String url_bs, byte[] id_bs, byte[] key_bs,
-			String url_s, byte[] id_s, byte[] key_s) throws Exception{
-		long startTime = System.currentTimeMillis();
-		TransactionReceipt txReceipt = contract.addClient(asciiToByte32(endpoint),
-				asciiToByte32(url_bs), (id_bs), (key_bs),
-				asciiToByte32(url_s), (id_s), (key_s)).send();
-		logTransaction(txReceipt, "addClient");
-		long endTime = System.currentTimeMillis();
-		long totalTime = ((endTime - startTime));
-		System.out.println("addClient: "+ totalTime + " ms");
-	}
-
-	private void removeClient(BootstrapStore contract, String endpoint) throws Exception {
-		long startTime = System.currentTimeMillis();
-		TransactionReceipt txReceipt = contract.removeClient(asciiToByte32(endpoint)).send();
-		logTransaction(txReceipt, "removeClient");
-		long endTime = System.currentTimeMillis();
-		long totalTime = ((endTime - startTime));
-		System.out.println("removeClient: "+ totalTime + " ms");
 	}
 
 	private BootstrapConfig getClient(BootstrapStore contract, String endpoint) throws Exception {

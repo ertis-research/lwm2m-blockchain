@@ -31,7 +31,7 @@ public class Client {
 		// create objects
 		ObjectsInitializer initializer = new ObjectsInitializer(new StaticModel(models));
 		initializer.setInstancesForObject(LwM2mId.SECURITY, Security.pskBootstrap(url, idByte, keyByte));
-		initializer.setInstancesForObject(LwM2mId.SERVER, new Server(12345, 5 * 60, BindingMode.U, false));
+		initializer.setClassForObject(LwM2mId.SERVER, Server.class);
 		initializer.setInstancesForObject(LwM2mId.DEVICE, new Device("Eclipse Leshan", "model12345", "12345", "U"));
 		initializer.setInstancesForObject(OBJECT_ID_TEMPERATURE_SENSOR, new TemperatureSensor());
 
