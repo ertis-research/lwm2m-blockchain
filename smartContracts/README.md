@@ -1,4 +1,4 @@
-## Blockchain
+## Smart Contracts
 Smart Contracts used in this project are stored here. All of them are coded using [Solidity](https://solidity-es.readthedocs.io/es/latest/). In order to compile Smart Contracts and generate Java wrappers is neccesary to install the Solidity compiler (*solc*) and a Java library for working with Smart Contracts (*web3j*).
 
 Following next steps you can generate Java wrapper code of a Smart Contract.
