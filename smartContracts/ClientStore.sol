@@ -1,7 +1,6 @@
 pragma solidity >=0.4.22 <0.7.0;
 
-contract BootstrapStore {
-
+contract ClientStore {
     // Client configuration requires a LWM2M BS Server config. and a LWM2M Server config.
     struct ClientConfig {
         bytes32 url_bs;
@@ -13,7 +12,7 @@ contract BootstrapStore {
     }
 
     // This declares a state variable that stores a 'ClientConfig' struct for each client endpoint
-    mapping (bytes32 => ClientConfig) clients;
+    mapping(bytes32 => ClientConfig) clients;
     // This declares a state variable that stores all client endpoints
     bytes32[] endpoints;
 
@@ -81,31 +80,13 @@ contract BootstrapStore {
             clients[endpoint].url_s, clients[endpoint].id_s, clients[endpoint].key_s); // Server config
     }
 
-    function getAllClients() public onlyWhitelist view returns(bytes32[] memory){
-        return endpoints;
-    }
-
-    function getClientsByServer(bytes32 url_s) public onlyWhitelist view returns(bytes32[] memory){
-        bytes32[] memory serverEndpoints = new bytes32[](endpoints.length);
-        uint cont = 0;
-
-        for (uint i = 0; i < endpoints.length; i++) {
-            if(clients[endpoints[i]].url_s == url_s) {
-                serverEndpoints[cont] = endpoints[i];
-                cont++;
-            }
-        }
-
-        return serverEndpoints;
-    }
-
     function removeClient(bytes32 endpoint) public onlyWhitelist {
         int pos = existsClient(endpoint);
         // require triggers a revert() with the message specified if condition is false
         require(pos != -1, "Endpoint does not exist");
         
-        for (uint i = uint(pos); i<endpoints.length-1; i++){
-            endpoints[i] = endpoints[i+1];
+        for (uint i = uint(pos); i < endpoints.length - 1; i++) {
+            endpoints[i] = endpoints[i + 1];
         }
 
         endpoints.pop();
@@ -120,5 +101,29 @@ contract BootstrapStore {
             }
         }
         return -1;
+    }
+
+    function getAllClients() public view onlyWhitelist returns (
+            bytes32[] memory, bytes32[] memory, bytes32[] memory, bytes32[] memory, bytes32[] memory, bytes32[] memory, bytes32[] memory)
+    {
+        bytes32[] memory endpoints_res = new bytes32[](endpoints.length);
+        bytes32[] memory urls_bs = new bytes32[](endpoints.length);
+        bytes32[] memory ids_bs = new bytes32[](endpoints.length);
+        bytes32[] memory keys_bs = new bytes32[](endpoints.length);
+        bytes32[] memory urls_s = new bytes32[](endpoints.length);
+        bytes32[] memory ids_s = new bytes32[](endpoints.length);
+        bytes32[] memory keys_s = new bytes32[](endpoints.length);
+
+        for (uint256 i = 0; i < endpoints.length; i++) {
+            endpoints_res[i] = endpoints[i];
+            urls_bs[i] = clients[endpoints[i]].url_bs;
+            ids_bs[i] = clients[endpoints[i]].id_bs;
+            keys_bs[i] = clients[endpoints[i]].key_bs;
+            urls_s[i] = clients[endpoints[i]].url_s;
+            ids_s[i] = clients[endpoints[i]].id_s;
+            keys_s[i] = clients[endpoints[i]].key_s;
+        }
+
+        return (endpoints_res, urls_bs, ids_bs, keys_bs, urls_s, ids_s, keys_s);
     }
 }
