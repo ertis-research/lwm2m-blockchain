@@ -15,8 +15,8 @@ import org.eclipse.leshan.core.request.BindingMode;
 public class Client {
 	public static void main(String[] args) {
 		// variables
-		String endpoint = "ivanEndpoint1" ; // choose an endpoint name
-		byte[] idByte = asciiToByte("ivanbs1");
+		String endpoint = "clientEndpoint1" ; // choose an endpoint name
+		byte[] idByte = asciiToByte("clientbs1");
 		byte[] keyByte = hexToByte("654321");
 		String url = "coaps://localhost:5684";		
 		int OBJECT_ID_TEMPERATURE_SENSOR = 3303;
