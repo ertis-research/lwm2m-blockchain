@@ -14,19 +14,20 @@ import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tuples.generated.Tuple6;
+import org.web3j.tuples.generated.Tuple7;
 import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.tx.gas.StaticGasProvider;
 
 import com.ivan.ServerLeshan.utils.Converter;
-import com.ivan.ServerLeshan.wrappers.BootstrapStore;
+import com.ivan.ServerLeshan.wrappers.ClientStore;
 
-public class ClientStore implements EditableSecurityStore {
+public class ClientStoreService implements EditableSecurityStore {
 
-	static Logger log = LoggerFactory.getLogger(ClientStore.class);
+	static Logger log = LoggerFactory.getLogger(ClientStoreService.class);
 
 	String url = "https://ropsten.infura.io/v3/a21979a509154e19b42267c28f697e32"; //Ropsten
 	String privateKey = "4C2A99F86C06C98448AB1986D33A248D699B5D7280EEBD76E4FD60B84C4B51C8"; //Private key of an account, Ropsten
-	String contractAddress = "0x0b65c81b465953fd25b29c0caffd2a448f0b948f"; //Ropsten
+	String contractAddress = "0x6c8568e24548115439174e86d98fb8d7d3de2c4b"; //Ropsten
 
 	//String url = "HTTP://127.0.0.1:7545"; //Ganache
 	//String privateKey = "a701158005907d33a130caa07a2b7d811b409336ba14efca9a00b8593ec6feb9"; //Private key of an account, Ganache
@@ -36,9 +37,9 @@ public class ClientStore implements EditableSecurityStore {
 	BigInteger gasLimit = new BigInteger("4712388");
 	ContractGasProvider gasProvider = new StaticGasProvider(gasPrice, gasLimit);
 	Web3j web3j;
-	BootstrapStore contract;
+	ClientStore contract;
 
-	public ClientStore() {
+	public ClientStoreService() {
 		try {
 			web3j = connect(url);
 			Credentials credentials = createCredentials(privateKey);
@@ -63,40 +64,29 @@ public class ClientStore implements EditableSecurityStore {
 
 	@Override
 	public SecurityInfo getByIdentity(String pskIdentity) {
-		System.out.println("BlockchainStore - getByIdentity");
+		Collection<SecurityInfo> clients = getAll();
 
-		try {
-			String[] endpoints = getAllEndpoints(contract);
-
-			for (String end : endpoints) {
-				SecurityInfo securityInfoFor = getClient(contract, end);
-				if(securityInfoFor.getIdentity().equals(pskIdentity)) {
-					return securityInfoFor;
-				}
+		for (SecurityInfo securityInfo : clients) {
+			if(securityInfo.getIdentity().equals(pskIdentity)) {
+				return securityInfo;
 			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
+
 		return null;
 	}
 
 	@Override
 	public Collection<SecurityInfo> getAll() {
-		System.out.println("BlockchainStore - getAll");
-		Collection<SecurityInfo> res = new ArrayList<SecurityInfo>();
+		Collection<SecurityInfo> securityInfos = new ArrayList<SecurityInfo>();
 
 		try {
-			String[] endpoints = getAllEndpoints(contract);
-
-			for (String end : endpoints) {
-				SecurityInfo securityInfoFor = getClient(contract, end);
-				res.add(securityInfoFor);
-			}
+			Tuple7<List<byte[]>, List<byte[]>, List<byte[]>, List<byte[]>, List<byte[]>, List<byte[]>, List<byte[]>> response = contract.getAllClients().send();
+			securityInfos = tuple7ToSecurityInfoCollection(response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return res;
+		
+		return securityInfos;
 	}
 
 	@Override
@@ -126,13 +116,13 @@ public class ClientStore implements EditableSecurityStore {
 	}
 
 	// Load smart contract
-	private BootstrapStore loadContract(Web3j web3j, Credentials credentials, String address, ContractGasProvider provider) throws Exception {
-		BootstrapStore contract = BootstrapStore.load(address, web3j, credentials, provider);
+	private ClientStore loadContract(Web3j web3j, Credentials credentials, String address, ContractGasProvider provider) throws Exception {
+		ClientStore contract = ClientStore.load(address, web3j, credentials, provider);
 		log.info("Smart contract loaded");
 		return contract;
 	}
 
-	private SecurityInfo getClient(BootstrapStore contract, String endpoint) throws Exception {
+	private SecurityInfo getClient(ClientStore contract, String endpoint) throws Exception {
 		long startTime = System.currentTimeMillis();
 		Tuple6<byte[],byte[],byte[],byte[],byte[],byte[]> clientConfig = contract.getClient(Converter.asciiToByte32(endpoint)).send();
 		SecurityInfo securityInfo = SecurityInfo.newPreSharedKeyInfo(endpoint, Converter.byteToAscii(clientConfig.component5()), Converter.hexToByte(Converter.byteToAscii(clientConfig.component6())));
@@ -142,20 +132,20 @@ public class ClientStore implements EditableSecurityStore {
 		return securityInfo;
 	}
 
-	private String[] getAllEndpoints(BootstrapStore contract) throws Exception {
-		long startTime = System.currentTimeMillis();
-		@SuppressWarnings("unchecked")
-		List<byte[]> list = contract.getAllClients().send();
-		List<String> list2 = new ArrayList<String>();
-		for(byte[] aux : list) {
-			list2.add(Converter.byteToAscii(aux));
-		}
-		String[] response = new String[list.size()];
-		list2.toArray(response);
-		long endTime = System.currentTimeMillis();
-		long totalTime = ((endTime - startTime));
-		System.out.println("getAllClients: "+ totalTime + " ms");
-		return response;
-	}
+	private Collection<SecurityInfo> tuple7ToSecurityInfoCollection(Tuple7<List<byte[]>, List<byte[]>, List<byte[]>, List<byte[]>, List<byte[]>, List<byte[]>, List<byte[]>> tuple){
+		Collection<SecurityInfo> securityInfos = new ArrayList<SecurityInfo>();
 
+		List<byte[]> endpoints = tuple.component1();
+		List<byte[]> ids_s = tuple.component6();
+		List<byte[]> keys_s = tuple.component7();
+
+		for (int i = 0; i < tuple.component1().size(); i++) {			
+			String endpoint = Converter.byteToAscii(endpoints.get(i));
+			String id_s = Converter.byteToAscii(ids_s.get(i));
+			String key_s = Converter.byteToAscii(keys_s.get(i));
+			SecurityInfo securityInfo = SecurityInfo.newPreSharedKeyInfo(endpoint, id_s, Converter.hexToByte(key_s));
+			securityInfos.add(securityInfo);
+		}
+		return securityInfos;
+	}
 }

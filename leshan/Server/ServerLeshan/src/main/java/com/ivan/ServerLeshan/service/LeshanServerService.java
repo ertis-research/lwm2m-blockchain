@@ -98,7 +98,7 @@ public class LeshanServerService {
 		builder.setDtlsConfig(dtlsConfig);
 
 		// Set securityStore & registrationStore
-		ClientStore securityStore = new ClientStore();
+		ClientStoreService securityStore = new ClientStoreService();
 		builder.setSecurityStore(securityStore);
 
 		return builder;
