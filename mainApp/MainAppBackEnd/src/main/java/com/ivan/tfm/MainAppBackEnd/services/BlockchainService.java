@@ -13,7 +13,7 @@ import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.tx.gas.StaticGasProvider;
 
 import com.ivan.tfm.MainAppBackEnd.wrappers.AnomalyStore;
-import com.ivan.tfm.MainAppBackEnd.wrappers.BootstrapStore;
+import com.ivan.tfm.MainAppBackEnd.wrappers.ClientStore;
 import com.ivan.tfm.MainAppBackEnd.wrappers.UserStore;
 
 @Service
@@ -24,7 +24,7 @@ public class BlockchainService {
 	// Ropsten (Ethereum testnet)
 	private final String URL = "https://ropsten.infura.io/v3/a21979a509154e19b42267c28f697e32";
 	private final String PRIVATE_KEY = "4C2A99F86C06C98448AB1986D33A248D699B5D7280EEBD76E4FD60B84C4B51C8";
-	private final String BOOTSTRAP_STORE_ADDR = "0x0b65c81b465953fd25b29c0caffd2a448f0b948f";
+	private final String CLIENT_STORE_ADDR = "0x6c8568e24548115439174e86d98fb8d7d3de2c4b";
 	private final String ANOMALY_STORE_ADDR = "0x1c209d6e3222f30a52fd2144f6ec4ea11c471d9c";
 	private final String USER_STORE_ADDR = "0xcfc79c76fe6c55445fa9301be5b2313dbba2d9ea";
 	
@@ -33,7 +33,7 @@ public class BlockchainService {
 	/*
 	private final String URL = "http://127.0.0.1:7545";
 	private final String PRIVATE_KEY = "";
-	private final String BOOTSTRAP_STORE_ADDR = "";
+	private final String CLIENT_STORE_ADDR = "";
 	private final String ANOMALY_STORE_ADDR = "";
 	private final String USER_STORE_ADDR = "";
 	*/
@@ -45,7 +45,7 @@ public class BlockchainService {
 	private final BigInteger gasLimit = new BigInteger("4712388");
 	private final ContractGasProvider gasProvider = new StaticGasProvider(gasPrice, gasLimit);
 	
-	private BootstrapStore bs_contract;
+	private ClientStore client_contract;
 	private AnomalyStore anomaly_contract;
 	private UserStore user_contract;
 	
@@ -53,7 +53,7 @@ public class BlockchainService {
 		try {
 			this.web3j = connect(URL);
 			this.credentials = createCredentials(PRIVATE_KEY);
-			this.bs_contract = loadContract1();
+			this.client_contract = loadContract1();
 			this.anomaly_contract = loadContract2();
 			this.user_contract = loadContract3();
 		} catch (Exception e) {
@@ -75,10 +75,10 @@ public class BlockchainService {
 		return credentials;
 	}
 	
-	// Load smart contract 'BootstrapStore'
-	private BootstrapStore loadContract1() throws Exception {
-		BootstrapStore contract = BootstrapStore.load(this.BOOTSTRAP_STORE_ADDR, this.web3j, this.credentials, this.gasProvider);
-		log.info("Smart contract 'BootstrapStore' loaded");
+	// Load smart contract 'ClientStore'
+	private ClientStore loadContract1() throws Exception {
+		ClientStore contract = ClientStore.load(this.CLIENT_STORE_ADDR, this.web3j, this.credentials, this.gasProvider);
+		log.info("Smart contract 'ClientStore' loaded");
 		return contract;
 	}
 	
@@ -96,8 +96,8 @@ public class BlockchainService {
 		return contract;
 	}
 
-	public BootstrapStore getBs_contract() {
-		return bs_contract;
+	public ClientStore getClient_contract() {
+		return client_contract;
 	}
 
 	public AnomalyStore getAnomaly_contract() {

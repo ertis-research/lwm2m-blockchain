@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
-import org.web3j.tuples.generated.Tuple6;
+import org.web3j.tuples.generated.Tuple7;
 
 import com.ivan.tfm.MainAppBackEnd.beans.Client;
 import com.ivan.tfm.MainAppBackEnd.utils.Converter;
@@ -22,7 +22,7 @@ public class ClientService {
 
 	private int existsClient(String endpoint) throws Exception{
 		long startTime = System.currentTimeMillis();
-		BigInteger exist = this.blockchainService.getBs_contract().existsClient(Converter.asciiToByte32(endpoint)).send();
+		BigInteger exist = this.blockchainService.getClient_contract().existsClient(Converter.asciiToByte32(endpoint)).send();
 		long endTime = System.currentTimeMillis();
 		long totalTime = ((endTime - startTime));
 		System.out.println("existClient: "+ totalTime + " ms");
@@ -43,7 +43,7 @@ public class ClientService {
 			byte[] id_sByte = Converter.asciiToByte32(id_s);
 			byte[] key_sByyte = Converter.asciiToByte32(key_s);
 
-			TransactionReceipt txReceipt = this.blockchainService.getBs_contract().addClient(endpointByte,
+			TransactionReceipt txReceipt = this.blockchainService.getClient_contract().addClient(endpointByte,
 					url_bsByte, id_bsByte, key_bsByte,
 					url_sByte, id_sByte, key_sByyte).send();
 			this.blockchainService.logTransaction(txReceipt, "addClient", this.contractName);
@@ -58,7 +58,7 @@ public class ClientService {
 		
 		try {
 			if(existsClient(endpoint) != -1) {
-				TransactionReceipt txReceipt = this.blockchainService.getBs_contract().removeClient(Converter.asciiToByte32(endpoint)).send();
+				TransactionReceipt txReceipt = this.blockchainService.getClient_contract().removeClient(Converter.asciiToByte32(endpoint)).send();
 				this.blockchainService.logTransaction(txReceipt, "removeClient", this.contractName);
 			}
 		} catch (Exception e) {
@@ -68,55 +68,43 @@ public class ClientService {
 		long totalTime = ((endTime - startTime));
 		System.out.println("removeClient: "+ totalTime + " ms");
 	}
-
-	public String[] getAllEndpoints() {
-		long startTime = System.currentTimeMillis();
-		List<byte[]> list = new ArrayList<byte[]>();
-		try {
-			list = this.blockchainService.getBs_contract().getAllClients().send();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		List<String> list2 = new ArrayList<String>();
-		for(byte[] aux : list) {
-			list2.add(Converter.byteToAscii(aux));
-		}
-		String[] response = new String[list.size()];
-		list2.toArray(response);
-		long endTime = System.currentTimeMillis();
-		long totalTime = ((endTime - startTime));
-		System.out.println("getAllEndpoints: "+ totalTime + " ms");
-		return response;
-	}
-
-	private Client getClient(String endpoint) throws Exception {
-		//long startTime = System.currentTimeMillis();
-		Tuple6<byte[],byte[],byte[],byte[],byte[],byte[]> response = this.blockchainService.getBs_contract().getClient(Converter.asciiToByte32(endpoint)).send();
-		Client client = new Client(endpoint, response);
-		//long endTime = System.currentTimeMillis();
-		//long totalTime = ((endTime - startTime));
-		//System.out.println("getClient: "+ totalTime + " ms");
-		return client;
-	}
-
+	
 	public List<Client> getAllClients(){
-		long startTime = System.currentTimeMillis();
-		List<Client> res = new ArrayList<Client>();
-		
-		try {
-			String[] endpoints = getAllEndpoints();
-			for (String end : endpoints) {
-				Client client = getClient(end);
-				res.add(client);
-			}
+		List<Client> clients = new ArrayList<Client>();
 
+		try {
+			Tuple7<List<byte[]>, List<byte[]>, List<byte[]>, List<byte[]>, List<byte[]>, List<byte[]>, List<byte[]>> response = this.blockchainService.getClient_contract().getAllClients().send();
+			clients = tuple7ToList(response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		long endTime = System.currentTimeMillis();
-		long totalTime = ((endTime - startTime));
-		System.out.println("getAllClients: "+ totalTime + " ms");
-		return res;
+		return clients;
+	}
+
+	private List<Client> tuple7ToList(Tuple7<List<byte[]>, List<byte[]>, List<byte[]>, List<byte[]>, List<byte[]>, List<byte[]>, List<byte[]>> tuple){
+		List<Client> clients = new ArrayList<Client>();
+
+		List<byte[]> endpoints = tuple.component1();
+		List<byte[]> urls_bs = tuple.component2();
+		List<byte[]> ids_bs = tuple.component3();
+		List<byte[]> keys_bs = tuple.component4();
+		List<byte[]> urls_s = tuple.component5();
+		List<byte[]> ids_s = tuple.component6();
+		List<byte[]> keys_s = tuple.component7();
+
+		for (int i = 0; i < tuple.component1().size(); i++) {
+			String endpoint = Converter.byteToAscii(endpoints.get(i));
+			String url_bs = Converter.byteToAscii(urls_bs.get(i));
+			String id_bs = Converter.byteToAscii(ids_bs.get(i));
+			String key_bs = Converter.byteToAscii(keys_bs.get(i));
+			String url_s = Converter.byteToAscii(urls_s.get(i));
+			String id_s = Converter.byteToAscii(ids_s.get(i));
+			String key_s = Converter.byteToAscii(keys_s.get(i));
+
+			Client client = new Client(endpoint, url_bs, id_bs, key_bs, url_s, id_s, key_s);
+			clients.add(client);
+		}
+		return clients;
 	}
 
 }

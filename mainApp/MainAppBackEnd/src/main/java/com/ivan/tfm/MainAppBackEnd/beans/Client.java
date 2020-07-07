@@ -16,6 +16,16 @@ public class Client {
 	
 	public Client() {}
 	
+	public Client(String endpoint, String url_bs, String id_bs, String key_bs, String url_s, String id_s, String key_s) {
+		this.endpoint = endpoint;
+		this.url_bs = url_bs;
+		this.id_bs = id_bs;
+		this.key_bs = key_bs;
+		this.url_s = url_s;
+		this.id_s = id_s;
+		this.key_s = key_s;
+	}
+
 	public Client(String endpoint, Tuple6<byte[],byte[],byte[],byte[],byte[],byte[]> in) {
 		this.endpoint = endpoint;
 		this.url_bs = Converter.byteToAscii(in.component1());
