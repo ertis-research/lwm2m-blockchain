@@ -22,6 +22,7 @@ public class DeployContract {
 
 	public static void main(String[] args) {
 
+		System.out.println("BEGIN deployContract");
 		//Ropsten
 		String url = "https://ropsten.infura.io/v3/a21979a509154e19b42267c28f697e32";
 		String privateKey = "4C2A99F86C06C98448AB1986D33A248D699B5D7280EEBD76E4FD60B84C4B51C8"; 
@@ -49,6 +50,7 @@ public class DeployContract {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println("END deployContract");
 	}
 }
 
