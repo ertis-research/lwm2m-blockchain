@@ -27,6 +27,8 @@ def jsonAndBc(json, bc):
     'filename': f'jsonAndBc',
   }}
 
+  #fig.write_image("jsonAndBc.pdf")
+
   fig.show(config=config)
 
 def clientAddAndRemove(add, remove):
@@ -46,6 +48,8 @@ def clientAddAndRemove(add, remove):
   config = {'toImageButtonOptions': {
     'filename': f'clientAddAndRemove',
   }}
+
+  #fig.write_image("clientAddAndRemove.pdf")
 
   fig.show(config=config)
 
@@ -68,6 +72,8 @@ def addAnomalyLine(anomalies):
     'filename': f'addAnomaly',
   }}
 
+  #fig.write_image("addAnomalyLine.pdf")
+
   fig.show(config=config)
 
 def addAnomaly(anomalies):
@@ -88,6 +94,8 @@ def addAnomaly(anomalies):
     'filename': f'addAnomalyBar',
   }}
 
+  #fig.write_image("addAnomaly.pdf")
+
   fig.show(config=config)
 
 def getAllAnomaliesLine(anomalies):
@@ -106,6 +114,8 @@ def getAllAnomaliesLine(anomalies):
   config = {'toImageButtonOptions': {
     'filename': f'getAllAnomalies',
   }}
+
+  #fig.write_image("getAllAnomaliesLine.pdf")
 
   fig.show(config=config)
 
@@ -126,6 +136,8 @@ def getAllAnomalies(anomalies):
   config = {'toImageButtonOptions': {
     'filename': f'getAllAnomaliesBar',
   }}
+
+  #fig.write_image("getAllAnomalies.pdf")
 
   fig.show(config=config)
 
@@ -149,6 +161,8 @@ def usersAddAndUpdate(add, update):
     'filename': f'usersAddAndUpdate',
   }}
   
+  #fig.write_image("usersAddAndUpdate.pdf")
+  
   fig.show(config=config)
 
 def validateLogin(validations):
@@ -168,5 +182,7 @@ def validateLogin(validations):
   config = {'toImageButtonOptions': {
     'filename': f'validateLogin',
   }}
+
+  #fig.write_image("validateLogin.pdf")
 
   fig.show(config=config)
