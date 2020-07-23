@@ -21,7 +21,7 @@
                         <td>{{client.endpoint}}</td>
                         <td>{{tsToDate(client.registrationTimestamp)}}</td>
                         <td>{{tsToDate(client.lastUpdateTimestamp)}}</td>
-                        <td>{{client.value}}</td>
+                        <td>{{client.value}} ºC</td>
                         <td>{{tsToDate(client.valueTimestamp)}}</td>
                         <td>
                             <button (click)="getValue(client.endpoint)" class="btn btn-info">Get</button>

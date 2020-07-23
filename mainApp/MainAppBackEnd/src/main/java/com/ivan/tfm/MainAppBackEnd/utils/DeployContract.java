@@ -1,7 +1,6 @@
-package utils;
+package com.ivan.tfm.MainAppBackEnd.utils;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,10 +10,9 @@ import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.tx.gas.StaticGasProvider;
 
-import wrappers.AnomalyStore;
-import wrappers.ClientStore;
-import wrappers.UserStore;
-
+import com.ivan.tfm.MainAppBackEnd.wrappers.AnomalyStore;
+import com.ivan.tfm.MainAppBackEnd.wrappers.ClientStore;
+import com.ivan.tfm.MainAppBackEnd.wrappers.UserStore;
 
 public class DeployContract {
 

@@ -102,9 +102,9 @@ public class UserTest {
 		private UserStore contract;
 
 		public UserBlockchain() {
-			String url = "https://ropsten.infura.io/v3/a21979a509154e19b42267c28f697e32"; //Ropsten
-			String privateKey = "4C2A99F86C06C98448AB1986D33A248D699B5D7280EEBD76E4FD60B84C4B51C8"; //Private key of an account, Ropsten
-			String contractAddress = "0x1056dc5ff06c47b33fcced0b0eb4b08c0841b8f3"; //Ropsten
+			String url = ""; //TO COMPLETE USING INFURA
+			String privateKey = ""; //TO COMPLETE
+			String contractAddress = ""; //TO COMPLETE
 
 			BigInteger gasPrice = new BigInteger("20000000000");
 			BigInteger gasLimit = new BigInteger("4712388");

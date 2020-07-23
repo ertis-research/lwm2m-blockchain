@@ -55,8 +55,8 @@ public class AnomalyTest {
 	}
 	
 	public static void main(String[] args) {
-//		testAddAnomalies(10);
-//		testGetAll(100);
+		//testAddAnomalies(10);
+		//testGetAll(100);
 
 	}
 
@@ -65,9 +65,9 @@ public class AnomalyTest {
 		private AnomalyStore contract;
 
 		public AnomalyBlockchain() {
-			String url = "https://ropsten.infura.io/v3/a21979a509154e19b42267c28f697e32"; //Ropsten
-			String privateKey = "4C2A99F86C06C98448AB1986D33A248D699B5D7280EEBD76E4FD60B84C4B51C8"; //Private key of an account, Ropsten
-			String contractAddress = "0x136f287df23e92968e930c0eee416e3bd87648b7"; //Ropsten
+			String url = ""; //TO COMPLETE USING INFURA
+			String privateKey = ""; //TO COMPLETE
+			String contractAddress = ""; //TO COMPLETE
 
 			BigInteger gasPrice = new BigInteger("20000000000");
 			BigInteger gasLimit = new BigInteger("4712388");
