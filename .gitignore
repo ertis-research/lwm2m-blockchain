@@ -115,3 +115,7 @@ buildNumber.properties
 # End of https://www.gitignore.io/api/java,maven,eclipse,java-web
 
 /mainApp/Test
+
+### Python ###
+__pycache__/
+.ipynb_checkpoints/
