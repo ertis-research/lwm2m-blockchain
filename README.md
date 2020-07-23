@@ -1,5 +1,9 @@
 # LwM2M-blockchain
-In this respository, the [LWM2M](https://omaspecworks.org/what-is-oma-specworks/iot/lightweight-m2m-lwm2m/) protocol is integrated with blockchain to improve reliability and auditability. The Java implementation of LWM2M, [Leshan](https://github.com/eclipse/leshan), and Ethereum testnet [Ropsten](https://ropsten.etherscan.io/) have been be used for this purpose.
+In this respository, the [LWM2M](https://omaspecworks.org/what-is-oma-specworks/iot/lightweight-m2m-lwm2m/) protocol is integrated with blockchain to improve reliability and auditability. This integration also provides a secure ledger to store critical information like anomalies. The Java implementation of LWM2M, [Leshan](https://github.com/eclipse/leshan), and Ethereum testnet [Ropsten](https://ropsten.etherscan.io/) have been be used for this purpose.
+
+<p align="center">
+<img src="images/architecture.png" width="500">
+</p>
 
 This repository is divided in six main folders:
 * **anomalyDetectionApp** --> Auxilar application that requests data to LwM2M clients and checks if the received information is or not an anomaly.
@@ -8,3 +12,6 @@ This repository is divided in six main folders:
 * **leshan** --> Java Implementation of LwM2M protocol modified to accomplish communication with Ropsten network.
 * **mainApp** --> Frontend and backend of the Web management UI Application.
 * **smartContracts** --> Smart Contracts are stored here.
+
+## License
+MIT
