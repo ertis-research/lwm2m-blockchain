@@ -27,7 +27,7 @@ public class DeployContract {
 		String url = ""; //TO COMPLETE
 		String privateKey = ""; //TO COMPLETE
 
-		BigInteger gasPrice = new BigInteger("20000000000");
+		BigInteger gasPrice = new BigInteger("40000000000");
 		BigInteger gasLimit = new BigInteger("4712388");
 		ContractGasProvider gasProvider = new StaticGasProvider(gasPrice, gasLimit);
 		Web3j web3j;

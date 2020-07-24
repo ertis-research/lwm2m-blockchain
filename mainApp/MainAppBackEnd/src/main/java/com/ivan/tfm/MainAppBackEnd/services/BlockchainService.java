@@ -31,7 +31,7 @@ public class BlockchainService {
 	private Web3j web3j;
 	private Credentials credentials;
 	
-	private final BigInteger gasPrice = new BigInteger("20000000000");
+	private final BigInteger gasPrice = new BigInteger("40000000000");
 	private final BigInteger gasLimit = new BigInteger("4712388");
 	private final ContractGasProvider gasProvider = new StaticGasProvider(gasPrice, gasLimit);
 	

@@ -33,7 +33,7 @@ public class BlockchainBootstrapStore implements EditableBootstrapConfigStore {
 	String privateKey = ""; //TO COMPLETE
 	String contractAddress = "0x6c8568e24548115439174e86d98fb8d7d3de2c4b"; //Ropsten
 	
-	BigInteger gasPrice = new BigInteger("20000000000");
+	BigInteger gasPrice = new BigInteger("40000000000");
 	BigInteger gasLimit = new BigInteger("4712388");
 	ContractGasProvider gasProvider = new StaticGasProvider(gasPrice, gasLimit);
 	Web3j web3j;
