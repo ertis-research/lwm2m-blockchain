@@ -1,10 +1,14 @@
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.eclipse.leshan.core.request.Identity;
 import org.eclipse.leshan.server.bootstrap.BootstrapConfig;
 import org.eclipse.leshan.server.bootstrap.BootstrapSession;
+import org.eclipse.leshan.server.security.SecurityInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.web3j.crypto.Credentials;
@@ -116,6 +121,36 @@ public class ClientTest {
 		System.out.println("\n--> END Test getAllClients in JSONFile");
 	}
 
+	//to generate security.data file
+	private static void addClientsToLwM2MServer(int num) {
+		String filename = "data/security.data";
+		Collection<SecurityInfo> alls = new ArrayList<SecurityInfo>();
+		
+		//create security infos
+		for (int i = 0; i < num; i++) {	
+			SecurityInfo securityInfo = SecurityInfo.newPreSharedKeyInfo("clientEndpoint"+i, "clients"+i,Converter.hexToByte("123456"));
+			alls.add(securityInfo);
+		}
+		
+		//save in file
+		try {
+            File file = new File(filename);
+            if (!file.exists()) {
+                File parent = file.getParentFile();
+                if (parent != null) {
+                    parent.mkdirs();
+                }
+                file.createNewFile();
+            }
+            try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename));) {
+                out.writeObject(alls.toArray(new SecurityInfo[0]));
+            }
+        } catch (IOException e) {
+            LOG.error("Could not save security infos to file", e);
+        }
+	}
+	
+	//Test blockchain
 	private static void testAddClientsBlockchain(int num) {
 		System.out.println("--> BEGIN Test addClient in Blockchain");
 		Blockchain bc = new Blockchain();
@@ -179,7 +214,7 @@ public class ClientTest {
 	private static void testGetAllClientsBlockchain(int num) {
 		System.out.println("--> BEGIN Test getAllClients in Blockchain");
 		Blockchain bc = new Blockchain();
-		bc.getAllClients(); 
+		System.out.println(bc.getAllClients().size()); 
 		long totalTime = 0;
 		for (int i = 0; i < num; i++) {
 			long startTime = System.currentTimeMillis();
@@ -204,12 +239,14 @@ public class ClientTest {
 		//testRemoveClientsJSONFile(5);
 		//testGetClientsJSONFile(5);
 		//testGetAllClientsJSONFile(5);
+		//addClientsToLwM2MServer(500);
 
 		//TEST - Blockchain
 		//testAddClientsBlockchain(5);
 		//testRemoveClientsBlockchain(5);
 		//testGetClientsBlockchain(5);
 		//testGetAllClientsBlockchain(5);
+		System.out.println("END");
 
 	}
 
