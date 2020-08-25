@@ -119,3 +119,6 @@ buildNumber.properties
 ### Python ###
 __pycache__/
 .ipynb_checkpoints/
+
+### package-lock NODE ###
+package-lock.json
