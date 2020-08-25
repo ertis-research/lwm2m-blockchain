@@ -15,7 +15,7 @@ RED_LINE = dict(color='#d62728', dash='dash') #red brick
 def leshanVsProposed(json, bc):
   fig = go.Figure()
 
-  fig.add_trace(go.Scatter(x=N_CLIENTS, y=json, mode="lines", name="ECLIPSE LESHAN", line=BLUE_LINE))
+  fig.add_trace(go.Scatter(x=N_CLIENTS, y=json, mode="lines", name="LESHAN LWM2M", line=BLUE_LINE))
   fig.add_trace(go.Scatter(x=N_CLIENTS, y=bc, mode="lines", name="PROPOSED SOLUTION", line=RED_LINE))
 
   fig.update_xaxes(title_text="<b>Number of clients retrieved</b>", range=[10, 500], tick0=10, dtick=49)
@@ -31,6 +31,28 @@ def leshanVsProposed(json, bc):
   }}
 
   #fig.write_image("leshanVsProposed.pdf")
+
+  fig.show(config=config)
+
+def leshanVsProposed2(json, bc):
+  fig = go.Figure()
+
+  fig.add_trace(go.Scatter(x=N_CLIENTS, y=json, mode="lines", name="LESHAN LWM2M", line=BLUE_LINE))
+  fig.add_trace(go.Scatter(x=N_CLIENTS, y=bc, mode="lines", name="PROPOSED SOLUTION", line=RED_LINE))
+
+  fig.update_xaxes(title_text="<b>Number of clients registered</b>", range=[10, 500], tick0=10, dtick=49)
+  fig.update_yaxes(title_text="<b>Average time per operation(ms)</b>", range=[0, 1500])
+
+  fig.layout.update(
+    legend=dict(y=1.15, orientation="h"),
+    template="plotly_white"
+  )
+
+  config = {'toImageButtonOptions': {
+    'filename': f'leshanVsProposed2',
+  }}
+
+  #fig.write_image("leshanVsProposed2.pdf")
 
   fig.show(config=config)
 
@@ -97,7 +119,7 @@ def addCriticalInformation(anomalies):
     'filename': f'addCriticalInformationBar',
   }}
 
-  fig.write_image("addCriticalInformation.pdf")
+  #fig.write_image("addCriticalInformation.pdf")
 
   fig.show(config=config)
 
@@ -140,7 +162,7 @@ def getAllCriticalInformation(anomalies):
     'filename': f'getAllCriticalInformationBar',
   }}
 
-  fig.write_image("getAllCriticalInformation.pdf")
+  #fig.write_image("getAllCriticalInformation.pdf")
 
   fig.show(config=config)
 
