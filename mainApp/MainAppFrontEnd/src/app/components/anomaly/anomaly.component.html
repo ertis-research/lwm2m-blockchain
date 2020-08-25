@@ -18,8 +18,8 @@
                         <tr *ngFor="let anomaly of anomalies">
                             <td>{{tsToDate(anomaly.timestamp)}}</td>
                             <td>{{anomaly.endpoint}}</td>
-                            <td>{{anomaly.emergencyLevel}}</td>
-                            <td>{{anomaly.temperature}}</td>
+                            <td align="center">{{anomaly.emergencyLevel}}</td>
+                            <td align="center">{{anomaly.temperature}} ºC</td>
                         </tr>
                     </tbody>
                 </table>
