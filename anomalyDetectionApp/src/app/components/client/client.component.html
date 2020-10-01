@@ -21,7 +21,7 @@
                         <td>{{client.endpoint}}</td>
                         <td>{{tsToDate(client.registrationTimestamp)}}</td>
                         <td>{{tsToDate(client.lastUpdateTimestamp)}}</td>
-                        <td>{{client.value}} ºC</td>
+                        <td>{{client.value}} <span *ngIf="client.value!=null">ºC</span></td>
                         <td>{{tsToDate(client.valueTimestamp)}}</td>
                         <td>
                             <button (click)="getValue(client.endpoint)" class="btn btn-info">Get</button>
