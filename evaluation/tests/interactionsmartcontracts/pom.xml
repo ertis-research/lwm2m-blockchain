@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.ertis</groupId>
+  <artifactId>interactionsmartcontracts</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <dependencies>
+		<dependency>
+		    <groupId>org.web3j</groupId>
+		    <artifactId>core</artifactId>
+		    <version>4.5.11</version>
+		</dependency>
+		<dependency>
+	        <groupId>org.slf4j</groupId>
+	        <artifactId>slf4j-simple</artifactId>
+	        <version>1.7.30</version>
+	        <scope>runtime</scope>
+	    </dependency>
+	    
+	    <dependency>
+	        <groupId>org.eclipse.leshan</groupId>
+	        <artifactId>leshan-server-cf</artifactId>
+	        <version>1.0.0-M13</version>                 
+	    </dependency>
+	    
+		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+		<dependency>
+		    <groupId>com.google.code.gson</groupId>
+		    <artifactId>gson</artifactId>
+		    <version>2.8.6</version>
+		</dependency>
+
+	</dependencies>
+</project>
