@@ -1,15 +1,19 @@
 package com.ivan.tfm.MainAppBackEnd.utils;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.tx.gas.StaticGasProvider;
 
+import com.ivan.tfm.MainAppBackEnd.beans.User;
 import com.ivan.tfm.MainAppBackEnd.wrappers.AnomalyStore;
 import com.ivan.tfm.MainAppBackEnd.wrappers.ClientStore;
 import com.ivan.tfm.MainAppBackEnd.wrappers.UserStore;
@@ -36,20 +40,47 @@ public class DeployContract {
 		try {
 			web3j = Web3j.build(new HttpService(url)); // Connect to Ethereum node
 			Credentials credentials = Credentials.create(privateKey); // Create credentials
+			
+			//White list
+			List<String> address = new ArrayList<String>(); //1 owner
+			address.add(""); //2
+			address.add(""); //3
+			
 			//Deploy smart contract
-//			clientContract = ClientStore.deploy(web3j, credentials, gasProvider, new ArrayList<String>()).send(); 
-//			userContract = UserStore.deploy(web3j, credentials, gasProvider, new ArrayList<String>()).send();
-//			anomalyContract = AnomalyStore.deploy(web3j, credentials, gasProvider, new ArrayList<String>()).send();
+//			clientContract = ClientStore.deploy(web3j, credentials, gasProvider, address).send(); 
+//			userContract = UserStore.deploy(web3j, credentials, gasProvider, address).send();
+//			anomalyContract = AnomalyStore.deploy(web3j, credentials, gasProvider, address).send();
 
 //			System.out.println("ClientContract Address: " + clientContract.getContractAddress());
 //			System.out.println("UserContract Address: " + userContract.getContractAddress());
 //			System.out.println("AnomalyContract Address: " + anomalyContract.getContractAddress());
 
+			//Add Admin user
+//			addAdmin(web3j, credentials, gasProvider);
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		System.out.println("END deployContract");
+	}
+	
+	private static void addAdmin(Web3j web3j, Credentials credentials, ContractGasProvider gasProvider) throws Exception {
+		System.out.println("--> BEGIN addUser");
+		String contractAddress = ""; //Ropsten
+		UserStore contract = UserStore.load(contractAddress, web3j, credentials, gasProvider);
+		User u = new User("admin", "admin1@test.com", "admin", 1);
+		byte[] username = Converter.asciiToByte32(u.getUsername());
+		byte[] email = Converter.asciiToByte32(u.getEmail());
+		byte[] password = Converter.asciiToByte32(u.getPassword());
+		BigInteger role = BigInteger.valueOf(u.getRole());
+
+		int existUser = contract.existsUser(username).send().intValue();
+
+		if(existUser == -1) {
+			TransactionReceipt txReceipt = contract.addUser(username, email, password, role).send();
+			System.out.println("TransactionHash: " + txReceipt.getTransactionHash());
+		}
+		System.out.println("\n--> END addUser");
 	}
 }
 
