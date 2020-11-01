@@ -1,25 +1,32 @@
 import plotly.graph_objs as go
 
-N_CLIENTS = [10, 25, 50, 100, 500]
+N_CLIENTS = [10, 25, 50, 100]
+N_APLICATIONS = [1, 2, 4, 8, 16]
 N_ANOMALIES = [10, 25, 50, 100]
-N_ANOMALIES_BAR = ["10", "25", "50", "100"]
 N_USERS = [10, 25, 50, 100]
-N_USERS_BAR = ["10", "25", "50", "100"]
 #PRIMARY_PLOTLY = "#8395c1" #muted blue
 ROYAL_BLUE = '#1f77b4' #royal blue
+RED_BRICK = '#d62728' #red brick
+GREEN = '#2ca02c'
+PURPLE= '#9467bd'
 BLUE_LINE = dict(color=ROYAL_BLUE)
-RED_LINE = dict(color='#d62728', dash='dash') #red brick
-
+BLUE_LINE_DASHED = dict(color=ROYAL_BLUE, dash='dash')
+RED_LINE = dict(color=RED_BRICK)
+RED_LINE_DASHED = dict(color=RED_BRICK, dash='dash')
+GREEN_LINE = dict(color=GREEN, dash='dot')
+PURPLE_LINE = dict(color=PURPLE, dash='dashdot')
 # ClientStore charts
 
-def leshanVsProposed(json, bc):
+def leshanVsProposed(json_store, json_rest, bc_store, bc_rest):
   fig = go.Figure()
 
-  fig.add_trace(go.Scatter(x=N_CLIENTS, y=json, mode="lines", name="LESHAN LWM2M", line=BLUE_LINE))
-  fig.add_trace(go.Scatter(x=N_CLIENTS, y=bc, mode="lines", name="PROPOSED SOLUTION", line=RED_LINE))
+  fig.add_trace(go.Scatter(x=N_CLIENTS, y=json_store, mode="lines", name="LESHAN LWM2M (in-memory time)", line=BLUE_LINE))
+  fig.add_trace(go.Scatter(x=N_CLIENTS, y=bc_store, mode="lines", name="PROPOSED SOLUTION (blockchain time)", line=RED_LINE))
+  fig.add_trace(go.Scatter(x=N_CLIENTS, y=json_rest, mode="lines", name="LESHAN LWM2M (rest of the time)", line=BLUE_LINE_DASHED))
+  fig.add_trace(go.Scatter(x=N_CLIENTS, y=bc_rest, mode="lines", name="PROPOSED SOLUTION (rest of the time)", line=RED_LINE_DASHED))
 
-  fig.update_xaxes(title_text="<b>Number of clients retrieved</b>", range=[10, 500], tick0=10, dtick=49)
-  fig.update_yaxes(title_text="<b>Total elapsed time (ms)</b>", range=[0, 500])
+  fig.update_xaxes(title_text="<b>Number of clients registered</b>", range=[10, 100], tick0=10, dtick=10)
+  fig.update_yaxes(title_text="<b>Average time per operation (ms)</b>", range=[0, 1700])
 
   fig.layout.update(
     legend=dict(y=1.15, orientation="h"),
@@ -34,102 +41,91 @@ def leshanVsProposed(json, bc):
 
   fig.show(config=config)
 
-def leshanVsProposed2(json, bc):
+
+def clientAddAndRemove(no_kubernetes, replica1, replica2, replica4, version):
   fig = go.Figure()
 
-  fig.add_trace(go.Scatter(x=N_CLIENTS, y=json, mode="lines", name="LESHAN LWM2M", line=BLUE_LINE))
-  fig.add_trace(go.Scatter(x=N_CLIENTS, y=bc, mode="lines", name="PROPOSED SOLUTION", line=RED_LINE))
+  fig.add_trace(go.Scatter(x=N_CLIENTS, y=no_kubernetes, mode="lines", name="NO KUBERNETES", line=BLUE_LINE))
+  fig.add_trace(go.Scatter(x=N_CLIENTS, y=replica1, mode="lines", name="1 REPLICA", line=RED_LINE_DASHED))
+  fig.add_trace(go.Scatter(x=N_CLIENTS, y=replica2, mode="lines", name="2 REPLICAS", line=GREEN_LINE))
+  fig.add_trace(go.Scatter(x=N_CLIENTS, y=replica4, mode="lines", name="4 REPLICAS", line=PURPLE_LINE))
 
-  fig.update_xaxes(title_text="<b>Number of clients registered</b>", range=[10, 500], tick0=10, dtick=49)
-  fig.update_yaxes(title_text="<b>Average time per operation(ms)</b>", range=[0, 1500])
-
-  fig.layout.update(
-    legend=dict(y=1.15, orientation="h"),
-    template="plotly_white"
-  )
-
-  config = {'toImageButtonOptions': {
-    'filename': f'leshanVsProposed2',
-  }}
-
-  #fig.write_image("leshanVsProposed2.pdf")
-
-  fig.show(config=config)
-
-def clientAddAndRemove(add, remove):
-  fig = go.Figure()
-
-  fig.add_trace(go.Scatter(x=N_CLIENTS, y=add, mode="lines", name="ADD", line=BLUE_LINE))
-  fig.add_trace(go.Scatter(x=N_CLIENTS, y=remove, mode="lines", name="REMOVE", line=RED_LINE))
-
-  fig.update_xaxes(title_text="<b>Number of clients</b>", range=[10, 500], tick0=10, dtick=49)
+  fig.update_xaxes(title_text="<b>Number of clients</b>", range=[10, 100], tick0=10, dtick=10)
   fig.update_yaxes(title_text="<b>Average time per operation (s)</b>", range=[0, 40], tick0=0, dtick=10)
 
   fig.layout.update(
     legend=dict(y=1.15, orientation="h"),
+    template="plotly_white",
+  )
+
+  config = {'toImageButtonOptions': {
+    'filename': f'client{version}',
+  }}
+
+  #fig.write_image(f'client{version}.pdf')
+
+  fig.show(config=config)
+
+def getAllClients(no_kubernetes, replica1, replica2, replica4):
+  fig = go.Figure()
+
+  fig.add_trace(go.Scatter(x=N_CLIENTS, y=no_kubernetes, mode="lines", name="NO KUBERNETES", line=BLUE_LINE))
+  fig.add_trace(go.Scatter(x=N_CLIENTS, y=replica1, mode="lines", name="1 REPLICA", line=RED_LINE_DASHED))
+  fig.add_trace(go.Scatter(x=N_CLIENTS, y=replica2, mode="lines", name="2 REPLICAS", line=GREEN_LINE))
+  fig.add_trace(go.Scatter(x=N_CLIENTS, y=replica4, mode="lines", name="4 REPLICAS", line=PURPLE_LINE))
+
+  fig.update_xaxes(title_text="<b>Clients retrieved</b>", range=[10, 100], tick0=10, dtick=10)
+  fig.update_yaxes(title_text="<b>Total time (ms)</b>", range=[130, 270], tick0=0, dtick=10)
+
+  fig.layout.update(
+    legend=dict(y=1.15, orientation="h"),
     template="plotly_white"
   )
 
   config = {'toImageButtonOptions': {
-    'filename': f'clientAddAndRemove',
+    'filename': f'getAllClients',
   }}
 
-  #fig.write_image("clientAddAndRemove.pdf")
+  #fig.write_image("getAllClients.pdf")
 
   fig.show(config=config)
 
 # AnomalyStore charts
 
-def addCriticalInformationLine(anomalies):
+def addCriticalInformation(no_kubernetes, replica1, replica2, replica4, version):
   fig = go.Figure()
 
-  fig.add_trace(go.Scatter(x=N_ANOMALIES, y=anomalies, mode="lines", line=BLUE_LINE))
+  fig.add_trace(go.Scatter(x=N_APLICATIONS, y=no_kubernetes, mode="lines", name="NO KUBERNETES", line=BLUE_LINE))
+  fig.add_trace(go.Scatter(x=N_APLICATIONS, y=replica1, mode="lines", name="1 REPLICA", line=RED_LINE_DASHED))
+  fig.add_trace(go.Scatter(x=N_APLICATIONS, y=replica2, mode="lines", name="2 REPLICAS", line=GREEN_LINE))
+  fig.add_trace(go.Scatter(x=N_APLICATIONS, y=replica4, mode="lines", name="4 REPLICAS", line=PURPLE_LINE))
 
-  fig.update_xaxes(title_text="<b>Critical information entries added</b>", range=[10, 100], tick0=10, dtick=10)
-  fig.update_yaxes(title_text="<b>Average time per operation (s)</b>", range=[0, 40], tick0=0, dtick=10)
-
-  fig.layout.update(
-    legend=dict(y=1.15, orientation="h"),
-    template="plotly_white"
-  )
-
-  config = {'toImageButtonOptions': {
-    'filename': f'addCriticalInformation',
-  }}
-
-  #fig.write_image("addCriticalInformationLine.pdf")
-
-  fig.show(config=config)
-
-def addCriticalInformation(anomalies):
-  fig = go.Figure()
-
-  fig.add_trace(go.Bar(x=N_ANOMALIES_BAR, y=anomalies, marker_color=ROYAL_BLUE))
-
-  fig.update_xaxes(title_text="<b>Critical information entries added</b>", type="category")
-  fig.update_yaxes(title_text="<b>Average time per operation (s)</b>", range=[0, 35], tick0=0, dtick=5)
+  fig.update_xaxes(title_text="<b>Number of simultaneous applications </b>", range=[1, 16], tick0=0, dtick=2)
+  fig.update_yaxes(title_text="<b>Average time per operation (s)</b>", range=[20, 40], tick0=20, dtick=5)
 
   fig.layout.update(
     legend=dict(y=1.15, orientation="h"),
     template="plotly_white",
-    width=500
   )
 
   config = {'toImageButtonOptions': {
-    'filename': f'addCriticalInformationBar',
+    'filename': f'addCriticalInformation{version}',
   }}
 
-  #fig.write_image("addCriticalInformation.pdf")
+  fig.write_image(f'addCriticalInformation{version}.pdf')
 
   fig.show(config=config)
 
-def getAllCriticalInformationLine(anomalies):
+def getAllCriticalInformation(no_kubernetes, replica1, replica2, replica4):
   fig = go.Figure()
 
-  fig.add_trace(go.Scatter(x=N_ANOMALIES, y=anomalies, mode="lines", line=BLUE_LINE))
+  fig.add_trace(go.Scatter(x=N_ANOMALIES, y=no_kubernetes, mode="lines", name="NO KUBERNETES", line=BLUE_LINE))
+  fig.add_trace(go.Scatter(x=N_ANOMALIES, y=replica1, mode="lines", name="1 REPLICA", line=RED_LINE_DASHED))
+  fig.add_trace(go.Scatter(x=N_ANOMALIES, y=replica2, mode="lines", name="2 REPLICAS", line=GREEN_LINE))
+  fig.add_trace(go.Scatter(x=N_ANOMALIES, y=replica4, mode="lines", name="4 REPLICAS", line=PURPLE_LINE))
 
   fig.update_xaxes(title_text="<b>Critical information entries retrived</b>", range=[10, 100], tick0=10, dtick=10)
-  fig.update_yaxes(title_text="<b>Total time (ms)</b>", range=[0, 500])
+  fig.update_yaxes(title_text="<b>Total time (ms)</b>", range=[100, 300])
 
   fig.layout.update(
     legend=dict(y=1.15, orientation="h"),
@@ -140,68 +136,50 @@ def getAllCriticalInformationLine(anomalies):
     'filename': f'getAllCriticalInformation',
   }}
 
-  #fig.write_image("getAllCriticalInformationLine.pdf")
-
-  fig.show(config=config)
-
-def getAllCriticalInformation(anomalies):
-  fig = go.Figure()
-
-  fig.add_trace(go.Bar(x=N_ANOMALIES_BAR, y=anomalies, marker_color=ROYAL_BLUE))
-
-  fig.update_xaxes(title_text="<b>Critical information entries retrived</b>", type="category")
-  fig.update_yaxes(title_text="<b>Total time (ms)</b>", range=[0, 250], tick0=0, dtick=50)
-
-  fig.layout.update(
-    legend=dict(y=1.15, orientation="h"),
-    template="plotly_white",
-    width=500
-  )
-
-  config = {'toImageButtonOptions': {
-    'filename': f'getAllCriticalInformationBar',
-  }}
-
   #fig.write_image("getAllCriticalInformation.pdf")
 
   fig.show(config=config)
 
 # UserStore charts
 
-def usersAddAndUpdate(add, update):
+def usersAddAndUpdate(no_kubernetes, replica1, replica2, replica4, version):
   fig = go.Figure()
 
-  fig.add_trace(go.Scatter(x=N_USERS, y=add, mode="lines", name="ADD", line=BLUE_LINE))
-  fig.add_trace(go.Scatter(x=N_USERS, y=update, mode="lines", name="UPDATE", line=RED_LINE))
+  fig.add_trace(go.Scatter(x=N_USERS, y=no_kubernetes, mode="lines", name="NO KUBERNETES", line=BLUE_LINE))
+  fig.add_trace(go.Scatter(x=N_USERS, y=replica1, mode="lines", name="1 REPLICA", line=RED_LINE_DASHED))
+  fig.add_trace(go.Scatter(x=N_USERS, y=replica2, mode="lines", name="2 REPLICAS", line=GREEN_LINE))
+  fig.add_trace(go.Scatter(x=N_USERS, y=replica4, mode="lines", name="4 REPLICAS", line=PURPLE_LINE))
 
   fig.update_xaxes(title_text="<b>Number of users</b>", range=[10, 100], tick0=10, dtick=10)
   fig.update_yaxes(title_text="<b>Average time per operation (s)</b>", range=[0, 40], tick0=0, dtick=10)
 
   fig.layout.update(
     legend=dict(y=1.15, orientation="h"),
-    template="plotly_white"
+    template="plotly_white",
   )
 
   config = {'toImageButtonOptions': {
-    'filename': f'usersAddAndUpdate',
+    'filename': f'users{version}',
   }}
   
-  #fig.write_image("usersAddAndUpdate.pdf")
+  #fig.write_image(f'users{version}.pdf')
   
   fig.show(config=config)
 
-def validateLogin(validations):
+def validateLogin(no_kubernetes, replica1, replica2, replica4):
   fig = go.Figure()
 
-  fig.add_trace(go.Bar(x=N_USERS_BAR, y=validations, marker_color=ROYAL_BLUE))
+  fig.add_trace(go.Scatter(x=N_CLIENTS, y=no_kubernetes, mode="lines", name="NO KUBERNETES", line=BLUE_LINE))
+  fig.add_trace(go.Scatter(x=N_CLIENTS, y=replica1, mode="lines", name="1 REPLICA", line=RED_LINE_DASHED))
+  fig.add_trace(go.Scatter(x=N_CLIENTS, y=replica2, mode="lines", name="2 REPLICAS", line=GREEN_LINE))
+  fig.add_trace(go.Scatter(x=N_CLIENTS, y=replica4, mode="lines", name="4 REPLICAS", line=PURPLE_LINE))
 
-  fig.update_xaxes(title_text="<b>Users stored on smart contract</b>", type="category")
-  fig.update_yaxes(title_text="<b>Average time per login attempt (ms)</b>", range=[0, 200], tick0=0, dtick=50)
+  fig.update_xaxes(title_text="<b>Users stored on smart contract</b>", range=[10, 100], tick0=10, dtick=10)
+  fig.update_yaxes(title_text="<b>Average time per login attempt (ms)</b>", range=[140, 180], tick0=0, dtick=10)
 
   fig.layout.update(
     legend=dict(y=1.15, orientation="h"),
     template="plotly_white",
-    width=500
   )
 
   config = {'toImageButtonOptions': {
