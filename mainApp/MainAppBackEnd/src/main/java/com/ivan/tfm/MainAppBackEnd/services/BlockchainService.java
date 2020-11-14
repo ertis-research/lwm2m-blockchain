@@ -94,6 +94,13 @@ public class BlockchainService {
 		return anomaly_contract;
 	}
 
+	public AnomalyStore getAnomaly_contract_application(String privateKey) throws Exception{
+		Credentials cred = createCredentials(privateKey);
+		AnomalyStore contract = AnomalyStore.load(this.ANOMALY_STORE_ADDR, this.web3j, cred, this.gasProvider);
+		log.info("Smart contract 'AnomalyStoreApplication' loaded");
+		return contract;
+	}
+
 	public UserStore getUser_contract() {
 		return user_contract;
 	}

@@ -10,6 +10,7 @@ import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.tuples.generated.Tuple4;
 
 import com.ivan.tfm.MainAppBackEnd.beans.Anomaly;
+import com.ivan.tfm.MainAppBackEnd.beans.EthereumAccount;
 import com.ivan.tfm.MainAppBackEnd.utils.Converter;
 
 @Service
@@ -32,16 +33,27 @@ public class AnomalyService {
 		return anomalies;
 	}
 
-	public void addAnomaly(Anomaly a){
+	public void addAnomaly(Anomaly a, String privateKey){
 		try {
 			BigInteger ts  = BigInteger.valueOf(a.getTimestamp());
 			byte[] endpoint = Converter.asciiToByte32(a.getEndpoint());
 			BigInteger emergency = BigInteger.valueOf(a.getEmergencyLevel());
 			BigInteger temp = BigInteger.valueOf(Math.round(100 * a.getTemperature()));
-
-			TransactionReceipt txReceipt = this.blockchainService.getAnomaly_contract().addAnomaly(ts, endpoint, emergency, temp).send();
+			TransactionReceipt txReceipt = this.blockchainService.getAnomaly_contract_application(privateKey).addAnomaly(ts, endpoint, emergency, temp).send();
 			this.blockchainService.logTransaction(txReceipt, "addAnomaly", this.contractName);
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void setPermission(EthereumAccount ethereumAccount) {
+		System.out.println("AnomalyService-setPermission");
+		TransactionReceipt txReceipt;
+		try {
+			txReceipt = this.blockchainService.getAnomaly_contract().setPermission(ethereumAccount.getAddress(), ethereumAccount.isPermission()).send();
+			this.blockchainService.logTransaction(txReceipt, "setPermission", this.contractName);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -65,5 +77,4 @@ public class AnomalyService {
 		}
 		return anomalies;
 	}
-
 }

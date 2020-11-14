@@ -6,6 +6,7 @@ public class Anomaly {
 	private String endpoint;
 	private int emergencyLevel;
 	private double temperature;
+	private String privateKey;
 	
 	public Anomaly(Long timestamp, String endpoint, int emergencyLevel, double temperature) {
 		this.timestamp = timestamp;
@@ -45,7 +46,10 @@ public class Anomaly {
 	public void setTemperature(double temperature) {
 		this.temperature = temperature;
 	}
-
+	
+	public String getPrivateKey() {
+		return privateKey;
+	}
 	@Override
 	public String toString() {
 		return "Anomaly [timestamp=" + timestamp + ", endpoint=" + endpoint + ", emergencyLevel=" + emergencyLevel
