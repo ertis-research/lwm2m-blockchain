@@ -49,7 +49,8 @@ export class ClientComponent implements OnInit {
               timestamp: data.valueTimestamp,
               endpoint: data.endpoint,
               emergencyLevel: level,
-              temperature: data.value
+              temperature: data.value,
+              privateKey: ""
             }
             this.serviceAnomaly.addAnomaly(anomaly)
               .subscribe(data => {
