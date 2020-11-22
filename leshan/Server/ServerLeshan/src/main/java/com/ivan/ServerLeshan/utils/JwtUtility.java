@@ -77,7 +77,7 @@ public class JwtUtility {
 			username = (String)claims.get("username");
 
 		} catch (ExpiredJwtException ex) {
-			System.out.println("Error al recuperar username del token");
+			System.out.println("Error retrieving username from token");
 		} 
 		return username;
 	}
