@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ivan.ServerLeshan.bean.Client;
+import com.ivan.ServerLeshan.service.AclService;
 import com.ivan.ServerLeshan.service.LeshanServerService;
 import com.ivan.ServerLeshan.utils.JwtUtility;
 
@@ -23,6 +24,8 @@ public class ClientController {
 
 	@Autowired
 	LeshanServerService leshanServerService;
+	@Autowired
+	AclService aclService;
 	
 	@GetMapping("/")
 	public ResponseEntity<List<Client>> getAllClients(@RequestHeader("Authorization") String auth) {
@@ -41,12 +44,14 @@ public class ClientController {
 	@GetMapping("/{endpoint}")
 	public ResponseEntity<Client> getValue(@RequestHeader("Authorization") String auth, @PathVariable("endpoint") String endpoint) {
 		int valid = JwtUtility.isValidToken(auth);
-		if(valid == 0) {
+		String username = JwtUtility.getUser(auth);
+		boolean aclValid = aclService.isValid(username, endpoint, 3303, 5700, 001);
+		if(valid == 0 && aclValid) {
 			Client c = leshanServerService.getValueFromClient(endpoint);
 			return new ResponseEntity<>(c, HttpStatus.OK);
 		}else if(valid == 1) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-		}else if(valid == 2) {
+		}else if(valid == 2 || !aclValid) {
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

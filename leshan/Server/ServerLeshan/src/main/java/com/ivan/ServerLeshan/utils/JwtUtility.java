@@ -63,4 +63,24 @@ public class JwtUtility {
 		}
 	}
 
+	public static String getUser(String token) {
+		String username = "error";
+
+		try {
+			Claims claims = Jwts.parserBuilder()
+					.requireIssuer("ERTIS")
+					.requireSubject("Blackbox API")
+					.setSigningKey(KEY)
+					.build()
+					.parseClaimsJws(token.replace(PREFIX, ""))
+					.getBody();
+			username = (String)claims.get("username");
+
+		} catch (ExpiredJwtException ex) {
+			System.out.println("Error al recuperar username del token");
+		} 
+		return username;
+	}
+
+
 }
