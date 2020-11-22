@@ -11,6 +11,8 @@ import { headersGenerator } from '../common/headers';
 })
 export class AnomalyService {
 
+  privateKey:string = ""; //FILL - private key of Ethereum account
+  
   constructor(private http: HttpClient, private auth: AuthService) {
   }
 
@@ -18,6 +20,7 @@ export class AnomalyService {
 
   addAnomaly(anomaly: Anomaly): Observable<any>{
     const headers = headersGenerator(true, true, this.auth.getToken());
+    anomaly.privateKey = this.privateKey;
     return this.http.post(this.url, anomaly, { headers });
   }
 

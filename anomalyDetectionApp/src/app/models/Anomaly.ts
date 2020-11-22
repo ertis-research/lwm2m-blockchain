@@ -3,4 +3,5 @@ export class Anomaly {
 	endpoint: string;
 	emergencyLevel: number;
 	temperature: number;
+	privateKey: string;
 }
