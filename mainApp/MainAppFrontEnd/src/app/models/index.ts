@@ -1,3 +1,4 @@
+export * from "./AclEntry";
 export * from "./Anomaly";
 export * from "./Client";
 export * from "./Credentials";

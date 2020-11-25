@@ -14,6 +14,9 @@
         <li class="nav-item" routerLinkActive="active" *ngIf="isAdmin()">
           <a class="nav-link" [routerLink]="['users']">Users</a>
         </li>
+        <li class="nav-item" routerLinkActive="active" *ngIf="isAdmin()">
+          <a class="nav-link" [routerLink]="['acl']">Manage ACL</a>
+        </li>
       </ul>
       
       <span class="navbar-text">

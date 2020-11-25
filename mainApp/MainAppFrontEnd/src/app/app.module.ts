@@ -15,6 +15,7 @@ import { AuthService } from "./services/auth.service";
 import { LoginService } from "./services/login.service";
 import { LoggedGuard } from "./services/guards.service";
 import { ErrorService } from "./services/error.service";
+import { AclService } from "./services/acl.service";
 
 //components
 import { AppComponent } from './app.component';
@@ -24,6 +25,7 @@ import { AnomalyComponent } from './components/anomaly/anomaly.component';
 import { UserComponent } from './components/user/user.component';
 import { LoginComponent } from './components/login/login.component';
 import { UserEntryComponent } from './components/user-entry/user-entry.component';
+import { AclComponent } from './components/acl/acl.component';
 
 //pipes
 import { RoleNumberToStringPipe } from './pipes/role-number-to-string.pipe';
@@ -39,6 +41,7 @@ import { RoleNumberToStringPipe } from './pipes/role-number-to-string.pipe';
     LoginComponent,
     RoleNumberToStringPipe,
     UserEntryComponent,
+    AclComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,6 +58,7 @@ import { RoleNumberToStringPipe } from './pipes/role-number-to-string.pipe';
     LoggedGuard,
     CookieService, //Cookie service library
     ErrorService,
+    AclService,
   ],
   bootstrap: [AppComponent]
 })

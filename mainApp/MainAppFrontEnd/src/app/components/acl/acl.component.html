@@ -1,0 +1,46 @@
+<div class="container col-md-5">
+  <div class="card">
+
+    <div class="card-header">
+      <h3>Search user/app permissions</h3>
+    </div>
+
+    <div class="card-body">
+      <form (ngSubmit)="getUserEntries()" #getUserEntriesFrom="ngForm">
+          <div class="form-group row">
+            <label for="username">User/Application </label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="User/App name"
+              required
+              [(ngModel)]="username"
+              name="username"
+              #username_tp="ngModel"
+            >
+          </div>
+
+          <div class="form-group row">
+            <label for="client_name">LwM2M client </label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="LwM2M client name"
+              [(ngModel)]="client_name"
+              name="client_name"
+              #client_name_tp="ngModel"
+            >
+          </div>
+
+          <div class="form-group row">
+            <button
+              type="submit"
+              class="btn btn-success offset-4 col-4"
+              [disabled]="!getUserEntriesFrom.form.valid"
+            >Search</button>
+          </div>
+      </form>
+    </div>
+
+  </div>
+</div>
