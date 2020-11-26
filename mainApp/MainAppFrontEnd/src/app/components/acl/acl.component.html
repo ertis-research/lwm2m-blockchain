@@ -1,12 +1,12 @@
-<div class="container col-md-5">
+<div class="container col-md-7">
   <div class="card">
 
     <div class="card-header">
-      <h3>Search user/app permissions</h3>
+      <h3>Search user/app permissions or modify one</h3>
     </div>
 
     <div class="card-body">
-      <form (ngSubmit)="getUserEntries()" #getUserEntriesFrom="ngForm">
+      <form (ngSubmit)="getUserEntries()" #getUserEntriesForm="ngForm">
           <div class="form-group row">
             <label for="username">User/Application </label>
             <input
@@ -35,12 +35,140 @@
           <div class="form-group row">
             <button
               type="submit"
-              class="btn btn-success offset-4 col-4"
-              [disabled]="!getUserEntriesFrom.form.valid"
-            >Search</button>
+              class="btn btn-success offset-1 col-4"
+              [disabled]="!getUserEntriesForm.form.valid"
+            >Search ACL entries</button>
+            <button
+              type="button"
+              class="btn btn-primary offset-2 col-4"
+              [disabled]="!getUserEntriesForm.form.valid || checkEmptyClientName()" 
+              data-toggle="modal"
+              data-target="#updateEntryModal"
+            >Modify permission</button>
+          </div>
+
+          <!-- Modal -->
+          <div class="modal fade" id="updateEntryModal" tabindex="-1" role="dialog" aria-labelledby="updateEntryLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <form (ngSubmit)="updateEntryByModal()" #updateEntryForm="ngForm">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="updateEntryLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="form-group">
+                      <label for="username">Username</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="username"
+                        name="username"
+                        [disabled]="true"
+                      >
+                    </div>
+  
+                    <div class="form-group">
+                      <label for="client_name">Client name</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="client_name"
+                        name="client_name"
+                        [disabled]="true"
+                      >
+                    </div>
+  
+                    <div class="form-group">
+                      <label for="object_id">Object id</label>
+                      <input
+                        type="number"
+                        class="form-control"
+                        placeholder="Object id"
+                        required
+                        [(ngModel)]="object_id"
+                        name="object_id"
+                        #object_id_tp="ngModel"
+                      >
+                    </div>
+  
+                    <div class="form-group">
+                      <label for="resource_id">Resource id</label>
+                      <input
+                        type="number"
+                        class="form-control"
+                        placeholder="Resource id"
+                        required
+                        [(ngModel)]="resource_id"
+                        name="resource_id"
+                        #resource_id_tp="ngModel"
+                      >
+                    </div>
+  
+                    <div class="form-group">
+                      <label for="permission">Permission</label>
+                      <select
+                        class="form-control"
+                        required
+                        [(ngModel)]="permission"
+                        name="permission"
+                        #permission_tp="ngModel"
+                      >
+                        <option [ngValue]="undefined" [disabled]="true">-- Choose a permission --</option>
+                        <option *ngFor="let per of permissions" [value]="per.value">{{per.label}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="closeModalBtn" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="!updateEntryForm.form.valid">Grant permission</button>
+                  </div>
+                </div>
+              </form>
+            </div>
           </div>
       </form>
+
+      <div class="row" *ngIf="zeroEntriesMessage">
+        <div class="alert alert-warning col-12">
+          {{zeroEntriesMessage}}
+        </div>
+      </div>
     </div>
 
+  </div>
+</div>
+
+<br>
+
+<div class="container" *ngIf="entries.length > 0">
+  <div class="card">
+    <div class="card-header">
+      <h3>{{listCardHeader}}</h3>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="thead-light">
+            <tr>
+              <th>CLIENT NAME</th>
+              <th>OBJECT ID</th>
+              <th>RESOURCE ID</th>
+              <th>PERMISSION</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let entry of entries">
+            <tr acl-entry
+              [username]="username"
+              [entry]="entry"
+              (onUpdate)="updateEntry($event)">
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>

@@ -26,6 +26,7 @@ import { UserComponent } from './components/user/user.component';
 import { LoginComponent } from './components/login/login.component';
 import { UserEntryComponent } from './components/user-entry/user-entry.component';
 import { AclComponent } from './components/acl/acl.component';
+import { AclEntryComponent } from './components/acl-entry/acl-entry.component';
 
 //pipes
 import { RoleNumberToStringPipe } from './pipes/role-number-to-string.pipe';
@@ -42,6 +43,7 @@ import { RoleNumberToStringPipe } from './pipes/role-number-to-string.pipe';
     RoleNumberToStringPipe,
     UserEntryComponent,
     AclComponent,
+    AclEntryComponent,
   ],
   imports: [
     BrowserModule,

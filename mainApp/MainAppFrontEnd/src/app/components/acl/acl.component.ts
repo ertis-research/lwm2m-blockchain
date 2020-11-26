@@ -10,7 +10,7 @@ import { ErrorService } from 'src/app/services/error.service';
 })
 export class AclComponent {
 
-  entries: AclEntry[];
+  entries: AclEntry[] = [];
 
   username: string;
   client_name: string;
@@ -18,8 +18,11 @@ export class AclComponent {
   resource_id: number;
   permission: number;
 
+  zeroEntriesMessage: string;
+  listCardHeader: string;
+
   permissions: Permission[] = [
-    { label: "Nothing", value: 0 },
+    { label: "None", value: 0 },
     { label: "Read only", value: 1 },
     { label: "Write only", value: 2 },
     { label: "Read & write", value: 3 },
@@ -32,33 +35,64 @@ export class AclComponent {
   constructor(private aclService: AclService, private errors: ErrorService) { }
 
   getUserEntries() {
-    console.log(this.client_name);
     if(this.client_name === undefined || this.client_name === "") {
       this.aclService.getUserEntries(this.username)
         .subscribe(data => {
-          console.log(data);
           this.entries = data;
+          this.handleMessageDisplay();
+          this.listCardHeader = `'${this.username}' permissions`;
         }, error => {
           this.errors.handleError(error);
         });
     } else {
       this.getUserEntriesByClient();
     }
-    
   }
 
   getUserEntriesByClient() {
     this.aclService.getUserEntriesByClient(this.username, this.client_name)
       .subscribe(data => {
-        console.log(data);
         this.entries = data;
+        this.handleMessageDisplay();
+        this.listCardHeader = `'${this.username}' permissions on client '${this.client_name}'`;
       }, error => {
         this.errors.handleError(error);
       });
   }
 
-  updateEntry() {
-    this.aclService.updateEntry
+  updateEntryByModal() {
+    const entry: AclEntry = {
+      client_name: this.client_name,
+      object_id: this.object_id,
+      resource_id: this.resource_id,
+      permission: this.permission,
+    };
+    this.updateEntry(entry);
+  }
+
+  updateEntry(entry: AclEntry) {
+    this.aclService.updateEntry(this.username, entry)
+      .subscribe(data => {
+        console.log(data);
+        document.getElementById("closeModalBtn").click();
+        window.location.reload();
+      }, error => {
+        this.errors.handleError(error);
+      });
+  }
+
+  private handleMessageDisplay() {
+    if(this.entries.length === 0) {
+      this.zeroEntriesMessage = `No entries found in ACL for '${this.username}'`;
+      this.zeroEntriesMessage = this.client_name !== undefined && this.client_name !== "" ?
+        this.zeroEntriesMessage + ` on client '${this.client_name}'` : this.zeroEntriesMessage;
+    } else {
+      this.zeroEntriesMessage = undefined;
+    }
+  }
+
+  checkEmptyClientName(): boolean {
+    return this.client_name === undefined || this.client_name === "";
   }
 
 }

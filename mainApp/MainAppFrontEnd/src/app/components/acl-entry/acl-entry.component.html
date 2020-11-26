@@ -1,0 +1,16 @@
+<td>{{entry.client_name}}</td>
+<td>{{entry.object_id}}</td>
+<td>{{entry.resource_id}}</td>
+<td>
+  <select class="form-control" [(ngModel)]="permission">
+    <option disabled>-- Choose a permission --</option>
+    <option *ngFor="let per of permissions" [value]="per.value">{{per.label}}</option>
+  </select>
+</td>
+<td>
+  <button
+    (click)="updateEntry()"
+    class="btn btn-primary"
+    [disabled]="permission == entry.permission"
+  >Update</button>
+</td>
