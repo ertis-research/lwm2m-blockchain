@@ -67,7 +67,7 @@ contract AclStore {
   ) {
     // User still does not exist on mapping
     if (!users[username].exists) {
-      return ([], [], [], []);
+      return (new bytes32[](0), new uint256[](0), new uint256[](0), new uint256[](0));
     }
 
     uint cont = users[username].entries.length;
@@ -92,7 +92,7 @@ contract AclStore {
   ) {
     // User still does not exist on mapping
     if (!users[username].exists) {
-      return ([], [], [], []);
+      return (new bytes32[](0), new uint256[](0), new uint256[](0), new uint256[](0));
     }
 
     uint cont = users[username].entries.length;
@@ -109,7 +109,7 @@ contract AclStore {
         res_obj[res_cont] = users[username].entries[i].object_id;
         res_res[res_cont] = users[username].entries[i].resource_id;
         res_per[res_cont] = users[username].entries[i].permission;
-        res_cont;
+        res_cont++;
       }
     }
 
