@@ -14,6 +14,7 @@ import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.tx.gas.StaticGasProvider;
 
 import com.ivan.tfm.MainAppBackEnd.beans.User;
+import com.ivan.tfm.MainAppBackEnd.wrappers.AclStore;
 import com.ivan.tfm.MainAppBackEnd.wrappers.AnomalyStore;
 import com.ivan.tfm.MainAppBackEnd.wrappers.ClientStore;
 import com.ivan.tfm.MainAppBackEnd.wrappers.UserStore;
@@ -36,24 +37,27 @@ public class DeployContract {
 		ClientStore clientContract;
 		UserStore userContract;
 		AnomalyStore anomalyContract;
+		AclStore aclContract;
 
 		try {
 			web3j = Web3j.build(new HttpService(url)); // Connect to Ethereum node
 			Credentials credentials = Credentials.create(privateKey); // Create credentials
 			
 			//White list
-			List<String> address = new ArrayList<String>(); //1 owner
-			address.add(""); //2
-			address.add(""); //3
+			List<String> addresses = new ArrayList<String>(); //Owner is included always, so you can add other addresses
+			//addresses.add("");
+			//addresses.add("");
 			
 			//Deploy smart contract
-//			clientContract = ClientStore.deploy(web3j, credentials, gasProvider, address).send(); 
-//			userContract = UserStore.deploy(web3j, credentials, gasProvider, address).send();
-//			anomalyContract = AnomalyStore.deploy(web3j, credentials, gasProvider, address).send();
+//			clientContract = ClientStore.deploy(web3j, credentials, gasProvider, addresses).send(); 
+//			userContract = UserStore.deploy(web3j, credentials, gasProvider, addresses).send();
+//			anomalyContract = AnomalyStore.deploy(web3j, credentials, gasProvider, addresses).send();
+//			aclContract = AclStore.deploy(web3j, credentials, gasProvider, addresses).send();
 
 //			System.out.println("ClientContract Address: " + clientContract.getContractAddress());
 //			System.out.println("UserContract Address: " + userContract.getContractAddress());
 //			System.out.println("AnomalyContract Address: " + anomalyContract.getContractAddress());
+//			System.out.println("AclContract Address: " + aclContract.getContractAddress());
 
 			//Add Admin user
 //			addAdmin(web3j, credentials, gasProvider);

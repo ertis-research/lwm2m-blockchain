@@ -12,6 +12,7 @@ import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.tx.gas.StaticGasProvider;
 
+import com.ivan.tfm.MainAppBackEnd.wrappers.AclStore;
 import com.ivan.tfm.MainAppBackEnd.wrappers.AnomalyStore;
 import com.ivan.tfm.MainAppBackEnd.wrappers.ClientStore;
 import com.ivan.tfm.MainAppBackEnd.wrappers.UserStore;
@@ -27,6 +28,7 @@ public class BlockchainService {
 	private final String CLIENT_STORE_ADDR = "0x6c8568e24548115439174e86d98fb8d7d3de2c4b";
 	private final String ANOMALY_STORE_ADDR = "0x1c209d6e3222f30a52fd2144f6ec4ea11c471d9c";
 	private final String USER_STORE_ADDR = "0xcfc79c76fe6c55445fa9301be5b2313dbba2d9ea";
+	private final String ACL_STORE_ADDR = "0x88991ed71857d200ccc1e009b65e9b8e7e2252d9";
 	
 	private Web3j web3j;
 	private Credentials credentials;
@@ -38,6 +40,7 @@ public class BlockchainService {
 	private ClientStore client_contract;
 	private AnomalyStore anomaly_contract;
 	private UserStore user_contract;
+	private AclStore acl_contract;
 	
 	public BlockchainService() {
 		try {
@@ -46,6 +49,7 @@ public class BlockchainService {
 			this.client_contract = loadContract1();
 			this.anomaly_contract = loadContract2();
 			this.user_contract = loadContract3();
+			this.acl_contract = loadContract4();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -85,6 +89,13 @@ public class BlockchainService {
 		log.info("Smart contract 'UserStore' loaded");
 		return contract;
 	}
+	
+	// Load smart contract 'AclStore'
+	private AclStore loadContract4() throws Exception {
+		AclStore contract = AclStore.load(this.ACL_STORE_ADDR, this.web3j, this.credentials, this.gasProvider);
+		log.info("Smart contract 'AclStore' loaded");
+		return contract;
+	}
 
 	public ClientStore getClient_contract() {
 		return client_contract;
@@ -103,6 +114,10 @@ public class BlockchainService {
 
 	public UserStore getUser_contract() {
 		return user_contract;
+	}
+	
+	public AclStore getAcl_contract() {
+		return acl_contract;
 	}
 	
 	public void logTransaction(TransactionReceipt txReceipt, String txName, String contractName) {

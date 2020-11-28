@@ -52,8 +52,7 @@ public class AclController {
 		int valid = JwtUtility.isValidToken(auth, 1);
 		if(valid == 0) {
 			try {
-				aclService.updateEntry(username, entry.getClient_name(), entry.getObject_id(),
-						entry.getObject_id(), entry.getPermission());
+				aclService.updateEntry(username, entry);
 				return new ResponseEntity<>(HttpStatus.OK);
 			} catch(Exception e) {
 				return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
