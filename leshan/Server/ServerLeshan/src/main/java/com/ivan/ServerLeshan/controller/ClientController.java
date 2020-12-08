@@ -45,7 +45,8 @@ public class ClientController {
 	public ResponseEntity<Client> getValue(@RequestHeader("Authorization") String auth, @PathVariable("endpoint") String endpoint) {
 		int valid = JwtUtility.isValidToken(auth);
 		String username = JwtUtility.getUser(auth);
-		boolean aclValid = aclService.isValid(username, endpoint, 3303, 5700, 001);
+		int permission = aclService.getUserPermission(username, endpoint, 3303, 5700);
+		boolean aclValid = aclService.isPermissionValid(new int[]{1,3,5,7}, permission);
 		if(valid == 0 && aclValid) {
 			Client c = leshanServerService.getValueFromClient(endpoint);
 			return new ResponseEntity<>(c, HttpStatus.OK);

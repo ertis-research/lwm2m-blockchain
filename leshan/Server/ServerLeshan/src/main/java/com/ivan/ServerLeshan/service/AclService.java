@@ -15,7 +15,9 @@ import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.tx.gas.StaticGasProvider;
 
 import com.ivan.ServerLeshan.bean.AclEntry;
-import com.ivan.ServerLeshan.wrappers.ClientStore;
+import com.ivan.ServerLeshan.utils.Converter;
+import com.ivan.ServerLeshan.wrappers.AclStore;
+
 
 @Service
 public class AclService {
@@ -23,13 +25,13 @@ public class AclService {
 
 	String url = ""; //TO COMPLETE USING INFURA
 	String privateKey = ""; //TO COMPLETE
-	String contractAddress = ""; //Ropsten
+	String contractAddress = "0x4071f645f4fb7fa966ae30fd755f1ef647854833"; //Ropsten
 
 	BigInteger gasPrice = new BigInteger("40000000000");
 	BigInteger gasLimit = new BigInteger("4712388");
 	ContractGasProvider gasProvider = new StaticGasProvider(gasPrice, gasLimit);
 	Web3j web3j;
-	//AclStore contract; 
+	AclStore contract; 
 
 	List<AclEntry> ACL;
 
@@ -37,7 +39,7 @@ public class AclService {
 		try {
 			web3j = connect(url);
 			Credentials credentials = createCredentials(privateKey);
-			//contract = loadContract(web3j, credentials, contractAddress, gasProvider);
+			contract = loadContract(web3j, credentials, contractAddress, gasProvider);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -61,45 +63,36 @@ public class AclService {
 	}
 
 	// Load smart contract
-	private ClientStore loadContract(Web3j web3j, Credentials credentials, String address, ContractGasProvider provider) throws Exception {
-		ClientStore contract = ClientStore.load(address, web3j, credentials, provider);
+	private AclStore loadContract(Web3j web3j, Credentials credentials, String address, ContractGasProvider provider) throws Exception {
+		AclStore contract = AclStore.load(address, web3j, credentials, provider);
 		log.info("Smart contract loaded");
 		return contract;
 	}
 
-	//actions: 001-read,010-write,100-exec
-	public boolean isValid(String user, String endpoint, int objectId, int resourceId, int action) {
-		boolean valid = false;
-		//get ACL from smartContract
-
-		for (AclEntry entry : ACL) {
-			if(user.equals(entry.getUser()) && endpoint.equals(entry.getEndpoint()) && objectId==entry.getObjectId() && (entry.getResourceId().isEmpty() || entry.getResourceId().contains(resourceId)) && isActionValid(entry.getPermission(), action)) {
-				valid = true;
+	public int getUserPermission(String username, String client_name, int object_id, int resource_id) {
+		int permission = 0;
+		
+		try {
+			byte[] usnm = Converter.asciiToByte32(username);
+			byte[] cl_nm = Converter.asciiToByte32(client_name);
+			BigInteger obj_id = BigInteger.valueOf(object_id);
+			BigInteger res_id = BigInteger.valueOf(resource_id);
+			BigInteger response =	contract.getUserPermission(usnm, cl_nm, obj_id, res_id).send();
+			permission = response.intValue();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return permission;
+	}
+	
+	public boolean isPermissionValid(int[] requiredPermission, int userPermission) {
+		for (int i = 0; i < requiredPermission.length; i++) {
+			if(requiredPermission[i] == userPermission) {
+				return true;
 			}
 		}
-
-		return valid;
+		return false;
 	}
-
-	private boolean isActionValid(Integer acl, Integer in) {
-		boolean valid = false;
-
-		String aclString = acl.toString();
-		for(int i = aclString.length(); i<3; i++) {
-			aclString = "0".concat(aclString);
-		}
-		char[] aclDigits = aclString.toCharArray();
-
-		String inString = in.toString();
-		for(int i = inString.length(); i<3; i++) {
-			inString = "0".concat(inString);
-		}
-		int pos = inString.indexOf("1");
-
-		if(aclDigits[pos] == '1') {
-			valid = true;
-		}
-
-		return valid;
-	}
+	
 }
