@@ -10,6 +10,7 @@ import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.tuples.generated.Tuple7;
 
 import com.ivan.tfm.MainAppBackEnd.beans.Client;
+import com.ivan.tfm.MainAppBackEnd.beans.EthereumAccount;
 import com.ivan.tfm.MainAppBackEnd.utils.Converter;
 
 @Service
@@ -80,7 +81,18 @@ public class ClientService {
 		}
 		return clients;
 	}
+	
+	public void setPermission(EthereumAccount ethereumAccount) {
+		try {
+			TransactionReceipt txReceipt = this.blockchainService.getClient_contract()
+					.setPermission(ethereumAccount.getAddress(), ethereumAccount.isPermission()).send();
+			this.blockchainService.logTransaction(txReceipt, "setPermissioN", contractName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
+	//PRIVATE FUNCTIONS
 	private List<Client> tuple7ToList(Tuple7<List<byte[]>, List<byte[]>, List<byte[]>, List<byte[]>, List<byte[]>, List<byte[]>, List<byte[]>> tuple){
 		List<Client> clients = new ArrayList<Client>();
 

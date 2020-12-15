@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.tuples.generated.Tuple4;
 
+import com.ivan.tfm.MainAppBackEnd.beans.EthereumAccount;
 import com.ivan.tfm.MainAppBackEnd.beans.User;
 import com.ivan.tfm.MainAppBackEnd.utils.Converter;
 
@@ -63,6 +64,16 @@ public class UserService {
 				this.blockchainService.logTransaction(txReceipt, "updateUser", this.contractName);
 			}
 		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void setPermission(EthereumAccount ethereumAccount) {
+		try {
+			TransactionReceipt txReceipt = this.blockchainService.getUser_contract()
+					.setPermission(ethereumAccount.getAddress(), ethereumAccount.isPermission()).send();
+			this.blockchainService.logTransaction(txReceipt, "setPermissioN", contractName);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

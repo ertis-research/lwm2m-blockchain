@@ -10,6 +10,7 @@ import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.tuples.generated.Tuple4;
 
 import com.ivan.tfm.MainAppBackEnd.beans.AclEntry;
+import com.ivan.tfm.MainAppBackEnd.beans.EthereumAccount;
 import com.ivan.tfm.MainAppBackEnd.utils.Converter;
 
 @Service
@@ -60,6 +61,16 @@ public class AclService {
 					.updateEntry(usnm, client_name, object_id, resource_id, permission).send();
 			this.blockchainService.logTransaction(txReceipt, "updateEntry", this.contractName);
 		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void setPermission(EthereumAccount ethereumAccount) {
+		try {
+			TransactionReceipt txReceipt = this.blockchainService.getAcl_contract()
+					.setPermission(ethereumAccount.getAddress(), ethereumAccount.isPermission()).send();
+			this.blockchainService.logTransaction(txReceipt, "setPermissioN", contractName);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

@@ -47,13 +47,11 @@ public class AnomalyService {
 	}
 
 	public void setPermission(EthereumAccount ethereumAccount) {
-		System.out.println("AnomalyService-setPermission");
-		TransactionReceipt txReceipt;
 		try {
-			txReceipt = this.blockchainService.getAnomaly_contract().setPermission(ethereumAccount.getAddress(), ethereumAccount.isPermission()).send();
+			TransactionReceipt txReceipt = this.blockchainService.getAnomaly_contract()
+					.setPermission(ethereumAccount.getAddress(), ethereumAccount.isPermission()).send();
 			this.blockchainService.logTransaction(txReceipt, "setPermission", this.contractName);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
