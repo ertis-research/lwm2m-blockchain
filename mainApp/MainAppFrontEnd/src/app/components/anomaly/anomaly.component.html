@@ -1,53 +1,5 @@
 <div class="container">
 
-    <div class="card" *ngIf="isAdmin()">
-        <div class="card-header">
-            <h3>White list of anomaly contract</h3>
-        </div>
-        <div class="card-body">
-            <form (ngSubmit)="setPermission()" #setPermissionForm="ngForm">
-                <div class="row">
-                    <div class="form-group" class="col-md-6">
-                        <label for="ethereumAccountAddress">Ethereum account address </label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            placeholder="0x0000000000000000000000..."
-                            required
-                            [(ngModel)]="ethereumAccount.address"
-                            name="ethereumAccountAddress"
-                            #username_tp="ngModel"
-                        >
-                    </div>
-
-                    <div class="form-group" class="col-md-2" >
-                        <label>Permission</label><br>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" [(ngModel)]="ethereumAccount.permission" id="inlineRadioTrue" [value]="true">
-                            <label class="form-check-label" for="inlineRadioTrue">True</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" [(ngModel)]="ethereumAccount.permission" id="inlineRadioFalse" [value]="false">
-                            <label class="form-check-label" for="inlineRadioFalse">False</label>
-                        </div>
-                    </div>
-
-
-                    <div class="form-group" class="col-sm-2">
-                        <br>
-                        <button
-                            type="submit"
-                            class="btn btn-success"
-                            [disabled]="!setPermissionForm.form.valid"
-                        >Set</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <br>
-
     <div class="card">
         <div class="card-header">
             <h3>Anomaly list</h3>

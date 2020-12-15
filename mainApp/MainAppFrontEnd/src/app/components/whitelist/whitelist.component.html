@@ -1,0 +1,61 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h3>Smart contracts whitelists</h3>
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="setPermission()" #setPermissionForm="ngForm">
+        <div class="row">
+          <div class="form-group col-md-5">
+            <label for="address">Ethereum account address </label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="0x0000000000000000000000000000000000000000"
+              required
+              pattern="0[xX][0-9a-fA-F]{40}"
+              [(ngModel)]="ethereumAccount.address"
+              name="ethereumAccountAddress"
+              #address="ngModel"
+            >
+          </div>
+
+          <div class="form-group col-md-2">
+            <label for="permission">Add to whitelist?</label><br>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" [(ngModel)]="ethereumAccount.permission" id="inlineRadioAdd" [value]="true">
+              <label class="form-check-label" for="inlineRadioAdd">Add</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" [(ngModel)]="ethereumAccount.permission" id="inlineRadioRemove" [value]="false">
+              <label class="form-check-label" for="inlineRadioRemove">Remove</label>
+            </div>
+          </div>
+
+          <div class="form-group col-md-3">
+            <label for="contract">Smart Contract</label>
+            <select
+              class="form-control"
+              required
+              [(ngModel)]="contract"
+              name="contract"
+              #contract_tp="ngModel"
+            >
+              <option [ngValue]="undefined" [disabled]="true">-- Choose a contract --</option>
+              <option *ngFor="let con of contracts" [value]="con">{{con}}</option>
+            </select>
+          </div>
+
+          <div class="form-group col-md-2">
+            <br>
+            <button
+              type="submit"
+              class="btn btn-success"
+              [disabled]="!setPermissionForm.form.valid"
+            >Update whitelist</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

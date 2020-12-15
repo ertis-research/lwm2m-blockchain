@@ -17,6 +17,9 @@
         <li class="nav-item" routerLinkActive="active" *ngIf="isAdmin()">
           <a class="nav-link" [routerLink]="['acl']">Manage ACL</a>
         </li>
+        <li class="nav-item" routerLinkActive="active" *ngIf="isAdmin()">
+          <a class="nav-link" [routerLink]="['whitelist']">Manage Whitelists</a>
+        </li>
       </ul>
       
       <span class="navbar-text">
