@@ -27,6 +27,15 @@ tar -xvf ./besu-YOUR_VERSION.tar.gz && cd besu-YOUR_VERSION
 ./bin/besu --version # This command should display your Besu version
 ```
 
+In order to execute Besu globally on your machine, it is highly recommendable to add Besu binary directory to environment variable `PATH`. On Windows, type __Environment Variables__ at the search bar. Then, a UI will be display, which allows the environment variables management. In the other hand, Linux commands are shown down below:
+```bash
+sudo nano /etc/environment
+# Add the end of 'PATH' variable add this: ~/besu-YOUR_VERSION/bin
+# Save changes and close the editor
+source /etc/environment
+besu --version # Check if Besu con be accessed globally
+```
+
 ## Starting Besu
 By default Besu will be **connected to the Ethereum Mainnet**. In order to connect the node to another network, it is necessary to include the flag `--network` or use environment variable `BESU_NETWORK`. For instance, if we would like to connect our Besu node to Ropsten testnet we should add `--network=ropsten` or `BESU_NETWORK=ropsten`. Network name can be written in upper or lower case.
 ```bash

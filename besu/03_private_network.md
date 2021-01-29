@@ -51,6 +51,7 @@ As explained [previously](./02_config_genesis_files.md), when running a private 
 ```
 
 ### 3) Start node-1 as a bootnode
+Using bootnodes is a method for initially discovering peers. Bootnodes are regular nodes used to discover other nodes. For mainnet and testnets, Besu has an internal list of enode URLs and uses this list automatically when you specify `--network` option. However, for private networks it is necessary to specify at least one bootnode for development purposes. Production private networks required two or more bootnodes.
 ```bash
 cd node-1/
 besu --data-path=data --genesis-file=../powGenesis.json \
@@ -63,7 +64,7 @@ Before moving forward the next step, we have to copy __node-1 enode URL__. This 
 ```
 
 ### 4) Start node-2 and node-3
-Once we
+Once we have copied node-1 enode URL, we can run node-2 and node-3.
 ```bash
 # Open a new terminal at 'private_net' folder
 cd node-2/
@@ -74,6 +75,7 @@ besu --data-path=data --genesis-file=../powGenesis.json --bootnodes=<node-1 enod
 ```
 
 ### 5) Confirm the network is working
+In other terminal, try to confirm the nodes are working as peers
 ```bash
 curl -X POST --data '{"jsonrpc":"2.0","method":"net_peerCount","params":[],"id":1}' localhost:8545
 ```

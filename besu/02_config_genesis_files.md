@@ -31,10 +31,7 @@ rpc-ws-port=9101
 genesis-file="~/genesis.json" # Path to the custom genesis file
 ```
 ## Genesis file
-The genesis file defines the first block in the chain, which indicates the chain you want to join. For Ethereum Mainnet and testnets (like Ropsten or Rinkeby), its genesis files are already defined in Besu and used when specifying a public network using the `--network` command line option. Those genesis files are stored and updated by Hyperledger Besu team [here](https://github.com/hyperledger/besu/tree/master/config/src/main/resources)
-
-For private networks, a new genesis file (__JSON format__) is required. In order to specify a genesis file, command line option `--genesis-file` must be included. This file specifies the __network-wide settings, so all nodes in a network must use the same genesis file. An example of genesis file is shown below.
-
+The genesis file defines the first block in the chain, which indicates the chain you want to join. This file specifies the __network-wide settings__, so all nodes in the network must use the same one. A genesis file is a JSON file which contains networks configuration items and genesis block (the first block of the chain) parameters. Depending on the desired/required __consensus protocol__, the mandatory fields may change (more information [here](https://besu.hyperledger.org/en/stable/Reference/Config-Items/)). An example of genesis file is shown below.
 ```json
 {
   "config": {
@@ -60,3 +57,12 @@ For private networks, a new genesis file (__JSON format__) is required. In order
   }
 }
 ```
+
+For Ethereum Mainnet and testnets (like Ropsten or Rinkeby), its genesis files are already defined in Besu and used when specifying a public network using the `--network` command line option. Those genesis files are stored and updated by Hyperledger Besu team [here](https://github.com/hyperledger/besu/tree/master/config/src/main/resources). For private networks, a new genesis file (__JSON format__) is required. In order to specify a genesis file, command line option `--genesis-file` must be included. 
+```bash
+besu --genesis-file=path/to/genesisFile.json
+```
+
+## Acknowledgment
+This guide has been developed summing up Hyperledger Besu docs.
+https://besu.hyperledger.org/
