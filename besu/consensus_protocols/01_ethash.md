@@ -60,7 +60,7 @@ besu --data-path=data --genesis-file=../ethashGenesis.json \
      --miner-enabled --miner-coinbase fe3b557e8fb62b89f4916b721be55ceb828dbd73 \
      --rpc-http-enabled --host-allowlist="*" --rpc-http-cors-origins="all"
 ```
-Before moving forward the next step, we have to copy __node-1 enode URL__. This one will be displayed just a few seconds after we execute the above command. The information we are looking for looks like this:
+Before moving on to the next step, we have to copy __node-1 enode URL__. It will be displayed just a few seconds after we execute the above command. The information we are looking for looks like this:
 ```bash
 2021-01-29 15:47:33.420+01:00 | main | INFO  | DefaultP2PNetwork | Enode URL enode://d263e7eff58923bf622fc0e9634687db3f62ad0d6aeb6d431aa1b33636dc9aefdb1d50f468b08bde9e3a1cafa314df306dbefc70472a7e23a0f8b669c4a65b33@127.0.0.1:30303
 ```
@@ -70,10 +70,15 @@ Once we have copied node-1 enode URL, we can run node-2 and node-3.
 ```bash
 # Open a new terminal at 'private_net' folder
 cd node-2/
-besu --data-path=data --genesis-file=../ethashGenesis.json --bootnodes=<node-1 enode URL> --p2p-port=30304
+besu --data-path=data --genesis-file=../ethashGenesis.json \
+     --bootnodes=<node-1 enode URL> --p2p-port=30304
+```
+
+```bash
 # Open another terminal at 'private_net' folder
 cd node-3/
-besu --data-path=data --genesis-file=../ethashGenesis.json --bootnodes=<node-1 enode URL> --p2p-port=30305
+besu --data-path=data --genesis-file=../ethashGenesis.json \
+     --bootnodes=<node-1 enode URL> --p2p-port=30305
 ```
 
 ### 5) Confirm the network is working
