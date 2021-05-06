@@ -1,0 +1,18 @@
+{
+  "name": "besu_deployment",
+  "version": "1.0.0",
+  "description": "Deploying a smart contract on a Hyperledger Besu network",
+  "main": "deploy.js",
+  "scripts": {
+    "deploy": "node deploy.js",
+    "get": "node get.js",
+    "set": "node set.js"
+  },
+  "keywords": [],
+  "author": "JTrillo",
+  "license": "MIT",
+  "dependencies": {
+    "@truffle/hdwallet-provider": "^1.2.2",
+    "web3": "^1.3.5"
+  }
+}
