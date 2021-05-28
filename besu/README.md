@@ -22,8 +22,9 @@ docker run hyperledger/besu:latest
 Installing from packaged binaries requires having **Java JDK** on your machine. [Here](https://hyperledger-org.bintray.com/besu-repo/) it is possible to dowload those Besu packaged binaries. Then, unpack downloaded files and change into `besu-<version>` folder. To confirm installation try to display Besu CLI version.
 ```bash
 # Replace 'YOUR_VERSION' with a valid version
-wget https://bintray.com/api/ui/download/hyperledger-org/besu-repo/besu-YOUR_VERSION.tar.gz
-tar -xvf ./besu-YOUR_VERSION.tar.gz && cd besu-YOUR_VERSION
+export BESU_VERSION = 'YOUR_VERSION'
+wget https://bintray.com/api/ui/download/hyperledger-org/besu-repo/besu-$BESU_VERSION.tar.gz
+tar -xvf ./besu-$BESU_VERSION.tar.gz && cd besu-$BESU_VERSION
 ./bin/besu --version # This command should display your Besu version
 ```
 
