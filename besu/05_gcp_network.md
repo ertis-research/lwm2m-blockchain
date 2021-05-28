@@ -32,7 +32,9 @@ sudo apt-get update && sudo apt-get install google-cloud-sdk
 ### Adding a firewall rule for Besu API
 In order to communicate with Besu JSON-RPC API it is necessary to expose API port. To do that, Google Cloud provides firewall rules.
 Go to VPC network > firewall and click **CREATE FIREWALL RULE** button.
+
 ![](./resources/GCP_00.png)
+
 Now, a new screen will be shown, where you have to indicate firewall rule information:
 - Name: besu-json-rpc-api
 - Logs: Off
@@ -57,7 +59,9 @@ gcloud compute firewall-rules create besu-json-rpc-api \
 
 ### Creating the first virtual machine
 Go to Compute Engine service and click **CREATE INSTANCE** button.
+
 ![](./resources/GCP_01.png)
+
 Now, a new screen will be shown, where you have to indicate the instance requirements:
 - Name: besu-1
 - Region/Zone: europe-west1/europe-west1-b
@@ -96,7 +100,9 @@ gcloud compute instances create besu-1 \
 
 ### Connecting to the newly created instance and preparing the network
 Through Google Cloud console UI:
+
 ![](./resources/GCP_02.png)
+
 Or via command: `gcloud beta compute ssh "besu-1"`
 
 Once you are connected to the instance, install Java and Hyperledger Besu:
@@ -126,13 +132,16 @@ nano ethashGenesis.json
 Until this point, everything we have installed or created is common to all nodes in the network. That is the reason why using a machine image comes in handy. A machine image allows to store all the configuration, metadata, permissions and data from one disk for a VM instance running on Compute Engine.
 
 To create a machine image, go to **besu-1** details and press **CREATE MACHINE IMAGE** button:
+
 ![](./resources/GCP_03.png)
 
 Then, fill the fields with the content shown below:
+
 ![](./resources/GCP_04.png)
 
 ### Creating other VM from machine image
 Go to Compute Engine service and click **CREATE INSTANCE** button. This time choose _'New VM instance from machine image'_ and select **besu-image**. Finally, complete the process without changes on VM configuration.
+
 ![](./resources/GCP_05.png)
 
 Equivalent `gcloud` commands:
