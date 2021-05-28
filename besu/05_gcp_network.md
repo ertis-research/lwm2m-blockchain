@@ -6,9 +6,12 @@ First of all, it is important to note that this network creation can be done in 
 - Using `gcloud` CLI
 - Through https://console.cloud.google.com/ UI
 
-No matter what approach you use. In both cases you will be working with **Compute Engine** service.
+No matter what approach you use, since in both cases you will be working with **Compute Engine** and **Firewall** services.
+
+In this guide, a private network of 3 nodes using Ethash will be created (further information about Ethash protocol [here](./consensus_protocols/01_ethash.md)).
 
 ### Installing `gcloud` CLI
+#### Debian/Ubuntu
 1. Add the Cloud SDK distribution URI as a package source:
 ```bash
 echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
@@ -28,6 +31,11 @@ sudo apt-get update && sudo apt-get install google-cloud-sdk
     1. You will be asked to log in to continue. A new window of your default browser will be prompted to perform Google Cloud authentication.
     2. Then, pick a cloud project (or create a new one)to use.
     3. Finally, select a default Compute Region and Zone. As of May 2021, there is no region in Spain. However, a region will be created in Madrid in the next few years. In the meantime, I do recommend to use **europe-west1-b** (located in Belgium).
+
+#### Windows
+Download the [Cloud SDK installer](https://dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe), launch it and complete the process.
+
+NOTE: Cloud SDK requires Python. Supported versions are Python 3 (preferred, 3.5 to 3.8) and Python 2 (2.7.9 or higher).
 
 ### Adding a firewall rule for Besu API
 In order to communicate with Besu JSON-RPC API it is necessary to expose API port. To do that, Google Cloud provides firewall rules.
@@ -99,7 +107,7 @@ gcloud compute instances create besu-1 \
 ```
 
 ### Connecting to the newly created instance and preparing the network
-Through Google Cloud console UI:
+Through Google Cloud console UI, pressing **SSH** button:
 
 ![](./resources/GCP_02.png)
 
@@ -155,7 +163,7 @@ gcloud beta compute instances create besu-3 \
 ```
 
 ### Running Besu nodes
-In order to ease Besu execution, create a script named `start.sh` on each machine:
+Connect again to VM instances (through UI or `gcloud` command). In order to ease Besu execution, create a script named `start.sh` on each machine:
 - besu-1
 ```bash
 #!/bin/bash
@@ -178,7 +186,8 @@ besu --data-path=besu_data --genesis-file=ethashGenesis.json \
 
 To grant execution permission: `chmod +x start.sh`
 
-### Checking network correct funcionamiento
+### Checking network correct functioning
+To verify Besu nodes are working, execute this command outside the Besu network (For instance, in your local machine):
 ```bash
 curl -X POST --data '{"jsonrpc":"2.0","method":"net_peerCount","params":[],"id":1}' \
     <besu-1-ip-address>:8545
